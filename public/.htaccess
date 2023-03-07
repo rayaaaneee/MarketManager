@@ -1,7 +1,6 @@
 <IfModule mod_rewrite.c>
-    Options -MultiViews 
-    rewriteEngine On 
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php [QSA,L]
-  </IfModule>
-  
+  Options -MultiViews 
+  rewriteEngine On 
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
