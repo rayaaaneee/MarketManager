@@ -16,14 +16,11 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $Name = null;
 
-    #[ORM\Column]
-    private ?int $Stock = null;
+    #[ORM\Column(length: 255)]
+    private ?string $Surname = null;
 
-    #[ORM\Column]
-    private ?int $UnityPrice = null;
-
-    #[ORM\Column]
-    private ?int $Type = null;
+    #[ORM\Column(length: 255)]
+    private ?string $Password = null;
 
     public function getId(): ?int
     {
@@ -42,38 +39,26 @@ class User
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getSurname(): ?string
     {
-        return $this->Stock;
+        return $this->Surname;
     }
 
-    public function setStock(int $Stock): self
+    public function setSurname(string $Surname): self
     {
-        $this->Stock = $Stock;
+        $this->Surname = $Surname;
 
         return $this;
     }
 
-    public function getUnityPrice(): ?int
+    public function getPassword(): ?string
     {
-        return $this->UnityPrice;
+        return $this->Password;
     }
 
-    public function setUnityPrice(int $UnityPrice): self
+    public function setPassword(string $Password): self
     {
-        $this->UnityPrice = $UnityPrice;
-
-        return $this;
-    }
-
-    public function getType(): ?int
-    {
-        return $this->Type;
-    }
-
-    public function setType(int $Type): self
-    {
-        $this->Type = $Type;
+        $this->Password = $Password;
 
         return $this;
     }

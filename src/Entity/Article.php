@@ -22,6 +22,9 @@ class Article
     #[ORM\Column]
     private ?int $UnityPrice = null;
 
+    #[ORM\Column]
+    private ?int $Type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Article
     public function setUnityPrice(int $UnityPrice): self
     {
         $this->UnityPrice = $UnityPrice;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->Type;
+    }
+
+    public function setType(int $Type): self
+    {
+        $this->Type = $Type;
 
         return $this;
     }
