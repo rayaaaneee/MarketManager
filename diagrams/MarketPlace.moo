@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" ID="{379E68B7-85D8-4A58-8F3A-60C6B91817EF}" Label="" LastModificationDate="1678177160" Name="ModeleOrienteObjet_1" Objects="32" Symbols="12" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" ID="{379E68B7-85D8-4A58-8F3A-60C6B91817EF}" Label="" LastModificationDate="1678178033" Name="ModeleOrienteObjet_1" Objects="35" Symbols="12" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <Model xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -1396,9 +1396,9 @@ Shadow=0</a:DisplayPreferences>
 <c:Symbols>
 <o:AssociationSymbol Id="o6">
 <a:CreationDate>1678176850</a:CreationDate>
-<a:ModificationDate>1678177136</a:ModificationDate>
-<a:Rect>((-16385,64365), (-2958,70355))</a:Rect>
-<a:ListOfPoints>((-16385,69181),(-8419,69181),(-8419,65539),(-2958,65539))</a:ListOfPoints>
+<a:ModificationDate>1678177382</a:ModificationDate>
+<a:Rect>((-16300,62841), (-714,66969))</a:Rect>
+<a:ListOfPoints>((-16300,65795),(-8546,65795),(-8546,64015),(-714,64015))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>8</a:ArrowStyle>
 <a:LineColor>16744448</a:LineColor>
@@ -1417,9 +1417,9 @@ MULA 0 Arial,8,N</a:FontList>
 </o:AssociationSymbol>
 <o:AssociationSymbol Id="o10">
 <a:CreationDate>1678176868</a:CreationDate>
-<a:ModificationDate>1678177160</a:ModificationDate>
-<a:Rect>((-20877,70250), (7541,72511))</a:Rect>
-<a:ListOfPoints>((7541,71424),(-3152,71424),(-3152,71337),(-20877,71337))</a:ListOfPoints>
+<a:ModificationDate>1678177386</a:ModificationDate>
+<a:Rect>((-19607,70250), (7541,73444))</a:Rect>
+<a:ListOfPoints>((7541,71424),(-3046,71424),(-3046,72270),(-19607,72270))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>8</a:ArrowStyle>
 <a:LineColor>16744448</a:LineColor>
@@ -1463,9 +1463,9 @@ LABL 0 Arial,8,N</a:FontList>
 </o:ClassSymbol>
 <o:ClassSymbol Id="o8">
 <a:CreationDate>1678175364</a:CreationDate>
-<a:ModificationDate>1678176856</a:ModificationDate>
+<a:ModificationDate>1678177374</a:ModificationDate>
 <a:IconMode>-1</a:IconMode>
-<a:Rect>((-5158,58464), (2673,69579))</a:Rect>
+<a:Rect>((-2914,56940), (4917,68055))</a:Rect>
 <a:AutoAdjustToText>0</a:AutoAdjustToText>
 <a:LineColor>16744448</a:LineColor>
 <a:FillColor>16770222</a:FillColor>
@@ -1488,9 +1488,9 @@ LABL 0 Arial,8,N</a:FontList>
 </o:ClassSymbol>
 <o:ClassSymbol Id="o7">
 <a:CreationDate>1678175365</a:CreationDate>
-<a:ModificationDate>1678177136</a:ModificationDate>
+<a:ModificationDate>1678177379</a:ModificationDate>
 <a:IconMode>-1</a:IconMode>
-<a:Rect>((-20951,60412), (-13373,71463))</a:Rect>
+<a:Rect>((-20739,63588), (-13161,74639))</a:Rect>
 <a:AutoAdjustToText>0</a:AutoAdjustToText>
 <a:LineColor>16744448</a:LineColor>
 <a:FillColor>16770222</a:FillColor>
@@ -1643,11 +1643,11 @@ LABL 0 Arial,8,N</a:FontList>
 </o:Class>
 <o:Class Id="o15">
 <a:ObjectID>5DA451C3-AC32-471A-A672-04E66DB96EE3</a:ObjectID>
-<a:Name>Cart</a:Name>
-<a:Code>Cart</a:Code>
+<a:Name>ShoppingList</a:Name>
+<a:Code>ShoppingList</a:Code>
 <a:CreationDate>1678175365</a:CreationDate>
 <a:Creator>rayan</a:Creator>
-<a:ModificationDate>1678177110</a:ModificationDate>
+<a:ModificationDate>1678178026</a:ModificationDate>
 <a:Modifier>rayan</a:Modifier>
 <a:UseParentNamespace>0</a:UseParentNamespace>
 <c:Attributes>
@@ -1686,11 +1686,44 @@ LABL 0 Arial,8,N</a:FontList>
 </o:Attribute>
 <o:Attribute Id="o28">
 <a:ObjectID>86A3AF33-A8EC-4588-9E67-B110CD05C075</a:ObjectID>
-<a:Name>Qtity</a:Name>
-<a:Code>qtity</a:Code>
+<a:Name>Quantity</a:Name>
+<a:Code>quantity</a:Code>
 <a:CreationDate>1678176645</a:CreationDate>
 <a:Creator>rayan</a:Creator>
-<a:ModificationDate>1678176719</a:ModificationDate>
+<a:ModificationDate>1678177889</a:ModificationDate>
+<a:Modifier>rayan</a:Modifier>
+<a:DataType>int</a:DataType>
+<a:Attribute.Visibility>-</a:Attribute.Visibility>
+</o:Attribute>
+<o:Attribute Id="o29">
+<a:ObjectID>029AB7AD-7193-424D-83CF-AD877B29FDC3</a:ObjectID>
+<a:Name>Name</a:Name>
+<a:Code>name</a:Code>
+<a:CreationDate>1678177389</a:CreationDate>
+<a:Creator>rayan</a:Creator>
+<a:ModificationDate>1678177608</a:ModificationDate>
+<a:Modifier>rayan</a:Modifier>
+<a:DataType>string</a:DataType>
+<a:Attribute.Visibility>-</a:Attribute.Visibility>
+</o:Attribute>
+<o:Attribute Id="o30">
+<a:ObjectID>DCB42C49-544D-4B89-8FC1-A48533862E72</a:ObjectID>
+<a:Name>Descrition</a:Name>
+<a:Code>descrition</a:Code>
+<a:CreationDate>1678177389</a:CreationDate>
+<a:Creator>rayan</a:Creator>
+<a:ModificationDate>1678177608</a:ModificationDate>
+<a:Modifier>rayan</a:Modifier>
+<a:DataType>string</a:DataType>
+<a:Attribute.Visibility>-</a:Attribute.Visibility>
+</o:Attribute>
+<o:Attribute Id="o31">
+<a:ObjectID>57923FE6-E12E-4DA1-89D9-EE045E7F7D49</a:ObjectID>
+<a:Name>TotalPrice</a:Name>
+<a:Code>totalPrice</a:Code>
+<a:CreationDate>1678178020</a:CreationDate>
+<a:Creator>rayan</a:Creator>
+<a:ModificationDate>1678178033</a:ModificationDate>
 <a:Modifier>rayan</a:Modifier>
 <a:DataType>int</a:DataType>
 <a:Attribute.Visibility>-</a:Attribute.Visibility>
@@ -1745,7 +1778,7 @@ LABL 0 Arial,8,N</a:FontList>
 </o:Association>
 </c:Associations>
 <c:TargetModels>
-<o:TargetModel Id="o29">
+<o:TargetModel Id="o32">
 <a:ObjectID>5664273C-C3FD-4A2A-8838-22B2A3E90DCD</a:ObjectID>
 <a:Name>Java</a:Name>
 <a:Code>Java</a:Code>
@@ -1760,7 +1793,7 @@ LABL 0 Arial,8,N</a:FontList>
 <o:Shortcut Ref="o3"/>
 </c:SessionShortcuts>
 </o:TargetModel>
-<o:TargetModel Id="o30">
+<o:TargetModel Id="o33">
 <a:ObjectID>055E1383-FDF5-4EC7-8448-ADD1C6DD7B1D</a:ObjectID>
 <a:Name>WSDL for Java</a:Name>
 <a:Code>WSDLJava</a:Code>
