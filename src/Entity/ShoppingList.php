@@ -14,10 +14,10 @@ class ShoppingList
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $idArticle = null;
+    private ?int $Id_Article = null;
 
     #[ORM\Column]
-    private ?int $idUser = null;
+    private ?int $Id_User = null;
 
     #[ORM\Column]
     private ?int $Quantity = null;
@@ -28,6 +28,9 @@ class ShoppingList
     #[ORM\Column(length: 255)]
     private ?string $Description = null;
 
+    #[ORM\Column]
+    private ?int $TotalPrice = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,24 +38,24 @@ class ShoppingList
 
     public function getIdArticle(): ?int
     {
-        return $this->idArticle;
+        return $this->Id_Article;
     }
 
-    public function setIdArticle(int $idArticle): self
+    public function setIdArticle(int $Id_Article): self
     {
-        $this->idArticle = $idArticle;
+        $this->Id_Article = $Id_Article;
 
         return $this;
     }
 
     public function getIdUser(): ?int
     {
-        return $this->idUser;
+        return $this->Id_User;
     }
 
-    public function setIdUser(int $idUser): self
+    public function setIdUser(int $Id_User): self
     {
-        $this->idUser = $idUser;
+        $this->Id_User = $Id_User;
 
         return $this;
     }
@@ -89,6 +92,18 @@ class ShoppingList
     public function setDescription(string $Description): self
     {
         $this->Description = $Description;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?int
+    {
+        return $this->TotalPrice;
+    }
+
+    public function setTotalPrice(int $TotalPrice): self
+    {
+        $this->TotalPrice = $TotalPrice;
 
         return $this;
     }

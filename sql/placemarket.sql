@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 07 mars 2023 à 08:53
--- Version du serveur : 8.0.31
--- Version de PHP : 8.0.26
+-- Généré le : mar. 07 mars 2023 à 10:07
+-- Version du serveur : 5.7.40
+-- Version de PHP : 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,10 +29,11 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE IF NOT EXISTS `article` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stock` int NOT NULL,
-  `unity_price` int NOT NULL,
+  `stock` int(11) NOT NULL,
+  `unity_price` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -44,18 +45,18 @@ CREATE TABLE IF NOT EXISTS `article` (
 
 DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
+  `execution_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `doctrine_migration_versions`
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20230307083829', '2023-03-07 08:48:22', 199);
+('DoctrineMigrations\\Version20230307100251', '2023-03-07 10:03:14', 253);
 
 -- --------------------------------------------------------
 
@@ -65,7 +66,7 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 
 DROP TABLE IF EXISTS `messenger_messages`;
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -86,16 +87,44 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 
 DROP TABLE IF EXISTS `shopping_list`;
 CREATE TABLE IF NOT EXISTS `shopping_list` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_article` int NOT NULL,
-  `id_user` int NOT NULL,
-  `quantity` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_article` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_article` (`id_article`),
-  KEY `id_user` (`id_user`)
+  `total_price` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `type`
+--
+
+DROP TABLE IF EXISTS `type`;
+CREATE TABLE IF NOT EXISTS `type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `type`
+--
+
+INSERT INTO `type` (`id`, `name`) VALUES
+(1, 'Alimentation Salé'),
+(2, 'Alimentation Sucré'),
+(3, 'Produits ménagers'),
+(4, 'Vêtements et accessoires'),
+(5, 'Articles de maison et de décoration'),
+(6, 'Santé et bien-être'),
+(7, 'Jouets et jeux'),
+(8, 'Produits cosmétiques et de beauté'),
+(9, 'Livres et magazines'),
+(10, 'Articles de sport');
 
 -- --------------------------------------------------------
 
@@ -105,24 +134,12 @@ CREATE TABLE IF NOT EXISTS `shopping_list` (
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stock` int NOT NULL,
-  `unity_price` int NOT NULL,
-  `type` int NOT NULL,
+  `surname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `shopping_list`
---
-ALTER TABLE `shopping_list`
-  ADD CONSTRAINT `shopping_list_ibfk_1` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `shopping_list_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
