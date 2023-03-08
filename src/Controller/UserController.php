@@ -11,10 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/register", name="user_register")
-     */
-    public function register(Request $request,EntityManagerInterface $entityManager)
+    #[Route('/register', name: 'user_register')]
+    public function register(Request $request, EntityManagerInterface $entityManager)
     {
         $user = new User();
         $form = $this->createForm(UserRegistrationFormType::class, $user);
@@ -24,11 +22,10 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
             // rediriger vers une autre page ou afficher un message de succès
             return $this->redirectToRoute('home');
         }
-
 
         return $this->render('user/register.html.twig', [
             'registrationForm' => $form->createView(),
