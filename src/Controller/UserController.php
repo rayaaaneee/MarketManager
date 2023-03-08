@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
-
-
 class UserController extends AbstractController
 {
-    #[Route("/register", name:"user_register")]
-    #[Route("/", name:"home")]
-     
-    public function register(Request $request,EntityManagerInterface $entityManager, Session $session)
+    #[Route("/register", name: "register")]
+    public function register(Request $request, EntityManagerInterface $entityManager, Session $session)
     {
         $user = new User();
         $form = $this->createForm(UserRegistrationFormType::class, $user);
@@ -26,20 +22,32 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // si le nom et le prenom sont déjà utilisés, on affiche un message d'erreur
+            $formData = $form->getData();
+            $alreadyConnected = $entityManager->getRepository(User::class)->findOneBy(['Surname' => $formData->getSurname()]) && $entityManager->getRepository(User::class)->findOneBy(['Name' => $formData->getName()]);
+            if ($alreadyConnected) {
+                $this->addFlash('error', 'Ce nom est déjà utilisé');
+                return $this->redirectToRoute('register');
+            }
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
+            $session->set('Name', $user->getName());
+            $session->set('Surname', $user->getSurname());
+            $session->set('id', $user->getId());
+            $session->set('Password', $user->getPassword());
+
             // rediriger vers une autre page ou afficher un message de succès
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('user/register.html.twig', [
+
+        return $this->render('page/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
 
-    #[Route("/connect", name:"user_connection")]
-    #[Route("/", name:"home")]
+    #[Route("/connect", name: "connect")]
     public function connect(Request $request, EntityManagerInterface $entityManager, Session $session)
     {
 
@@ -53,24 +61,29 @@ class UserController extends AbstractController
                 $session->set('Name', $user->getName());
                 $session->set('Surname', $user->getSurname());
                 $session->set('id', $user->getId());
-                $session->set('Password',$user->getPassword());
+                $session->set('Password', $user->getPassword());
                 $this->addFlash('success', 'Vous êtes connecté');
                 return $this->redirectToRoute('home');
             } else {
                 $this->addFlash('error', 'Identifiants incorrects');
-                return $this->redirectToRoute('user_connection');
+                return $this->redirectToRoute('connection');
             }
         }
-        return $this->render('user/connect.html.twig', [
+        return $this->render('page/connect.html.twig', [
             'connectionForm' => $form->createView(),
-        ]);}
+        ]);
+    }
 
-        #[Route("/disconnect", name:"user_disconnect")]
-        #[Route("/", name:"home")]
-        public function disconnect(Session $session)
-        {
-            $session->clear();
-            return $this->redirectToRoute('home');
-        }
+    #[Route("/disconnect", name: "disconnect")]
+    public function disconnect(Session $session)
+    {
+        $session->clear();
+        return $this->redirectToRoute('home');
+    }
 
+    #[Route('/list', name: 'list')]
+    public function  list(Request $request, EntityManagerInterface $entityManager)
+    {
+        return $this->render('page/list.html.twig', []);
+    }
 }
