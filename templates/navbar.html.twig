@@ -40,9 +40,14 @@
           </li>
         </ul>
         <form class="d-flex">
+        {% if app.session.get('id') %}
+          <a href="./disconnect/" type="button" class="btn btn-primary">Disconnect</a>
+        {% else %}
           <a href="./connect/" type="button" class="btn btn-primary">Connect</a>
           <a href="./register/"type="button" class="btn btn-primary">Sign Up</a>
+        {% endif %}
         </form>
+
       </div>
     </div>
 </nav>
