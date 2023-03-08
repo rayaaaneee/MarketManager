@@ -24,6 +24,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // rediriger vers une autre page ou afficher un message de succès
+            $this->addFlash('success', 'Votre compte a bien été créé !');
             return $this->redirectToRoute('home');
         }
 
