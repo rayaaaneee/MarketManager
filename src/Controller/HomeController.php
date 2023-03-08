@@ -17,4 +17,13 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/article/search', name: 'home')]
+    public function searchArticle(Session $session): Response
+    {
+        dump($session->get('name'));
+        return $this->render('page/article.search.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }

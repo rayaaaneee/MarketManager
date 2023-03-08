@@ -28,16 +28,10 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-
-            $session->set('Name', $user->getName());
-            $session->set('Surname', $user->getSurname());
-            $session->set('id', $user->getId());
-            $session->set('Password',$user->getPassword());
     
             // rediriger vers une autre page ou afficher un message de succès
             return $this->redirectToRoute('home');
         }
-
 
         return $this->render('user/register.html.twig', [
             'registrationForm' => $form->createView(),
@@ -70,5 +64,13 @@ class UserController extends AbstractController
         return $this->render('user/connect.html.twig', [
             'connectionForm' => $form->createView(),
         ]);}
+
+        #[Route("/disconnect", name:"user_disconnect")]
+        #[Route("/", name:"home")]
+        public function disconnect(Session $session)
+        {
+            $session->clear();
+            return $this->redirectToRoute('home');
+        }
 
 }
