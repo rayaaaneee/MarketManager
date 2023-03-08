@@ -3,3 +3,11 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+register:
+    path: /register
+    controller: App\Controller\UserController::register
+
+home:
+    path: /.
+    controller: App\Controller\HomeCOntroller::.
