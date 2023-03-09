@@ -1,11 +1,35 @@
 {% extends 'base.html.twig' %}
+{% block title %}Connection{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .form-control {
+        width: 30%;
+        margin-left: 30px;
+    }
+    .btn {
+        display: block;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
     <h1>Register</h1>
 
-    {{ form_start(connectionForm) }}
-        {{ form_row(connectionForm.Surname) }}
-        {{ form_row(connectionForm.Password) }}
+    {{ form_start(connectionForm, {
+        
+    }) }}
+        {{ form_row(connectionForm.Surname, {
+            'attr' :  {
+                'class' : 'form-control',  
+                'placeholder' : 'Your name'
+        }}) }}
+
+        {{ form_row(connectionForm.Password, {
+            'attr' :  { 
+                'class' : 'form-control', 
+                'placeholder' : 'Your password'}
+        }) }}
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(connectionForm) }}
 {% endblock %}

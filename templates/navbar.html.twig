@@ -45,7 +45,7 @@
         </ul>
         <form class="d-flex">
         {% if app.session.get('id') %}
-          <p class="name-menu-container">Bonjour {{ app.session.get('Surname') }}</p>
+          <p class="name-menu-container">Hello {{ app.session.get('Surname') }}</p>
           <a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
         {% else %}
           <a href="{{ path('connect') }}" type="button" class="btn btn-primary">Connect</a>

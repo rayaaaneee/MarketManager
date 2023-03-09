@@ -38,7 +38,7 @@ class UserController extends AbstractController
             $session->set('Surname', $user->getSurname());
             $session->set('id', $user->getId());
             $session->set('Password', $user->getPassword());
-    
+
             // rediriger vers une autre page ou afficher un message de succès
             return $this->redirectToRoute('home');
         }
@@ -64,10 +64,8 @@ class UserController extends AbstractController
                 $session->set('Surname', $user->getSurname());
                 $session->set('id', $user->getId());
                 $session->set('Password', $user->getPassword());
-                $this->addFlash('success', 'Vous êtes connecté');
                 return $this->redirectToRoute('home');
             } else {
-                $this->addFlash('error', 'Identifiants incorrects');
                 return $this->redirectToRoute('connection');
             }
         }

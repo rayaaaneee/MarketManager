@@ -1,12 +1,36 @@
 {% extends 'base.html.twig' %}
-
 {%block title%}Register{%endblock%}
+
+{% block stylesheets %}
+<style>
+    .form-control {
+        width: 30%;
+        margin-left: 30px;
+    }
+    .btn {
+        display: block;
+    }
+</style>
+{% endblock %}
+
 
 {% block body %}
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.Name) }}
-        {{ form_row(registrationForm.Surname) }}
-        {{ form_row(registrationForm.Password) }}
+        {{ form_row(registrationForm.Name,  {
+            'attr' :  {
+                'class' : 'form-control',  
+                'placeholder' : 'Your name'
+        }}) }}
+        {{ form_row(registrationForm.Surname,  {
+            'attr' :  {
+                'class' : 'form-control',  
+                'placeholder' : 'Your Surname'
+        }}) }}
+        {{ form_row(registrationForm.Password, {
+            'attr' :  {
+                'class' : 'form-control',  
+                'placeholder' : 'Your password'
+        }}) }}
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
 
