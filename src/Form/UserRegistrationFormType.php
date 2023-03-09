@@ -25,7 +25,8 @@ class UserRegistrationFormType extends AbstractType
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
+                //le mot de passe doit être plus grand que 6 caractères et doit avoir au moins une lettre et un chiffre
+                'first_options' => ['label' => 'Mot de passe', 'attr' => ['pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$']],
                 'second_options' => ['label' => 'Répéter le mot de passe'],
             ]);
     }
