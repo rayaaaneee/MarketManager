@@ -26,12 +26,25 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // si le nom et le prenom sont déjà utilisés, on affiche un message d'erreur
+            $formData = $form->getData();
+            $alreadyConnected = $entityManager->getRepository(User::class)->findOneBy(['Surname' => $formData->getSurname()]) && $entityManager->getRepository(User::class)->findOneBy(['Name' => $formData->getName()]);
+            if ($alreadyConnected) {
+                $this->addFlash('error', 'Ce nom est déjà utilisé');
+                return $this->redirectToRoute('user_register');
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
-    
+        
+            $session->set('Name', $user->getName());
+            $session->set('Surname', $user->getSurname());
+            $session->set('id', $user->getId());
+            $session->set('Password',$user->getPassword());
             // rediriger vers une autre page ou afficher un message de succès
             return $this->redirectToRoute('home');
         }
+    
 
         return $this->render('user/register.html.twig', [
             'registrationForm' => $form->createView(),
