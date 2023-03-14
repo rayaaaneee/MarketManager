@@ -25,4 +25,20 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/article/{id}', name: 'article')]
+    public function article(string $id): Response
+    {
+        return $this->render('page/article.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('article/new', name: 'article_new')]
+    public function newArticle(): Response
+    {
+        return $this->render('page/article.new.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }

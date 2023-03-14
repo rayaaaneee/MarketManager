@@ -1,3 +1,4 @@
+{% block stylesheet %}
 <style>
   .title-menu-container {
     display: flex;
@@ -19,6 +20,9 @@
 
   .title-menu-container { margin-left: 20px; }
 </style>
+{% endblock %}
+
+{% block body %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <div class="title-menu-container">
@@ -37,7 +41,7 @@
             <a class="nav-link" href="{{ path('article_search') }}">Search article</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./">New list</a>
+            <a class="nav-link" href="{{ path('new_list') }}">New list</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./">Stats</a>
@@ -56,3 +60,4 @@
       </div>
     </div>
 </nav>
+{% endblock %}

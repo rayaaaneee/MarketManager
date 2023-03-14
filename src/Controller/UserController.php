@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ShoppingList;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
 use App\Form\UserConnectionFormType;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class UserController extends AbstractController
 {
@@ -66,7 +68,7 @@ class UserController extends AbstractController
                 $session->set('Password', $user->getPassword());
                 return $this->redirectToRoute('home');
             } else {
-                return $this->redirectToRoute('connection');
+                return $this->redirectToRoute('connect');
             }
         }
         return $this->render('page/connect.html.twig', [
@@ -84,6 +86,19 @@ class UserController extends AbstractController
     #[Route('/list', name: 'list')]
     public function  list(Request $request, EntityManagerInterface $entityManager)
     {
-        return $this->render('page/list.html.twig', []);
+        $lists = $entityManager->getRepository(ShoppingList::class)->findAll();
+        $nbLists = count($lists);
+        $table_tr_classes = ["active", "light", "dark"];
+        return $this->render('page/list.html.twig', [
+            'lists' => $lists,
+            'nbLists' => $nbLists,
+            'table_tr_classes' => $table_tr_classes,
+        ]);
+    }
+
+    #[Route('/list/new', name: 'new_list')]
+    public function newList(Request $request, EntityManagerInterface $entityManager)
+    {
+        return $this->render('page/new_list.html.twig', []);
     }
 }

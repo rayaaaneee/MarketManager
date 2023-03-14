@@ -20,7 +20,7 @@ class Article
     private ?int $Stock = null;
 
     #[ORM\Column]
-    private ?int $UnityPrice = null;
+    private ?float $UnityPrice = null;
 
     #[ORM\Column]
     private ?int $Type = null;
