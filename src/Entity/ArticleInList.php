@@ -28,6 +28,9 @@ class ArticleInList
     #[ORM\OneToMany(mappedBy: 'articleInList', targetEntity: Article::class)]
     private Collection $idArticle;
 
+    #[ORM\Column]
+    private ?float $unityPrice = null;
+
     public function __construct()
     {
         $this->idArticle = new ArrayCollection();
@@ -100,6 +103,18 @@ class ArticleInList
                 $idArticle->setArticleInList(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUnityPrice(): ?float
+    {
+        return $this->unityPrice;
+    }
+
+    public function setUnityPrice(float $unityPrice): self
+    {
+        $this->unityPrice = $unityPrice;
 
         return $this;
     }

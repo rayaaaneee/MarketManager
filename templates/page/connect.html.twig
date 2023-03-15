@@ -4,32 +4,40 @@
 {% block stylesheets %}
 <style>
     .form-control {
-        width: 30%;
-        margin-left: 30px;
+        margin-left: 15px;
     }
     .btn {
         display: block;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        width: 350px;
+    }   
+    form button[type="submit"] {
+        align-self: center;
+        justify-self: center;
+        width: fit-content;
+        padding: 13px 25px;
+    }
+    form > div {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
     }
 </style>
 {% endblock %}
 
 {% block body %}
+<main>
     <h1>Register</h1>
 
-    {{ form_start(connectionForm, {
-        
-    }) }}
-        {{ form_row(connectionForm.Surname, {
-            'attr' :  {
-                'class' : 'form-control',  
-                'placeholder' : 'Your name'
-        }}) }}
+    {{ form_start(connectionForm) }}
+        {{ form_row(connectionForm.Surname) }}
 
-        {{ form_row(connectionForm.Password, {
-            'attr' :  { 
-                'class' : 'form-control', 
-                'placeholder' : 'Your password'}
-        }) }}
+        {{ form_row(connectionForm.Password) }}
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(connectionForm) }}
+</main>
 {% endblock %}

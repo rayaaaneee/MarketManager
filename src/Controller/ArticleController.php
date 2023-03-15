@@ -46,10 +46,10 @@ class ArticleController extends AbstractController
         // recupere l'int correspondant a type et le converti en string grâce a la classe Type
         // créer un objet de type Type
         // recupere le nom du type
-        return $this->render('page/articleId.html.twig', [
+        return $this->render('page/article.show.html.twig', [
             'controller_name' => 'HomeController',
             'article' => $article
-            
+
         ]);
     }
 
@@ -60,5 +60,4 @@ class ArticleController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-
 }

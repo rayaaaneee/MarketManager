@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 15 mars 2023 à 16:19
+-- Généré le : mer. 15 mars 2023 à 17:24
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `unity_price` float NOT NULL,
   `type_id` int NOT NULL,
   `article_in_list_id` int NOT NULL,
+  `image` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_23A0E66C54C8C93` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,35 +44,35 @@ CREATE TABLE IF NOT EXISTS `article` (
 -- Déchargement des données de la table `article`
 --
 
-INSERT INTO `article` (`id`, `name`, `stock`, `unity_price`, `type_id`, `article_in_list_id`) VALUES
-(1, 'Pâtes', 47, 1.5, 1, 0),
-(2, 'Riz', 37, 2.3, 1, 0),
-(3, 'Chips', 38, 1.8, 1, 0),
-(4, 'Biscuits', 66, 1.2, 2, 0),
-(5, 'Chocolat', 38, 2.5, 2, 0),
-(6, 'Bonbons', 40, 0.8, 2, 0),
-(7, 'Lessive', 17, 6.5, 3, 0),
-(8, 'Liquide vaisselle', 14, 2.2, 3, 0),
-(9, 'Papier toilette', 10, 1.8, 3, 0),
-(10, 'Chemise homme', 54, 20, 4, 0),
-(11, 'Robe femme', 59, 25, 4, 0),
-(12, 'Ceinture', 12, 8.5, 4, 0),
-(13, 'Coussin', 43, 12, 5, 0),
-(14, 'Tapis', 57, 30, 5, 0),
-(15, 'Table basse', 33, 50, 5, 0),
-(16, 'Aspirine', 39, 2.5, 6, 0),
-(17, 'Vitamine C', 31, 6, 6, 0),
-(18, 'Pansements', 28, 1.2, 6, 0),
-(19, 'Puzzle', 39, 8, 7, 0),
-(20, 'Jeux de cartes', 44, 4.5, 7, 0),
-(21, 'Ballon de football', 38, 12, 10, 0),
-(22, 'Ballon de basket', 48, 15, 10, 0),
-(23, 'Raquette de tennis', 59, 35, 10, 0),
-(24, 'Crayon à lèvres', 29, 6.5, 8, 0),
-(25, 'Mascara', 16, 8, 8, 0),
-(26, 'Vernis à ongles', 39, 5, 8, 0),
-(27, 'Roman', 23, 10, 9, 0),
-(28, 'Magazine', 47, 3.5, 9, 0);
+INSERT INTO `article` (`id`, `name`, `stock`, `unity_price`, `type_id`, `article_in_list_id`, `image`) VALUES
+(1, 'Pâtes', 47, 1.5, 1, 0, 'pasta.png'),
+(2, 'Riz', 37, 2.3, 1, 0, 'rice.png'),
+(3, 'Chips', 38, 1.8, 1, 0, 'chips.png'),
+(4, 'Biscuits', 66, 1.2, 2, 0, 'cookies.png'),
+(5, 'Chocolat', 38, 2.5, 2, 0, 'chocolate.png'),
+(6, 'Bonbons', 40, 0.8, 2, 0, 'candy.png'),
+(7, 'Lessive', 17, 6.5, 3, 0, 'laundry.png'),
+(8, 'Liquide vaisselle', 14, 2.2, 3, 0, 'detergent.png'),
+(9, 'Papier toilette', 10, 1.8, 3, 0, 'toilet-paper.png'),
+(10, 'Chemise homme', 54, 20, 4, 0, 'man-shirt.png'),
+(11, 'Robe femme', 59, 25, 4, 0, 'woman-dress.png'),
+(12, 'Ceinture', 12, 8.5, 4, 0, 'belt.png'),
+(13, 'Coussin', 43, 12, 5, 0, 'pillow.png'),
+(14, 'Tapis', 57, 30, 5, 0, 'rug.png'),
+(15, 'Table basse', 33, 50, 5, 0, 'coffee-table.png'),
+(16, 'Aspirine', 39, 2.5, 6, 0, 'aspirin.png'),
+(17, 'Vitamine C', 31, 6, 6, 0, 'vitamin-c.png'),
+(18, 'Pansements', 28, 1.2, 6, 0, 'band-aid.png'),
+(19, 'Puzzle', 39, 8, 7, 0, 'puzzle.png'),
+(20, 'Jeux de cartes', 44, 4.5, 7, 0, 'cards.png'),
+(21, 'Ballon de football', 38, 12, 10, 0, 'football-ball.png'),
+(22, 'Ballon de basket', 48, 15, 10, 0, 'basketball-ball.png'),
+(23, 'Raquette de tennis', 59, 35, 10, 0, 'tennis-racket.png'),
+(24, 'Crayon à lèvres', 29, 6.5, 8, 0, 'lipstick.png'),
+(25, 'Mascara', 16, 8, 8, 0, 'mascara.png'),
+(26, 'Vernis à ongles', 39, 5, 8, 0, 'nail-polish.png'),
+(27, 'Roman', 23, 10, 9, 0, 'book.png'),
+(28, 'Magazine', 47, 3.5, 9, 0, 'magazine.png');
 
 -- --------------------------------------------------------
 

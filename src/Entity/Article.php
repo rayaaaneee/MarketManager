@@ -18,9 +18,6 @@ class Article extends TypeRepository
     private ?string $Name = null;
 
     #[ORM\Column]
-    private ?int $Stock = null;
-
-    #[ORM\Column]
     private ?float $UnityPrice = null;
 
     #[ORM\ManyToOne]
@@ -30,6 +27,9 @@ class Article extends TypeRepository
     #[ORM\ManyToOne(inversedBy: 'idArticle')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ArticleInList $articleInList = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
@@ -44,18 +44,6 @@ class Article extends TypeRepository
     public function setName(string $Name): self
     {
         $this->Name = $Name;
-
-        return $this;
-    }
-
-    public function getStock(): ?int
-    {
-        return $this->Stock;
-    }
-
-    public function setStock(int $Stock): self
-    {
-        $this->Stock = $Stock;
 
         return $this;
     }
@@ -92,6 +80,18 @@ class Article extends TypeRepository
     public function setArticleInList(?ArticleInList $articleInList): self
     {
         $this->articleInList = $articleInList;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

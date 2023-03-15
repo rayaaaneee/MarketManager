@@ -14,19 +14,20 @@ class UserConnectionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('Surname', null, [
-            'label' => 'Nom de famille:',
-            'required' => true,
-        ])
-        ->add('Password', PasswordType::class, [
-            'label' => 'Mot de passe',
-            'attr' => ['class' => 'password-field'],
-            'required' => true,
-            'invalid_message' => 'Le mot de passe est invalide.',
-        ])        
-    ;
+            ->setAttributes(['class' => 'form-signin'])
+            ->add('Surname', null, [
+                'label' => 'Nom de famille:',
+                'attr' => ['class' => 'form-control', 'id' => 'floatingSurname', 'placeholder' => 'Your surname'],
+                'required' => true,
+            ])
+            ->add('Password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'attr' => ['class' => 'form-control', 'id' => 'floatingPassword', 'placeholder' => 'Your password'],
+                'required' => true,
+                'invalid_message' => 'Le mot de passe est invalide.',
+            ]);
     }
-    
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {
