@@ -14,96 +14,81 @@ class ShoppingList
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $Id_Article = null;
-
-    #[ORM\Column]
-    private ?int $Id_User = null;
-
-    #[ORM\Column]
-    private ?int $Quantity = null;
+    private ?int $idUser = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Description = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $TotalPrice = null;
+    private ?float $totalPrice = null;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdArticle(): ?int
-    {
-        return $this->Id_Article;
-    }
-
-    public function setIdArticle(int $Id_Article): self
-    {
-        $this->Id_Article = $Id_Article;
-
-        return $this;
-    }
-
     public function getIdUser(): ?int
     {
-        return $this->Id_User;
+        return $this->idUser;
     }
 
-    public function setIdUser(int $Id_User): self
+    public function setIdUser(int $idUser): self
     {
-        $this->Id_User = $Id_User;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->Quantity;
-    }
-
-    public function setQuantity(int $Quantity): self
-    {
-        $this->Quantity = $Quantity;
+        $this->idUser = $idUser;
 
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
-    public function setDescription(string $Description): self
+    public function setDescription(?string $description): self
     {
-        $this->Description = $Description;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getTotalPrice(): ?int
+    public function getTotalPrice(): ?float
     {
-        return $this->TotalPrice;
+        return $this->totalPrice;
     }
 
-    public function setTotalPrice(int $TotalPrice): self
+    public function setTotalPrice(float $totalPrice): self
     {
-        $this->TotalPrice = $TotalPrice;
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

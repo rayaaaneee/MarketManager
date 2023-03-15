@@ -84,7 +84,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/list', name: 'list')]
-    public function  list(Request $request, EntityManagerInterface $entityManager)
+    public function  list(EntityManagerInterface $entityManager)
     {
         $lists = $entityManager->getRepository(ShoppingList::class)->findAll();
         $nbLists = count($lists);
