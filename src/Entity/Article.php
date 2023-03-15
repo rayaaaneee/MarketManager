@@ -24,10 +24,6 @@ class Article extends TypeRepository
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'idArticle')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ArticleInList $articleInList = null;
-
     #[ORM\Column(length: 100)]
     private ?string $image = null;
 
@@ -68,18 +64,6 @@ class Article extends TypeRepository
     public function setType(?Type $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getArticleInList(): ?ArticleInList
-    {
-        return $this->articleInList;
-    }
-
-    public function setArticleInList(?ArticleInList $articleInList): self
-    {
-        $this->articleInList = $articleInList;
 
         return $this;
     }
