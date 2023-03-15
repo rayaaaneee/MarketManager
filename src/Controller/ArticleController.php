@@ -16,10 +16,12 @@ class ArticleController extends AbstractController
     {
         $articles = $articleRepository->findAll();
         $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
+        $classesButtons = ['btn-outline-primary', 'btn-light', 'btn-dark', 'btn-primary'];
         return $this->render('page/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,
             'classesTable' => $classesTable,
+            'classesButtons' => $classesButtons,
             'i' => 0
         ]);
     }
@@ -33,7 +35,8 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'article_id')]
+    // On precise que l'id est un parametre de la route et forcement un entier
+    #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
     public function article(string $id, ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->find($id);
