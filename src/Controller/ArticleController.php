@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Controller;
+
+use App\Repository\ArticleRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ArticleController extends AbstractController
+{
+    #[Route('/article', name: 'article_search')]
+    public function index(ArticleRepository $articleRepository): Response
+    {
+        $articles = $articleRepository->findAllArticle();
+        return $this->render('article.search.html.twig', [
+            'controller_name' => 'ArticleController',
+            'articles' => $articles
+        ]);
+    }
+}
