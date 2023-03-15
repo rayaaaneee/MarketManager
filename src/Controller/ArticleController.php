@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
-    #[Route('/article', name: 'article_search')]
+    #[Route('/article', name: 'article')]
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        return $this->render('article.search.html.twig', [
+        return $this->render('page/article.search.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles
         ]);
