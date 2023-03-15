@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use App\Repository\TypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-class Article
+class Article extends TypeRepository
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,8 +23,13 @@ class Article
     #[ORM\Column]
     private ?float $UnityPrice = null;
 
-    #[ORM\Column]
-    private ?int $Type = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Type $type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'idArticle')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ArticleInList $articleInList = null;
 
     public function getId(): ?int
     {
@@ -66,14 +72,26 @@ class Article
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): ?Type
     {
-        return $this->Type;
+        return $this->type;
     }
 
-    public function setType(int $Type): self
+    public function setType(?Type $type): self
     {
-        $this->Type = $Type;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getArticleInList(): ?ArticleInList
+    {
+        return $this->articleInList;
+    }
+
+    public function setArticleInList(?ArticleInList $articleInList): self
+    {
+        $this->articleInList = $articleInList;
 
         return $this;
     }

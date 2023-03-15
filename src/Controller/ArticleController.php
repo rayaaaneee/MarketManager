@@ -15,7 +15,7 @@ class ArticleController extends AbstractController
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        $classesTable = ['table-active', ''];
+        $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
         return $this->render('page/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,
@@ -39,13 +39,11 @@ class ArticleController extends AbstractController
         $article = $articleRepository->find($id);
         // recupere l'int correspondant a type et le converti en string grâce a la classe Type
         // créer un objet de type Type
-        $type = new Type();
         // recupere le nom du type
-        $type = $type->getName($article->getType());
         return $this->render('page/articleId.html.twig', [
             'controller_name' => 'HomeController',
-            'article' => $article,
-            'type' => $type
+            'article' => $article
+            
         ]);
     }
 
