@@ -17,28 +17,4 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-
-    #[Route('/article/search', name: 'article_search')]
-    public function searchArticle(): Response
-    {
-        return $this->render('page/article.search.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
-    #[Route('/article/{id}', name: 'article_id')]
-    public function article(string $id): Response
-    {
-        return $this->render('page/article.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
-    #[Route('article/new', name: 'article_new')]
-    public function newArticle(): Response
-    {
-        return $this->render('page/article.new.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
 }

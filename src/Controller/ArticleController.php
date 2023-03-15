@@ -6,16 +6,54 @@ use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Type;
 
+#[Route('/article')]
 class ArticleController extends AbstractController
 {
-    #[Route('/article', name: 'article')]
+    #[Route('/', name: 'article')]
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        return $this->render('page/article.search.html.twig', [
+        $classesTable = ['table-active', ''];
+        return $this->render('page/article.html.twig', [
             'controller_name' => 'ArticleController',
-            'articles' => $articles
+            'articles' => $articles,
+            'classesTable' => $classesTable,
+            'i' => 0
+        ]);
+    }
+
+
+    #[Route('/search', name: 'article_search')]
+    public function searchArticle(): Response
+    {
+        return $this->render('page/article.search.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/{id}', name: 'article_id')]
+    public function article(string $id, ArticleRepository $articleRepository): Response
+    {
+        $article = $articleRepository->find($id);
+        // recupere l'int correspondant a type et le converti en string grâce a la classe Type
+        // créer un objet de type Type
+        $type = new Type();
+        // recupere le nom du type
+        $type = $type->getName($article->getType());
+        return $this->render('page/articleId.html.twig', [
+            'controller_name' => 'HomeController',
+            'article' => $article,
+            'type' => $type
+        ]);
+    }
+
+    #[Route('article/new', name: 'article_new')]
+    public function newArticle(): Response
+    {
+        return $this->render('page/article.new.html.twig', [
+            'controller_name' => 'HomeController',
         ]);
     }
 }

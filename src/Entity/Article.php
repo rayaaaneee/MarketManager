@@ -54,12 +54,12 @@ class Article
         return $this;
     }
 
-    public function getUnityPrice(): ?int
+    public function getUnityPrice(): ?float
     {
         return $this->UnityPrice;
     }
 
-    public function setUnityPrice(int $UnityPrice): self
+    public function setUnityPrice(float $UnityPrice): self
     {
         $this->UnityPrice = $UnityPrice;
 

@@ -21,7 +21,7 @@ class Type
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(int $id): ?string
     {
         return $this->Name;
     }

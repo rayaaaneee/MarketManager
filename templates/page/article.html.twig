@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{%block title%}Articles{%endblock%}
+
+{%block body%}
+<h1>Articles</h1>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Column heading</th>
+        <th scope="col">Column heading</th>
+      </tr>
+    </thead>
+    <tbody>
+{%  for article in articles %}
+    {% set i = (i++)%(classes|length)  %}
+    {% set class = classes[i] %}
+      <tr class="table-active">
+        <th scope="row">Active</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr> 
+{% endfor %}
+    </tbody>
+</table>
+
+{{ include ('footer.html.twig') }}
+{% endblock body %}
