@@ -12,7 +12,7 @@ class ArticleController extends AbstractController
     #[Route('/article', name: 'article_search')]
     public function index(ArticleRepository $articleRepository): Response
     {
-        $articles = $articleRepository->findAllArticle();
+        $articles = $articleRepository->findAll();
         return $this->render('article.search.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles
