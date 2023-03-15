@@ -26,7 +26,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{id}', name: 'article')]
+    #[Route('/article/{id}', name: 'article_id')]
     public function article(string $id): Response
     {
         return $this->render('page/article.html.twig', [
