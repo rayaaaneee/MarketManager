@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\ArticleInList;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Type;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -39,9 +43,13 @@ class ArticleController extends AbstractController
     public function article(string $id, ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->find($id);
-        return $this->render('page/article.html.twig', [
+        // recupere l'int correspondant a type et le converti en string grâce a la classe Type
+        // créer un objet de type Type
+        // recupere le nom du type
+        return $this->render('page/articleId.html.twig', [
             'controller_name' => 'HomeController',
             'article' => $article
+            
         ]);
     }
 
@@ -52,4 +60,5 @@ class ArticleController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
 }

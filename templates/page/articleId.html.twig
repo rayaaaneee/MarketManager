@@ -1,0 +1,29 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.Name }}{% endblock %}
+
+{% block body %}
+
+{% block stylesheet %}
+<style>
+  .container {
+    display: flex;
+    align-items: center;
+  }
+
+</style>
+{% endblock %}
+
+
+<div class ="container">
+  <h1>{{ article.Name }}</h1>
+  <p>Stock: {{ article.Stock }}</p>
+  <p>Unity Price: {{ article.UnityPrice }}</p>
+  <p>Type: {{ article.Type.name }}</p>
+</div>    
+{{ include ('footer.html.twig') }}
+{%endblock%}
+
+
