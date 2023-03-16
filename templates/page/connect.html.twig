@@ -26,18 +26,21 @@
         flex-direction: column;
         row-gap: 5px;
     }
+
+    form > h1 {
+        align-self: center;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
 <main>
-    <h1>Register</h1>
-
     {{ form_start(connectionForm) }}
+        <h1>Connection</h1>
         {{ form_row(connectionForm.Surname) }}
 
         {{ form_row(connectionForm.Password) }}
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Sign In</button>
     {{ form_end(connectionForm) }}
 </main>
 {% endblock %}
