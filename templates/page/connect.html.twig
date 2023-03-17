@@ -14,7 +14,7 @@
         flex-direction: column;
         row-gap: 15px;
         width: 350px;
-    }   
+    }
     form button[type="submit"] {
         align-self: center;
         justify-self: center;
@@ -43,4 +43,6 @@
         <button type="submit" class="btn btn-primary">Sign In</button>
     {{ form_end(connectionForm) }}
 </main>
+
+{{ include ('footer.html.twig') }}
 {% endblock %}
