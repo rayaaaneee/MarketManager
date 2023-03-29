@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ArticleInList;
+use App\Repository\ArticleInListRepository;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Type;
 use App\Form\ArticleInListFormType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Repository\ShoppingListRepository;
+use App\Entity\ShoppingList;
+use App\Entity\Article;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -41,28 +45,56 @@ class ArticleController extends AbstractController
 
     // On precise que l'id est un parametre de la route et forcement un entier
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
-    public function article(string $id, ArticleRepository $articleRepository, Session $session): Response
+    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, Session $session, Request $request): Response
     {
-        $form = $this->createForm(ArticleInListFormType::class);
-        $article = $articleRepository->find($id);
+        if ($request->isMethod('POST')) {
+            $articleInListInputBag = $request->request;
+            $articleInListParameters = $articleInListInputBag->all();
+            $request = $articleInListParameters["article_in_list_form"];
 
-        $articleInList = new ArticleInList();
-        $articleInList->setName($article->getName());
-        $articleInList->setQuantity(1);
-        $articleInList->setUnityPrice($article->getUnityPrice());
+            $article = $articleRepository->find($id);
+            $brand = null;
+            if ($request["brand"] != "") {
+                $brand = $request["brand"];
+            }
+            $totalPrice = $request["quantity"] * $request["unityPrice"];
 
-        $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList, [
-            'action' => $this->generateUrl('article_show', ['id' => $id]),
-            'method' => 'POST',
-            'attr' => ['class' => 'form-inline'],
-            'session' => $session
-        ]);
+            $articleInList = new ArticleInList();
+            $articleInList
+                ->setName($request["name"])
+                ->setQuantity($request["quantity"])
+                ->setUnityPrice($request["unityPrice"])
+                ->setIdShoppingList($shoppingListRepository->find($request["idShoppingList"]))
+                ->setTotalPrice($totalPrice)
+                ->setBrand($brand)
+                ->setIdArticle($article);
 
-        return $this->render('page/article.show.html.twig', [
-            'controller_name' => 'ArticleController',
-            'article' => $article,
-            'articleInListForm' => $articleInListForm->createView()
-        ]);
+            $articleInListRepository->save($articleInList);
+            exit;
+        } else {
+            $shoppingLists = $shoppingListRepository->findBy(['idUser' => $session->get('id')]);
+
+            $article = $articleRepository->find($id);
+
+            $articleInList = new ArticleInList();
+            $articleInList->setName($article->getName());
+            $articleInList->setQuantity(1);
+            $articleInList->setUnityPrice($article->getUnityPrice());
+
+
+            $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList, [
+                'action' => $this->generateUrl('article_show', ['id' => $id]),
+                'method' => 'POST',
+                'attr' => ['class' => 'form-inline'],
+                'shopping_lists' => $shoppingLists
+            ]);
+
+            return $this->render('page/article.show.html.twig', [
+                'controller_name' => 'ArticleController',
+                'article' => $article,
+                'articleInListForm' => $articleInListForm->createView()
+            ]);
+        }
     }
 
     #[Route('article/new', name: 'article_new')]
@@ -72,5 +104,4 @@ class ArticleController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-
-    }
+}

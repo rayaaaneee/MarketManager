@@ -25,8 +25,8 @@ class ArticleInList
     #[ORM\JoinColumn(nullable: false)]
     private ?ShoppingList $idShoppingList = null;
 
-    #[ORM\OneToMany(mappedBy: 'articleInList', targetEntity: Article::class)]
-    private Collection $idArticle;
+    #[ORM\ManyToOne]
+    private ?Article $idArticle;
 
     #[ORM\Column]
     private ?float $unityPrice = null;
@@ -39,7 +39,6 @@ class ArticleInList
 
     public function __construct()
     {
-        $this->idArticle = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,17 +85,14 @@ class ArticleInList
     /**
      * @return Collection<int, Article>
      */
-    public function getIdArticle(): Collection
+    public function getIdArticle(): Article
     {
         return $this->idArticle;
     }
 
-    public function addIdArticle(Article $idArticle): self
+    public function setIdArticle(Article $idArticle): self
     {
-        if (!$this->idArticle->contains($idArticle)) {
-            $this->idArticle->add($idArticle);
-            $idArticle->setArticleInList($this);
-        }
+        $this->idArticle = $idArticle;
 
         return $this;
     }

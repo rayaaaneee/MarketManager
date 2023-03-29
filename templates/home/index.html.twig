@@ -8,12 +8,18 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     .table { width: 95%; }
+    main {
+        column-gap: 25px;
+    }
 </style>
 {% endblock stylesheet %}
 
 <main>
-    <h1>Home page</h1>
-    <h5>Welcome to Market Manager. <br> You can find the available course listings below.</h5>
+    <img src="{{ asset('img/home.png') }}" alt="homepage" class="home-image" width="100" height="100">
+    <div class="home-text-container">
+        <h1>Home page</h1>
+        <h5>Welcome to Market Manager. <br> You can find the available course listings below.</h5>
+    </div>
 </main>
 {{ include ('footer.html.twig') }}
 

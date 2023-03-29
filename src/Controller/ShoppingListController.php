@@ -39,7 +39,6 @@ class ShoppingListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $shoppingListRepository->save($shoppingList, true);
-            $session->get('tabList')[]=[$shoppingList->getId(), $shoppingList->getName()];
 
             return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }

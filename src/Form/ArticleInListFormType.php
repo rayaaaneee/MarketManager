@@ -19,8 +19,15 @@ class ArticleInListFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $session = $options['session'];
+        $shoppingLists = $options['shopping_lists'];
+        $tabChoices = [];
+        foreach ($shoppingLists as $shoppingList) {
+            $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
+        }
         $builder
+            ->setAttributes([
+                'class' => 'form-inline'
+            ])
             ->add(
                 'quantity',
                 IntegerType::class,
@@ -76,12 +83,7 @@ class ArticleInListFormType extends AbstractType
                     'attr' => [
                         'class' => 'form-control',
                     ],
-                    'choices' => [
-                        'List 1' => 'one',
-                        'List 2' => 'two',
-                        'List 3' => 'three',
-                        'List 4' => 'Viva l\'Algerie',
-                    ],
+                    'choices' => $tabChoices,
                     'placeholder' => 'Select your shopping list',
                 ]
             )
@@ -101,7 +103,7 @@ class ArticleInListFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ArticleInList::class,
-            'session' => null
+            'shopping_lists' => null
         ]);
     }
 }
