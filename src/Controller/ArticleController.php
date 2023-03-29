@@ -20,8 +20,8 @@ class ArticleController extends AbstractController
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        $classesTable = ['table-dark', 'table-primary', ''];
-        $classesButtons = ['btn-light', 'btn-dark', 'btn-outline-primary'];
+        $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
+        $classesButtons = ['btn-outline-primary', 'btn-light', 'btn-dark', 'btn-primary'];
         return $this->render('page/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,
@@ -43,6 +43,7 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
     public function article(string $id, ArticleRepository $articleRepository, Session $session): Response
     {
+        $form = $this->createForm(ArticleInListFormType::class);
         $article = $articleRepository->find($id);
 
         $articleInList = new ArticleInList();
@@ -71,4 +72,5 @@ class ArticleController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-}
+
+    }

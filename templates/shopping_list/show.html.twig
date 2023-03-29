@@ -8,14 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ shopping_list.id }}</td>
-            </tr>
-            <tr>
-                <th>IdUser</th>
-                <td>{{ shopping_list.idUser }}</td>
-            </tr>
-            <tr>
                 <th>Name</th>
                 <td>{{ shopping_list.name }}</td>
             </tr>
@@ -34,7 +26,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_shopping_list_index') }}">back to list</a>
+    <a href="{{ path('list') }}">back to list</a>
 
     <a href="{{ path('app_shopping_list_edit', {'id': shopping_list.id}) }}">edit</a>
 

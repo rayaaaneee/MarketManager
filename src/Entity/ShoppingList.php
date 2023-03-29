@@ -25,9 +25,9 @@ class ShoppingList
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
     private ?User $idUser = null;
+
 
     public function getId(): ?int
     {

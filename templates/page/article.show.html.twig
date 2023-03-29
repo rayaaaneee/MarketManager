@@ -2,7 +2,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ article.Name }} - Article{% endblock %}
+{% block title %}{{ article.Name }}{% endblock %}
 
 {% block body %}
 
@@ -96,7 +96,10 @@
       {{ form_row(articleInListForm.submit) }}
     {{ form_end(articleInListForm) }}
   </div>
-</div>
+</div>    
+
+
+  
 {{ include ('footer.html.twig') }}
 {%endblock%}
 

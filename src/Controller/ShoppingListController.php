@@ -2,41 +2,50 @@
 
 namespace App\Controller;
 
+use App\Entity\ArticleInList;
 use App\Entity\ShoppingList;
 use App\Form\ShoppingListType;
 use App\Repository\ShoppingListRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
 {
     #[Route('/', name: 'list', methods: ['GET'])]
-    public function index(ShoppingListRepository $shoppingListRepository): Response
+    public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
         return $this->render('shopping_list/index.html.twig', [
-            'shopping_lists' => $shoppingListRepository->findAll(),
+            // recupere que les listes de l'utilisateur connecté
+            'shopping_lists' => $shoppingListRepository->findBy(['idUser' => $session->get('id')]),
         ]);
     }
 
     #[Route('/new', name: 'new_list', methods: ['GET', 'POST'])]
-    public function new(Request $request, ShoppingListRepository $shoppingListRepository): Response
+    public function newList(Request $request, UserRepository $userRepository, ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
         $shoppingList = new ShoppingList();
+        //recupere le user qui a les informations de session depuis le UserRepository
+        $shoppingList->setIdUser($userRepository->findUserConnected($session->get('id')));
+        $shoppingList->setQuantity(0);
+        $shoppingList->setTotalPrice(0);
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $shoppingListRepository->save($shoppingList, true);
+            $session->get('tabList')[]=[$shoppingList->getId(), $shoppingList->getName()];
 
-            return $this->redirectToRoute('app_shopping_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('shopping_list/new.html.twig', [
             'shopping_list' => $shoppingList,
-            'form' => $form,
+            'ShoppingListform' => $form,
         ]);
     }
 
