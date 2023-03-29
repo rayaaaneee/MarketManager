@@ -15,6 +15,11 @@ class UserConnectionFormType extends AbstractType
     {
         $builder
             ->setAttributes(['class' => 'form-signin'])
+            ->add('Name', null, [
+                'label' => 'Name',
+                'attr' => ['class' => 'form-control', 'id' => 'floatingName', 'placeholder' => 'Your name'],
+                'required' => true,
+            ])
             ->add('Surname', null, [
                 'label' => 'Surname',
                 'attr' => ['class' => 'form-control', 'id' => 'floatingSurname', 'placeholder' => 'Your surname'],
