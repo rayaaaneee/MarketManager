@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\ShoppingListRepository;
 use App\Entity\ShoppingList;
 use App\Entity\Article;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -45,7 +46,7 @@ class ArticleController extends AbstractController
 
     // On precise que l'id est un parametre de la route et forcement un entier
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
-    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, Session $session, Request $request): Response
+    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, Session $session, Request $request): Response | RedirectResponse
     {
         if ($request->isMethod('POST')) {
             $articleInListInputBag = $request->request;
@@ -69,18 +70,20 @@ class ArticleController extends AbstractController
                 ->setBrand($brand)
                 ->setIdArticle($article);
 
-            $articleInListRepository->save($articleInList);
+            $articleInListRepository->save($articleInList, true);
+            return $this->redirectToRoute('list_show', ['id' => $request["idShoppingList"]]);
             exit;
         } else {
+
             $shoppingLists = $shoppingListRepository->findBy(['idUser' => $session->get('id')]);
 
             $article = $articleRepository->find($id);
 
             $articleInList = new ArticleInList();
-            $articleInList->setName($article->getName());
-            $articleInList->setQuantity(1);
-            $articleInList->setUnityPrice($article->getUnityPrice());
-
+            $articleInList
+                ->setName($article->getName())
+                ->setQuantity(1)
+                ->setUnityPrice($article->getUnityPrice());
 
             $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList, [
                 'action' => $this->generateUrl('article_show', ['id' => $id]),

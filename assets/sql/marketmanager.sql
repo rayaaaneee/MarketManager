@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 29 mars 2023 à 12:32
+-- Généré le : mer. 29 mars 2023 à 19:27
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -81,15 +81,27 @@ INSERT INTO `article` (`id`, `name`, `unity_price`, `type_id`, `image`) VALUES
 DROP TABLE IF EXISTS `article_in_list`;
 CREATE TABLE IF NOT EXISTS `article_in_list` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `brand` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unity_price` double NOT NULL,
   `quantity` int NOT NULL,
   `total_price` double NOT NULL,
   `id_shopping_list_id` int NOT NULL,
+  `id_article_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_83A183CBC0AE0E28` (`id_shopping_list_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `IDX_83A183CBC0AE0E28` (`id_shopping_list_id`),
+  KEY `IDX_83A183CBD71E064B` (`id_article_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `article_in_list`
+--
+
+INSERT INTO `article_in_list` (`id`, `name`, `brand`, `unity_price`, `quantity`, `total_price`, `id_shopping_list_id`, `id_article_id`) VALUES
+(1, 'Ballon de football', NULL, 12, 1, 12, 1, 21),
+(2, 'Ballon de football', NULL, 15, 1, 15, 1, 21),
+(3, 'Ballon de football', NULL, 12, 1, 12, 2, 21),
+(4, 'Papier toilette super arbsorbant qui irrite le boulard en sah', 'Pampers', 3.5, 1, 3.5, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -112,7 +124,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20230307100251', '2023-03-07 10:03:14', 253),
 ('DoctrineMigrations\\Version20230315155847', '2023-03-15 16:00:31', 519),
-('DoctrineMigrations\\Version20230329123027', '2023-03-29 12:31:06', 272);
+('DoctrineMigrations\\Version20230329123027', '2023-03-29 12:31:06', 272),
+('DoctrineMigrations\\Version20230329192252', '2023-03-29 19:23:10', 502);
 
 -- --------------------------------------------------------
 
@@ -144,14 +157,23 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 DROP TABLE IF EXISTS `shopping_list`;
 CREATE TABLE IF NOT EXISTS `shopping_list` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_user_id` int NOT NULL,
+  `id_user_id` int DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total_price` double NOT NULL,
   `quantity` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A45979F37AE5` (`id_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `shopping_list`
+--
+
+INSERT INTO `shopping_list` (`id`, `id_user_id`, `name`, `description`, `total_price`, `quantity`) VALUES
+(1, 11, 'Ma liste pref ou quoi aha bakala', 'Oh oui niska ou quoi', 0, 0),
+(2, 11, 'viggo petite catin', 'reel en vrai', 0, 0),
+(3, 11, 'Liste de courses du 31/03/23', NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -219,7 +241,8 @@ ALTER TABLE `article`
 -- Contraintes pour la table `article_in_list`
 --
 ALTER TABLE `article_in_list`
-  ADD CONSTRAINT `FK_83A183CBC0AE0E28` FOREIGN KEY (`id_shopping_list_id`) REFERENCES `shopping_list` (`id`);
+  ADD CONSTRAINT `FK_83A183CBC0AE0E28` FOREIGN KEY (`id_shopping_list_id`) REFERENCES `shopping_list` (`id`),
+  ADD CONSTRAINT `FK_83A183CBD71E064B` FOREIGN KEY (`id_article_id`) REFERENCES `article` (`id`);
 
 --
 -- Contraintes pour la table `shopping_list`

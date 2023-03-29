@@ -23,8 +23,8 @@
                 <td>{{ shopping_list.totalPrice }}</td>
                 <td>{{ shopping_list.quantity }}</td>
                 <td>
-                    <a href="{{ path('app_shopping_list_show', {'id': shopping_list.id}) }}">show</a>
-                    <a href="{{ path('app_shopping_list_edit', {'id': shopping_list.id}) }}">edit</a>
+                    <a href="{{ path('list_show', {'id': shopping_list.id}) }}">show</a>
+                    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

@@ -20,7 +20,7 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
-        return $this->render('shopping_list/index.html.twig', [
+        return $this->render('shopping_list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $shoppingListRepository->findBy(['idUser' => $session->get('id')]),
         ]);
@@ -42,21 +42,21 @@ class ShoppingListController extends AbstractController
 
             return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('shopping_list/new.html.twig', [
+        return $this->render('shopping_list/list.new.html.twig', [
             'shopping_list' => $shoppingList,
             'ShoppingListform' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_shopping_list_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'list_show', methods: ['GET'])]
     public function show(ShoppingList $shoppingList): Response
     {
-        return $this->render('shopping_list/show.html.twig', [
+        return $this->render('shopping_list/list.show.html.twig', [
             'shopping_list' => $shoppingList,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_shopping_list_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'list_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
@@ -65,16 +65,16 @@ class ShoppingListController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $shoppingListRepository->save($shoppingList, true);
 
-            return $this->redirectToRoute('app_shopping_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('shopping_list/edit.html.twig', [
+        return $this->render('shopping_list/list.edit.html.twig', [
             'shopping_list' => $shoppingList,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_shopping_list_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'list_delete', methods: ['POST'])]
     public function delete(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $shoppingList->getId(), $request->request->get('_token'))) {

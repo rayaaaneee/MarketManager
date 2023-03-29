@@ -28,7 +28,7 @@
 
     <a href="{{ path('list') }}">back to list</a>
 
-    <a href="{{ path('app_shopping_list_edit', {'id': shopping_list.id}) }}">edit</a>
+    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>
 
     {{ include('shopping_list/_delete_form.html.twig') }}
 {% endblock %}
