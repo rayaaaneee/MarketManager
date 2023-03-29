@@ -13,7 +13,6 @@
   .name-menu-container {
     display: flex;
     align-items: center;
-    margin-right: 10px;
     color: white;
     margin-top:14px;
   }
@@ -37,6 +36,24 @@
     width: 100%;
     margin: 0;
     padding: 0;
+  }
+
+  .nav-text-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+  .me-auto {
+    margin-left: 0 !important;
+  }
+
+  .hello-text-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    column-gap: 7px;
   }
 </style>
 {% endblock %}
@@ -69,8 +86,13 @@
           </li>
         </ul>
         {% if app.session.get('id') %}
-          <p class="name-menu-container">Hello {{ app.session.get('Surname') }}</p>
-          <a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
+          <div class="nav-text-right">
+            <div class="hello-text-image-container">
+              <img class="hello-image" src="{{ asset('img/hello.png') }}" alt="hello" draggable="false" width="25" height="25">
+              <p class="name-menu-container">Hello {{ app.session.get('Surname') }}</p>
+            </div>
+            <a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
+          </div>
         {% else %}
           <a href="{{ path('connect') }}" type="button" class="btn btn-primary">Connect</a>
           <a href="{{ path('register') }}"type="button" class="btn btn-primary">Sign Up</a>

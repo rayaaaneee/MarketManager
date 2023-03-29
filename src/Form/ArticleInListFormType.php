@@ -3,26 +3,105 @@
 namespace App\Form;
 
 use App\Entity\ArticleInList;
+use Doctrine\ORM\Query\Expr\Select;
+use FFI;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleInListFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $session = $options['session'];
         $builder
-            ->add('quantity')
-            ->add('unityPrice')
-            ->add('name')
-            ->add('brand')
-            ->add('idShoppingList');
+            ->add(
+                'quantity',
+                IntegerType::class,
+                [
+                    'label' => 'Quantity',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Quantity'
+                    ]
+                ]
+            )
+            ->add(
+                'unityPrice',
+                NumberType::class,
+                [
+                    'label' => 'Unity price ( € )',
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Unity price',
+                    ]
+                ]
+            )
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'Name',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Name'
+                    ]
+                ]
+            )
+            ->add(
+                'brand',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'Brand',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Unknown'
+                    ]
+                ]
+            )
+            ->add(
+                'idShoppingList',
+                ChoiceType::class,
+                [
+                    'label' => 'Please select a shopping list',
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                    'choices' => [
+                        'List 1' => 'one',
+                        'List 2' => 'two',
+                        'List 3' => 'three',
+                        'List 4' => 'Viva l\'Algerie',
+                    ],
+                    'placeholder' => 'Select your shopping list',
+                ]
+            )
+            ->add(
+                'submit',
+                SubmitType::class,
+                [
+                    'label' => 'Add this article to my list',
+                    'attr' => [
+                        'class' => 'btn btn-primary',
+                    ]
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ArticleInList::class,
+            'session' => null
         ]);
     }
 }

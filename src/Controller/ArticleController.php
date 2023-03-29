@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Type;
 use App\Form\ArticleInListFormType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -40,13 +41,21 @@ class ArticleController extends AbstractController
 
     // On precise que l'id est un parametre de la route et forcement un entier
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
-    public function article(string $id, ArticleRepository $articleRepository): Response
+    public function article(string $id, ArticleRepository $articleRepository, Session $session): Response
     {
         $article = $articleRepository->find($id);
 
         $articleInList = new ArticleInList();
-        $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList);
+        $articleInList->setName($article->getName());
+        $articleInList->setQuantity(1);
+        $articleInList->setUnityPrice($article->getUnityPrice());
 
+        $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList, [
+            'action' => $this->generateUrl('article_show', ['id' => $id]),
+            'method' => 'POST',
+            'attr' => ['class' => 'form-inline'],
+            'session' => $session
+        ]);
 
         return $this->render('page/article.show.html.twig', [
             'controller_name' => 'ArticleController',
