@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Type;
+use App\Form\ArticleInListFormType;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -29,7 +30,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-
     #[Route('/search', name: 'article_search')]
     public function searchArticle(): Response
     {
@@ -45,13 +45,7 @@ class ArticleController extends AbstractController
         $article = $articleRepository->find($id);
 
         $articleInList = new ArticleInList();
-        $articleInListForm = $this->createFormBuilder($articleInList)
-            ->add('quantity')
-            ->add('unityPrice')
-            ->add('name')
-            ->add('brand')
-            ->add('idShoppingList')
-            ->getForm();
+        $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList);
 
 
         return $this->render('page/article.show.html.twig', [

@@ -13,7 +13,9 @@ class ArticleInListFormType extends AbstractType
     {
         $builder
             ->add('quantity')
-            ->add('totalPrice')
+            ->add('unityPrice')
+            ->add('name')
+            ->add('brand')
             ->add('idShoppingList');
     }
 
