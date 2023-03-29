@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Type;
+use App\Form\ArticleInListFormType;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -18,8 +19,8 @@ class ArticleController extends AbstractController
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        $classesTable = ['table-dark', 'table-primary', ''];
-        $classesButtons = ['btn-light', 'btn-dark', 'btn-outline-primary'];
+        $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
+        $classesButtons = ['btn-outline-primary', 'btn-light', 'btn-dark', 'btn-primary'];
         return $this->render('page/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,
@@ -42,14 +43,15 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
     public function article(string $id, ArticleRepository $articleRepository): Response
     {
+        $form = $this->createForm(ArticleInListFormType::class);
         $article = $articleRepository->find($id);
         // recupere l'int correspondant a type et le converti en string grâce a la classe Type
         // créer un objet de type Type
         // recupere le nom du type
         return $this->render('page/article.show.html.twig', [
             'controller_name' => 'HomeController',
-            'article' => $article
-
+            'article' => $article,
+            'ArticleInListform' => $form->createView(),
         ]);
     }
 
@@ -60,4 +62,5 @@ class ArticleController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-}
+
+    }
