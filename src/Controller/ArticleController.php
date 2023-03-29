@@ -43,13 +43,21 @@ class ArticleController extends AbstractController
     public function article(string $id, ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->find($id);
-        // recupere l'int correspondant a type et le converti en string grâce a la classe Type
-        // créer un objet de type Type
-        // recupere le nom du type
-        return $this->render('page/article.show.html.twig', [
-            'controller_name' => 'HomeController',
-            'article' => $article
 
+        $articleInList = new ArticleInList();
+        $articleInListForm = $this->createFormBuilder($articleInList)
+            ->add('quantity')
+            ->add('unityPrice')
+            ->add('name')
+            ->add('brand')
+            ->add('idShoppingList')
+            ->getForm();
+
+
+        return $this->render('page/article.show.html.twig', [
+            'controller_name' => 'ArticleController',
+            'article' => $article,
+            'articleInListForm' => $articleInListForm->createView()
         ]);
     }
 

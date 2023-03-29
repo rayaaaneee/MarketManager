@@ -14,8 +14,7 @@ class ArticleInListFormType extends AbstractType
         $builder
             ->add('quantity')
             ->add('totalPrice')
-            ->add('idShoppingList')
-        ;
+            ->add('idShoppingList');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

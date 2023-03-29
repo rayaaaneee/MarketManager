@@ -56,6 +56,7 @@ class UserController extends AbstractController
 
         $form = $this->createForm(UserConnectionFormType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $formData = $form->getData();
@@ -71,6 +72,7 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('connect');
             }
         }
+
         return $this->render('page/connect.html.twig', [
             'connectionForm' => $form->createView(),
         ]);
@@ -80,25 +82,6 @@ class UserController extends AbstractController
     public function disconnect(Session $session)
     {
         $session->clear();
-        return $this->redirectToRoute('home');
-    }
-
-    #[Route('/list', name: 'list')]
-    public function  list(EntityManagerInterface $entityManager)
-    {
-        $lists = $entityManager->getRepository(ShoppingList::class)->findAll();
-        $nbLists = count($lists);
-        $table_tr_classes = ["active", "light", "dark"];
-        return $this->render('page/list.html.twig', [
-            'lists' => $lists,
-            'nbLists' => $nbLists,
-            'table_tr_classes' => $table_tr_classes,
-        ]);
-    }
-
-    #[Route('/list/new', name: 'new_list')]
-    public function newList(Request $request, EntityManagerInterface $entityManager)
-    {
-        return $this->render('page/new_list.html.twig', []);
+        return $this->redirectToRoute('connect');
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/list')]
 class ShoppingListController extends AbstractController
 {
-    #[Route('/', name: 'app_shopping_list_index', methods: ['GET'])]
+    #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository): Response
     {
         return $this->render('shopping_list/index.html.twig', [
@@ -21,7 +21,7 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_shopping_list_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'new_list', methods: ['GET', 'POST'])]
     public function new(Request $request, ShoppingListRepository $shoppingListRepository): Response
     {
         $shoppingList = new ShoppingList();
