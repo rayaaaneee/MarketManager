@@ -16,21 +16,21 @@ class UserRegistrationFormType extends AbstractType
         $builder
             ->setAttributes(['class' => 'form-signup'])
             ->add('Name', null, [
-                'label' => 'Prénom:',
-                'attr' => ['class' => 'form-control', 'id' => 'floatingName', 'placeholder' => 'Your name']
+                'label' => 'First name',
+                'attr' => ['class' => 'form-control', 'id' => 'floatingName', 'placeholder' => 'Your first name']
             ])
             ->add('Surname', null, [
-                'label' => 'Nom de famille:',
+                'label' => 'Surname',
                 'attr' => ['class' => 'form-control', 'id' => 'floatingSurname', 'placeholder' => 'Your surname']
             ])
             ->add('Password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent être identiques.',
+                'invalid_message' => 'Passwords must match.',
                 'options' => ['attr' => ['placeholder' => 'Your password']],
                 'required' => true,
                 //le mot de passe doit être plus grand que 6 caractères et doit avoir au moins une lettre et un chiffre
-                'first_options' => ['label' => 'Mot de passe', 'attr' => ['class' => 'form-control', 'id' => 'floatingPassword', 'placeholder' => 'Your password', 'pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$']],
-                'second_options' => ['label' => 'Répéter le mot de passe', 'attr' => ['class' => 'form-control', 'id' => 'floatingRepeatPassword', 'placeholder' => 'Repeat your password']]
+                'first_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'id' => 'floatingPassword', 'placeholder' => 'Your password', 'pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$']],
+                'second_options' => ['label' => 'Repeat password', 'attr' => ['class' => 'form-control', 'id' => 'floatingRepeatPassword', 'placeholder' => 'Repeat your password']]
             ]);
     }
 

@@ -25,6 +25,19 @@
     justify-content: center;
   }
   .title-menu-container { margin-left: 20px; }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .navbar-brand * {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 </style>
 {% endblock %}
 
@@ -32,8 +45,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <div class="title-menu-container">
+        <a class="navbar-brand" href="{{ path('home') }}">
           <img src="{{ asset('img/icon.png') }}" alt="logo" draggable="false">
-          <a class="navbar-brand" href="{{ path('home') }}">Market Manager</a>
+          <p>Market Manager<p>
+        </a>
       </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

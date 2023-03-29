@@ -16,12 +16,12 @@ class UserConnectionFormType extends AbstractType
         $builder
             ->setAttributes(['class' => 'form-signin'])
             ->add('Surname', null, [
-                'label' => 'Nom de famille:',
+                'label' => 'Surname',
                 'attr' => ['class' => 'form-control', 'id' => 'floatingSurname', 'placeholder' => 'Your surname'],
                 'required' => true,
             ])
             ->add('Password', PasswordType::class, [
-                'label' => 'Mot de passe',
+                'label' => 'Password',
                 'attr' => ['class' => 'form-control', 'id' => 'floatingPassword', 'placeholder' => 'Your password'],
                 'required' => true,
                 'invalid_message' => 'Le mot de passe est invalide.',

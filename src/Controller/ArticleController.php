@@ -30,7 +30,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-
     #[Route('/search', name: 'article_search')]
     public function searchArticle(): Response
     {
@@ -45,13 +44,15 @@ class ArticleController extends AbstractController
     {
         $form = $this->createForm(ArticleInListFormType::class);
         $article = $articleRepository->find($id);
-        // recupere l'int correspondant a type et le converti en string grâce a la classe Type
-        // créer un objet de type Type
-        // recupere le nom du type
+
+        $articleInList = new ArticleInList();
+        $articleInListForm = $this->createForm(ArticleInListFormType::class, $articleInList);
+
+
         return $this->render('page/article.show.html.twig', [
-            'controller_name' => 'HomeController',
+            'controller_name' => 'ArticleController',
             'article' => $article,
-            'ArticleInListform' => $form->createView(),
+            'articleInListForm' => $articleInListForm->createView()
         ]);
     }
 

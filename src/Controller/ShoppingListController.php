@@ -2,38 +2,50 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\ArticleInList;
 use App\Entity\ShoppingList;
 use App\Form\ShoppingListType;
 use App\Repository\ShoppingListRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
 {
-    #[Route('/', name: 'app_shopping_list_index', methods: ['GET'])]
+    #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
-        $user = $this->getUser();
-        // recupere que les listes ou il y a l'id user = id de la session ou id user = 0
-        $listes = $shoppingListRepository->findAll();
-
-        // recupere l'id de l'utilisateur connecté grâce à la session
         return $this->render('shopping_list/index.html.twig', [
-            'shopping_lists' => $listes,
+            // recupere que les listes de l'utilisateur connecté
+            'shopping_lists' => $shoppingListRepository->findBy(['idUser' => $session->get('id')]),
         ]);
     }
 
-    #[Route('/new', name: 'app_shopping_list_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ShoppingListRepository $shoppingListRepository): Response
+    #[Route('/new', name: 'new_list', methods: ['GET', 'POST'])]
+    public function newList(Request $request, UserRepository $userRepository, ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
+        $shoppingList = new ShoppingList();
+        //recupere le user qui a les informations de session depuis le UserRepository
+        $shoppingList->setIdUser($userRepository->findUserConnected($session->get('id')));
+        $shoppingList->setQuantity(0);
+        $shoppingList->setTotalPrice(0);
+        $form = $this->createForm(ShoppingListType::class, $shoppingList);
+        $form->handleRequest($request);
 
-        return $this->render('shopping_list/new.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            $shoppingListRepository->save($shoppingList, true);
+            $session->get('tabList')[]=[$shoppingList->getId(), $shoppingList->getName()];
+
+            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('shopping_list/new.html.twig', [
+            'shopping_list' => $shoppingList,
+            'ShoppingListform' => $form,
         ]);
     }
 

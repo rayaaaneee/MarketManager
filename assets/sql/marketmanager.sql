@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 16 mars 2023 à 08:19
+-- Généré le : mer. 29 mars 2023 à 12:32
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -81,14 +81,14 @@ INSERT INTO `article` (`id`, `name`, `unity_price`, `type_id`, `image`) VALUES
 DROP TABLE IF EXISTS `article_in_list`;
 CREATE TABLE IF NOT EXISTS `article_in_list` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_shopping_list` int NOT NULL,
-  `id_article` int NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `brand` text COLLATE utf8mb4_unicode_ci,
-  `unity_price` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brand` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unity_price` double NOT NULL,
   `quantity` int NOT NULL,
   `total_price` double NOT NULL,
-  PRIMARY KEY (`id`)
+  `id_shopping_list_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_83A183CBC0AE0E28` (`id_shopping_list_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -111,7 +111,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20230307100251', '2023-03-07 10:03:14', 253),
-('DoctrineMigrations\\Version20230315155847', '2023-03-15 16:00:31', 519);
+('DoctrineMigrations\\Version20230315155847', '2023-03-15 16:00:31', 519),
+('DoctrineMigrations\\Version20230329123027', '2023-03-29 12:31:06', 272);
 
 -- --------------------------------------------------------
 
@@ -143,12 +144,13 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 DROP TABLE IF EXISTS `shopping_list`;
 CREATE TABLE IF NOT EXISTS `shopping_list` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_user` int NOT NULL,
+  `id_user_id` int NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total_price` double NOT NULL,
   `quantity` int NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `IDX_3DC1A45979F37AE5` (`id_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -212,6 +214,18 @@ INSERT INTO `user` (`id`, `name`, `surname`, `password`) VALUES
 --
 ALTER TABLE `article`
   ADD CONSTRAINT `FK_23A0E66C54C8C93` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`);
+
+--
+-- Contraintes pour la table `article_in_list`
+--
+ALTER TABLE `article_in_list`
+  ADD CONSTRAINT `FK_83A183CBC0AE0E28` FOREIGN KEY (`id_shopping_list_id`) REFERENCES `shopping_list` (`id`);
+
+--
+-- Contraintes pour la table `shopping_list`
+--
+ALTER TABLE `shopping_list`
+  ADD CONSTRAINT `FK_3DC1A45979F37AE5` FOREIGN KEY (`id_user_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

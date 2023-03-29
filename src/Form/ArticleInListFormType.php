@@ -13,10 +13,11 @@ class ArticleInListFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('name')
-        ->add('brand')
-        ->add('quantity')
-        ;
+            ->add('quantity')
+            ->add('unityPrice')
+            ->add('name')
+            ->add('brand')
+            ->add('idShoppingList');
     }
     
 }
