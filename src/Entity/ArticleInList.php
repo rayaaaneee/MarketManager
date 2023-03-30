@@ -21,12 +21,12 @@ class ArticleInList
     #[ORM\Column]
     private ?float $totalPrice = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ShoppingList $idShoppingList = null;
+    private ?ShoppingList $shoppingList = null;
 
     #[ORM\ManyToOne]
-    private ?Article $idArticle;
+    private ?Article $article;
 
     #[ORM\Column]
     private ?float $unityPrice = null;
@@ -70,14 +70,14 @@ class ArticleInList
         return $this;
     }
 
-    public function getIdShoppingList(): ?ShoppingList
+    public function getShoppingList(): ?ShoppingList
     {
-        return $this->idShoppingList;
+        return $this->shoppingList;
     }
 
-    public function setIdShoppingList(?ShoppingList $idShoppingList): self
+    public function setShoppingList(?ShoppingList $shoppingList): self
     {
-        $this->idShoppingList = $idShoppingList;
+        $this->shoppingList = $shoppingList;
 
         return $this;
     }
@@ -85,24 +85,24 @@ class ArticleInList
     /**
      * @return Collection<int, Article>
      */
-    public function getIdArticle(): Article
+    public function getArticle(): Article
     {
-        return $this->idArticle;
+        return $this->article;
     }
 
-    public function setIdArticle(Article $idArticle): self
+    public function setArticle(Article $article): self
     {
-        $this->idArticle = $idArticle;
+        $this->article = $article;
 
         return $this;
     }
 
-    public function removeIdArticle(Article $idArticle): self
+    public function removeArticle(Article $article): self
     {
-        if ($this->idArticle->removeElement($idArticle)) {
+        if ($this->article->removeElement($article)) {
             // set the owning side to null (unless already changed)
-            if ($idArticle->getArticleInList() === $this) {
-                $idArticle->setArticleInList(null);
+            if ($article->getArticleInList() === $this) {
+                $article->setArticleInList(null);
             }
         }
 
@@ -143,5 +143,10 @@ class ArticleInList
         $this->brand = $brand;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

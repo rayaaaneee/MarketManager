@@ -76,7 +76,7 @@ class ArticleInListFormType extends AbstractType
                 ]
             )
             ->add(
-                'idShoppingList',
+                'shoppingList',
                 ChoiceType::class,
                 [
                     'label' => 'Please select a shopping list',

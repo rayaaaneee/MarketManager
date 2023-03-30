@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 29 mars 2023 à 19:27
+-- Généré le : jeu. 30 mars 2023 à 09:14
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -91,17 +91,15 @@ CREATE TABLE IF NOT EXISTS `article_in_list` (
   PRIMARY KEY (`id`),
   KEY `IDX_83A183CBC0AE0E28` (`id_shopping_list_id`),
   KEY `IDX_83A183CBD71E064B` (`id_article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `article_in_list`
 --
 
 INSERT INTO `article_in_list` (`id`, `name`, `brand`, `unity_price`, `quantity`, `total_price`, `id_shopping_list_id`, `id_article_id`) VALUES
-(1, 'Ballon de football', NULL, 12, 1, 12, 1, 21),
-(2, 'Ballon de football', NULL, 15, 1, 15, 1, 21),
-(3, 'Ballon de football', NULL, 12, 1, 12, 2, 21),
-(4, 'Papier toilette super arbsorbant qui irrite le boulard en sah', 'Pampers', 3.5, 1, 3.5, 2, 9);
+(5, 'Chips', NULL, 1.8, 1, 1.8, 4, 3),
+(6, 'Biscuits', 'Bonne maman', 5, 2, 10, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -160,20 +158,18 @@ CREATE TABLE IF NOT EXISTS `shopping_list` (
   `id_user_id` int DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_price` double NOT NULL,
-  `quantity` int NOT NULL,
+  `total_price` double NOT NULL DEFAULT '0',
+  `nb_articles` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A45979F37AE5` (`id_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `shopping_list`
 --
 
-INSERT INTO `shopping_list` (`id`, `id_user_id`, `name`, `description`, `total_price`, `quantity`) VALUES
-(1, 11, 'Ma liste pref ou quoi aha bakala', 'Oh oui niska ou quoi', 0, 0),
-(2, 11, 'viggo petite catin', 'reel en vrai', 0, 0),
-(3, 11, 'Liste de courses du 31/03/23', NULL, 0, 0);
+INSERT INTO `shopping_list` (`id`, `id_user_id`, `name`, `description`, `total_price`, `nb_articles`) VALUES
+(4, 11, 'Liste de courses du 31/03/23', 'reel en vrai', 11.8, 3);
 
 -- --------------------------------------------------------
 

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ArticleInListRepository;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
@@ -20,9 +21,9 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
-        return $this->render('shopping_list/list.html.twig', [
+        return $this->render('list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
-            'shopping_lists' => $shoppingListRepository->findBy(['idUser' => $session->get('id')]),
+            'shopping_lists' => $shoppingListRepository->findBy(['user' => $session->get('id')]),
         ]);
     }
 
@@ -31,8 +32,9 @@ class ShoppingListController extends AbstractController
     {
         $shoppingList = new ShoppingList();
         //recupere le user qui a les informations de session depuis le UserRepository
-        $shoppingList->setIdUser($userRepository->findUserConnected($session->get('id')));
-        $shoppingList->setQuantity(0);
+        $user = $userRepository->findUserConnected($session->get('id'));
+        $shoppingList->setUser($user);
+        $shoppingList->setNbArticles(0);
         $shoppingList->setTotalPrice(0);
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
         $form->handleRequest($request);
@@ -42,7 +44,7 @@ class ShoppingListController extends AbstractController
 
             return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('shopping_list/list.new.html.twig', [
+        return $this->render('list/list.new.html.twig', [
             'shopping_list' => $shoppingList,
             'ShoppingListform' => $form,
         ]);
@@ -51,8 +53,8 @@ class ShoppingListController extends AbstractController
     #[Route('/{id}', name: 'list_show', methods: ['GET'])]
     public function show(ShoppingList $shoppingList): Response
     {
-        return $this->render('shopping_list/list.show.html.twig', [
-            'shopping_list' => $shoppingList,
+        return $this->render('list/list.show.html.twig', [
+            'shopping_list' => $shoppingList
         ]);
     }
 
@@ -68,13 +70,13 @@ class ShoppingListController extends AbstractController
             return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('shopping_list/list.edit.html.twig', [
+        return $this->render('list/list.edit.html.twig', [
             'shopping_list' => $shoppingList,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'list_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'list_delete', methods: ['POST'])]
     public function delete(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $shoppingList->getId(), $request->request->get('_token'))) {

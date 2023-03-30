@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ShoppingList{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/list.show.css') }}">
+{% endblock %}
+
+{% block body %}
+    <article class="main-container">
+        <div class="list-card">
+            <div class="title-container">
+                <h1>{{ shopping_list.name }}</h1>
+                <h3>{{ shopping_list.description }}</h3>
+            </div>
+            <div class="article-container">
+                <h2> My articles ({{ shopping_list.nbArticles }}) </h2>
+                <div class="article-container">
+                </div>
+            </div>
+            <div class="total-price">
+                <div class="words">
+                    <p>Number of articles : </p>
+                    <p>Total price (€) : </p>
+                </div>
+                <div class="results">
+                    <p>{{ shopping_list.nbArticles }}</p>
+                    <p>{{ shopping_list.totalPrice }}</p>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <a href="{{ path('list') }}">back to lists</a>
+
+    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>
+
+    {{ include('list/_delete_form.html.twig') }}
+{% endblock %}

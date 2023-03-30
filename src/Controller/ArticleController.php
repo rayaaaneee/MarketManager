@@ -27,7 +27,7 @@ class ArticleController extends AbstractController
         $articles = $articleRepository->findAll();
         $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
         $classesButtons = ['btn-outline-primary', 'btn-light', 'btn-dark', 'btn-primary'];
-        return $this->render('page/article.html.twig', [
+        return $this->render('article/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,
             'classesTable' => $classesTable,
@@ -39,7 +39,7 @@ class ArticleController extends AbstractController
     #[Route('/search', name: 'article_search')]
     public function searchArticle(): Response
     {
-        return $this->render('page/article.search.html.twig', [
+        return $this->render('article/article.search.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
@@ -59,23 +59,32 @@ class ArticleController extends AbstractController
                 $brand = $request["brand"];
             }
             $totalPrice = $request["quantity"] * $request["unityPrice"];
+            $shoppingList = $shoppingListRepository->find($request["shoppingList"]);
 
             $articleInList = new ArticleInList();
             $articleInList
                 ->setName($request["name"])
                 ->setQuantity($request["quantity"])
                 ->setUnityPrice($request["unityPrice"])
-                ->setIdShoppingList($shoppingListRepository->find($request["idShoppingList"]))
+                ->setShoppingList($shoppingList)
                 ->setTotalPrice($totalPrice)
                 ->setBrand($brand)
-                ->setIdArticle($article);
-
+                ->setArticle($article);
             $articleInListRepository->save($articleInList, true);
-            return $this->redirectToRoute('list_show', ['id' => $request["idShoppingList"]]);
+
+            $totalArticles = $articleInList->getQuantity() + $shoppingList->getNbArticles();
+            $shoppingList->setNbArticles($totalArticles);
+
+            $totalPrice = $articleInList->getTotalPrice() + $shoppingList->getTotalPrice();
+            $shoppingList->setTotalPrice($totalPrice);
+
+            $shoppingListRepository->save($shoppingList, true);
+
+            return $this->redirectToRoute('list_show', ['id' => $request["shoppingList"]]);
             exit;
         } else {
 
-            $shoppingLists = $shoppingListRepository->findBy(['idUser' => $session->get('id')]);
+            $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
 
             $article = $articleRepository->find($id);
 
@@ -92,7 +101,7 @@ class ArticleController extends AbstractController
                 'shopping_lists' => $shoppingLists
             ]);
 
-            return $this->render('page/article.show.html.twig', [
+            return $this->render('article/article.show.html.twig', [
                 'controller_name' => 'ArticleController',
                 'article' => $article,
                 'articleInListForm' => $articleInListForm->createView()
@@ -100,10 +109,10 @@ class ArticleController extends AbstractController
         }
     }
 
-    #[Route('article/new', name: 'article_new')]
+    #[Route('/new', name: 'article_new')]
     public function newArticle(): Response
     {
-        return $this->render('page/article.new.html.twig', [
+        return $this->render('article/article.new.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

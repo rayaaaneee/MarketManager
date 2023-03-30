@@ -44,7 +44,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('page/register.html.twig', [
+        return $this->render('account/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -72,7 +72,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('page/connect.html.twig', [
+        return $this->render('account/connect.html.twig', [
             'connectionForm' => $form->createView(),
         ]);
     }

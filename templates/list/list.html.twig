@@ -10,8 +10,8 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>TotalPrice</th>
-                <th>Quantity</th>
+                <th>Total price</th>
+                <th>Number of articles</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,8 +20,8 @@
             <tr>
                 <td>{{ shopping_list.name }}</td>
                 <td>{{ shopping_list.description }}</td>
+                <td>{{ shopping_list.nbArticles }}</td>
                 <td>{{ shopping_list.totalPrice }}</td>
-                <td>{{ shopping_list.quantity }}</td>
                 <td>
                     <a href="{{ path('list_show', {'id': shopping_list.id}) }}">show</a>
                     <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>

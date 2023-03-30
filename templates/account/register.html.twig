@@ -2,36 +2,9 @@
 {%block title%}Register{%endblock%}
 
 {% block stylesheets %}
-<style>
-    .form-control {
-        margin-left: 15px;
-    }
-    .btn {
-        display: block;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        row-gap: 15px;
-        width: 350px;
-    }   
-    form button[type="submit"] {
-        align-self: center;
-        justify-self: center;
-        width: fit-content;
-        padding: 10px 20px;
-    }
-    form > div {
-        display: flex;
-        flex-direction: column;
-        row-gap: 5px;
-    }
-    form > h1 {
-        align-self: center;
-    }
-</style>
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/css/register.css') }}">
 {% endblock %}
-
 
 {% block body %}
     <main>

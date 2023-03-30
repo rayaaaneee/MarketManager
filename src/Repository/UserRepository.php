@@ -37,7 +37,8 @@ class UserRepository extends ServiceEntityRepository
         }
     }
     /* recuperer l'utilisateur avec son id et créer un user avec ses informations */
-    public function findUserConnected($id){
+    public function findUserConnected($id): User
+    {
         $user = $this->find($id);
         return $user;
     }
