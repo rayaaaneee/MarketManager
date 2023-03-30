@@ -21,6 +21,7 @@
     background-color: #d1d1d1;
     border-radius: 70px;
     padding: 20px 0;
+    position: relative;
 }
 
 .title-container {
@@ -102,10 +103,11 @@ div.total-price > * {
     column-gap: 15px;
     padding: 20px;
     background-color: #b0b0b0;
-    border-radius: 50px;
+    border-radius: 30px;
     align-items: center;
     justify-content: center;
-    height: 120px;
+    height: fit-content;
+    min-height: 120px;
 }
 
 .title-part {
@@ -157,4 +159,32 @@ div.total-price > * {
 .empty-image-container img {
     object-fit: cover;
     width: fit-content;
+}
+
+html {
+    --list-end-date-width: 160px;
+}
+
+.end-date-container {
+    width: var(--list-end-date-width);
+    position: absolute;
+    bottom: 20px;
+    right: 70px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.end-date-container img {
+    width: 30px;
+    height: fit-content;
+    object-fit: cover;
+}
+
+.end-date-container h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #5d5d5d;
 }

@@ -3,17 +3,6 @@
 {% block title %}Edit ShoppingList{% endblock %}
 
 {% block body %}
-    <h1>Edit ShoppingList</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-success">Update</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
-
-    <form method="post" action="{{ path('list_delete', {'id': shopping_list.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ shopping_list.id) }}">
-        <button class="btn btn-danger">Delete</button>
-    </form>
+    {{ include('title.page.html.twig', {title: 'New shoppingList', 'file' : 'edit.png', 'title' : 'Edit my shoppingList'}) }}
+    {{ include('list/list.form.html.twig', {'button_label': 'Update', 'form': shoppingListForm, 'displayDelete': true}) }}
 {% endblock %}

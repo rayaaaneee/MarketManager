@@ -6,9 +6,9 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/article.css') }}">
 {% endblock stylesheet%}
-<main>
-  <h1>All articles ({{ articles|length }})</h1>
-</main>
+
+{{ include('title.page.html.twig', {title: 'Articles ('~ articles|length ~')', 'file' : 'article.png'}) }}
+
 <table class="table table-hover">
     <thead>
       <tr>

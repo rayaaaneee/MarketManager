@@ -25,8 +25,8 @@ class ArticleController extends AbstractController
     public function index(ArticleRepository $articleRepository): Response
     {
         $articles = $articleRepository->findAll();
-        $classesTable = ['table-active', 'table-dark', 'table-primary', ''];
-        $classesButtons = ['btn-outline-primary', 'btn-light', 'btn-dark', 'btn-primary'];
+        $classesTable = ['table-active', ''];
+        $classesButtons = ['btn-light', 'btn-primary'];
         return $this->render('article/article.html.twig', [
             'controller_name' => 'ArticleController',
             'articles' => $articles,

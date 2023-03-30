@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\ShoppingListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Console\Helper\Dumper;
 
 #[ORM\Entity(repositoryClass: ShoppingListRepository::class)]
 class ShoppingList
@@ -32,6 +34,9 @@ class ShoppingList
 
     #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: ArticleInList::class, orphanRemoval: true)]
     private Collection $articles;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endDate = null;
 
     public function __construct()
     {
@@ -66,6 +71,11 @@ class ShoppingList
         $this->description = $description;
 
         return $this;
+    }
+
+    public function hasDescription(): bool
+    {
+        return $this->description !== null;
     }
 
     public function getNbArticles(): ?int
@@ -132,5 +142,22 @@ class ShoppingList
         }
 
         return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): self
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function hasEndDate(): bool
+    {
+        return $this->endDate != null;
     }
 }

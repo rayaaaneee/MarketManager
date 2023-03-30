@@ -44,9 +44,10 @@ class ShoppingListController extends AbstractController
 
             return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('list/list.new.html.twig', [
             'shopping_list' => $shoppingList,
-            'ShoppingListform' => $form,
+            'shoppingListForm' => $form,
         ]);
     }
 
@@ -60,7 +61,7 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'list_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'list_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
@@ -74,7 +75,7 @@ class ShoppingListController extends AbstractController
 
         return $this->render('list/list.edit.html.twig', [
             'shopping_list' => $shoppingList,
-            'form' => $form,
+            'shoppingListForm' => $form,
         ]);
     }
 

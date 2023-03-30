@@ -2,8 +2,18 @@
 
 {% block title %}Shopping lists{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Shopping lists</h1>
+    {% if shopping_lists is empty %}
+        {% set title = 'No shopping lists' %}
+    {% else %}
+        {% set title = 'My shopping lists ('~ shopping_lists|length ~')' %}
+    {% endif %}
+    {{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
 
     <table class="table">
         <thead>
@@ -29,11 +39,12 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="7">You have no shopping lists yet.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
+    <div class="create-new-container">
+        <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
+    </div>
 {% endblock %}

@@ -17,3 +17,7 @@
   .table th, .table td {
     padding : 1.1rem;
   }
+
+  table {
+    margin-top : 20px;
+  }

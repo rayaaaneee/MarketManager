@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 30 mars 2023 à 10:56
+-- Généré le : jeu. 30 mars 2023 à 16:12
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -31,9 +31,9 @@ DROP TABLE IF EXISTS `article`;
 CREATE TABLE IF NOT EXISTS `article` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `unity_price` double NOT NULL,
-  `image` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_23A0E66C54C8C93` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,33 +43,33 @@ CREATE TABLE IF NOT EXISTS `article` (
 --
 
 INSERT INTO `article` (`id`, `type_id`, `name`, `unity_price`, `image`) VALUES
-(30, 1, 'Pâtes', 1.5, 'pasta.png'),
-(31, 1, 'Riz', 2.3, 'rice.png'),
+(30, 1, 'Pastas', 1.5, 'pasta.png'),
+(31, 1, 'Rice', 2.3, 'rice.png'),
 (32, 1, 'Chips', 1.8, 'chips.png'),
-(33, 2, 'Biscuits', 1.2, 'cookies.png'),
-(34, 2, 'Chocolat', 2.5, 'chocolate.png'),
+(33, 2, 'Cookies', 1.2, 'cookies.png'),
+(34, 2, 'Chocolate', 2.5, 'chocolate.png'),
 (35, 2, 'Bonbons', 0.8, 'candy.png'),
-(36, 3, 'Lessive', 6.5, 'laundry.png'),
-(37, 3, 'Liquide vaisselle', 2.2, 'detergent.png'),
-(38, 3, 'Papier toilette', 1.8, 'toilet-paper.png'),
-(39, 4, 'Chemise homme', 20, 'man-shirt.png'),
-(40, 4, 'Robe femme', 25, 'woman-dress.png'),
-(41, 4, 'Ceinture', 8.5, 'belt.png'),
-(42, 5, 'Coussin', 12, 'pillow.png'),
-(43, 5, 'Tapis', 30, 'rug.png'),
-(44, 5, 'Table basse', 50, 'coffee-table.png'),
-(45, 6, 'Aspirine', 2.5, 'aspirin.png'),
-(46, 6, 'Vitamine C', 6, 'vitamin-c.png'),
-(47, 6, 'Pansements', 1.2, 'band-aid.png'),
+(36, 3, 'Laundry', 6.5, 'laundry.png'),
+(37, 3, 'Detergent', 2.2, 'detergent.png'),
+(38, 3, 'Toilet paper', 1.8, 'toilet-paper.png'),
+(39, 4, 'Man shirt', 20, 'man-shirt.png'),
+(40, 4, 'Woman dress', 25, 'woman-dress.png'),
+(41, 4, 'Belt', 8.5, 'belt.png'),
+(42, 5, 'Pillow', 12, 'pillow.png'),
+(43, 5, 'Rug', 30, 'rug.png'),
+(44, 5, 'Coffee table', 50, 'coffee-table.png'),
+(45, 6, 'Aspirin', 2.5, 'aspirin.png'),
+(46, 6, 'Vitamin C', 6, 'vitamin-c.png'),
+(47, 6, 'Band aid', 1.2, 'band-aid.png'),
 (48, 7, 'Puzzle', 8, 'puzzle.png'),
-(49, 7, 'Jeux de cartes', 4.5, 'cards.png'),
-(50, 10, 'Ballon de football', 12, 'football-ball.png'),
-(51, 10, 'Ballon de basket', 15, 'basketball-ball.png'),
-(52, 10, 'Raquette de tennis', 35, 'tennis-racket.png'),
-(53, 8, 'Crayon à lèvres', 6.5, 'lipstick.png'),
+(49, 7, 'Card game', 4.5, 'cards.png'),
+(50, 10, 'Football ball', 12, 'football-ball.png'),
+(51, 10, 'Basket ball', 15, 'basketball-ball.png'),
+(52, 10, 'Tennis racket', 35, 'tennis-racket.png'),
+(53, 8, 'Lip Stick', 6.5, 'lipstick.png'),
 (54, 8, 'Mascara', 8, 'mascara.png'),
-(55, 8, 'Vernis à ongles', 5, 'nail-polish.png'),
-(56, 9, 'Roman', 10, 'book.png'),
+(55, 8, 'Nail polish', 5, 'nail-polish.png'),
+(56, 9, 'Book', 10, 'book.png'),
 (57, 9, 'Magazine', 3.5, 'magazine.png');
 
 -- --------------------------------------------------------
@@ -86,19 +86,12 @@ CREATE TABLE IF NOT EXISTS `article_in_list` (
   `quantity` int NOT NULL,
   `total_price` double NOT NULL,
   `unity_price` double NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `brand` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_83A183CB23245BF9` (`shopping_list_id`),
   KEY `IDX_83A183CB7294869C` (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `article_in_list`
---
-
-INSERT INTO `article_in_list` (`id`, `shopping_list_id`, `article_id`, `quantity`, `total_price`, `unity_price`, `name`, `brand`) VALUES
-(1, 3, 33, 1, 1.2, 1.2, 'Biscuits', NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -108,7 +101,7 @@ INSERT INTO `article_in_list` (`id`, `shopping_list_id`, `article_id`, `quantity
 
 DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
@@ -119,7 +112,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20230330102907', '2023-03-30 10:29:24', 654);
+('DoctrineMigrations\\Version20230330102907', '2023-03-30 10:29:24', 654),
+('DoctrineMigrations\\Version20230330152432', '2023-03-30 15:24:43', 54);
 
 -- --------------------------------------------------------
 
@@ -130,9 +124,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 DROP TABLE IF EXISTS `messenger_messages`;
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `available_at` datetime NOT NULL,
   `delivered_at` datetime DEFAULT NULL,
@@ -152,20 +146,22 @@ DROP TABLE IF EXISTS `shopping_list`;
 CREATE TABLE IF NOT EXISTS `shopping_list` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nb_articles` int NOT NULL DEFAULT '0',
   `total_price` double NOT NULL DEFAULT '0',
+  `end_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A459A76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `shopping_list`
 --
 
-INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_articles`, `total_price`) VALUES
-(3, 1, 'Liste de courses du 31/03/23', 'Important', 1, 1.2);
+INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_articles`, `total_price`, `end_date`) VALUES
+(12, 2, 'Liste de courses du 31/03/23', 'Importante', 0, 0, NULL),
+(13, 2, 'Liste de courses du 31/03/23', 'Important', 0, 0, '2023-04-07 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -176,7 +172,7 @@ INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_article
 DROP TABLE IF EXISTS `type`;
 CREATE TABLE IF NOT EXISTS `type` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -205,18 +201,18 @@ INSERT INTO `type` (`id`, `name`) VALUES
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `surname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `surname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `password`) VALUES
-(1, 'root', 'root', '$2y$10$ysOfyOOgsZEErJCR3z/8rex79YSX1QnwBwIBg5AWncsPXvH1dEGe6');
+(2, 'root', 'root', '$2y$10$NzOaf2stNPiLERcd9nH6QuuXng.10QZBGRH07mckI1Djqd93Uqwka');
 
 --
 -- Contraintes pour les tables déchargées

@@ -1,0 +1,20 @@
+.title-page-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.title-page-container * {
+    margin: 0;
+}
+
+.title-page-container img {
+    width: 28px;
+    height: fit-content;
+}
+
+.title-page {
+    text-align: center;
+}
