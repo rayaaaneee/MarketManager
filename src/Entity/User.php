@@ -85,7 +85,7 @@ class User
     {
         if (!$this->shoppingLists->contains($shoppingList)) {
             $this->shoppingLists->add($shoppingList);
-            $shoppingList->setIdUser($this);
+            $shoppingList->setUser($this);
         }
 
         return $this;
@@ -95,8 +95,8 @@ class User
     {
         if ($this->shoppingLists->removeElement($shoppingList)) {
             // set the owning side to null (unless already changed)
-            if ($shoppingList->getIdUser() === $this) {
-                $shoppingList->setIdUser(null);
+            if ($shoppingList->getUser() === $this) {
+                $shoppingList->setUser(null);
             }
         }
 

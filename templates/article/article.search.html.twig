@@ -3,15 +3,11 @@
 {%block title%}Search article{%endblock%}
 
 {%block body%}
-    
-     
     {% for article in articles %}
         <div class = article>
             <h1>{{ article.name }}</h1>
             <p>{{ article.stock }}</p>
     {% endfor %}
-
-{{ include ('footer.html.twig') }}
 {%endblock body%}
 
 

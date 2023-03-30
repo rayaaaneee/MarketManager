@@ -21,7 +21,7 @@ class ArticleInList
     #[ORM\Column]
     private ?float $totalPrice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\ManyToOne(inversedBy: 'articles', targetEntity: ShoppingList::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?ShoppingList $shoppingList = null;
 
@@ -82,9 +82,6 @@ class ArticleInList
         return $this;
     }
 
-    /**
-     * @return Collection<int, Article>
-     */
     public function getArticle(): Article
     {
         return $this->article;
@@ -93,18 +90,6 @@ class ArticleInList
     public function setArticle(Article $article): self
     {
         $this->article = $article;
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): self
-    {
-        if ($this->article->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getArticleInList() === $this) {
-                $article->setArticleInList(null);
-            }
-        }
 
         return $this;
     }

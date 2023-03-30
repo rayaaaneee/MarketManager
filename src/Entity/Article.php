@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
-use App\Repository\TypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-class Article extends TypeRepository
+class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

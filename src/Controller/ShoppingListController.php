@@ -53,8 +53,10 @@ class ShoppingListController extends AbstractController
     #[Route('/{id}', name: 'list_show', methods: ['GET'])]
     public function show(ShoppingList $shoppingList): Response
     {
+        $articles = $shoppingList->getArticles()->getValues();
         return $this->render('list/list.show.html.twig', [
-            'shopping_list' => $shoppingList
+            'shopping_list' => $shoppingList,
+            'articles' => $articles
         ]);
     }
 
@@ -83,6 +85,6 @@ class ShoppingListController extends AbstractController
             $shoppingListRepository->remove($shoppingList, true);
         }
 
-        return $this->redirectToRoute('app_shopping_list_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
     }
 }

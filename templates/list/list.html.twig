@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ShoppingList index{% endblock %}
+{% block title %}Shopping lists{% endblock %}
 
 {% block body %}
-    <h1>ShoppingList index</h1>
+    <h1>Shopping lists</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Total price</th>
                 <th>Number of articles</th>
+                <th>Total price</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,8 +23,8 @@
                 <td>{{ shopping_list.nbArticles }}</td>
                 <td>{{ shopping_list.totalPrice }}</td>
                 <td>
-                    <a href="{{ path('list_show', {'id': shopping_list.id}) }}">show</a>
-                    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>
+                    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
+                    <a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('new_list') }}">Create new</a>
+    <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
 {% endblock %}

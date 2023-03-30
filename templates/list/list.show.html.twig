@@ -11,30 +11,85 @@
     <article class="main-container">
         <div class="list-card">
             <div class="title-container">
-                <h1>{{ shopping_list.name }}</h1>
-                <h3>{{ shopping_list.description }}</h3>
+                <div class="title-list">
+                    <img src="{{ asset('img/list.png') }}" width="40" height="40" alt="list">
+                    <h1>{{ shopping_list.name }}</h1>
+                </div>
+                <div class="description-list">
+                    <img src="{{ asset('img/description.png') }}" width="25" height="25" alt="description">
+                    <div class="description-text">
+                        <h3>List description :</h3>
+                        <h3>{{ shopping_list.description }}</h3>
+                    </div>
+                </div>
             </div>
             <div class="article-container">
-                <h2> My articles ({{ shopping_list.nbArticles }}) </h2>
-                <div class="article-container">
+                {% if shopping_list.nbArticles == 0 %}
+                    <h2 class="title-part empty-list">Your list is empty</h2>
+                    <div class="empty-image-container">
+                        <img class="empty-list" src="{{ asset('img/empty-list.png') }}" height="170" alt="empty-list" draggable="false">
+                    </div>
+                    <div class="add-articles-button-container">
+                        <a href="{{ path('article') }}" class="btn btn-primary">Add articles</a>
+                    </div>
+                {% else %}
+                    <h2 class="title-part"> My articles ({{ shopping_list.nbArticles }}) :</h2>
+                    <div class="article-container">
+                        {% for article in articles %}
+                            <div class="article-card">
+                                <div class="article-img">
+                                    <a href="{{ path('article_show', {'id': article.article.id}) }}">
+                                        <img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">
+                                    </a>
+                                </div>
+                                <div class="article-name">
+                                    <h3>{{ article.name }}</h3>
+                                    <label for="type" class="type-label">{{ article.article.type.name }}</label>
+                                </div>
+                                <div class="article-category">
+                                    <label for="brand">Brand :</label>
+                                    <h3>{% if article.brand is not null %}
+                                            {{ article.brand }}
+                                        {% else %}
+                                            Unknown
+                                        {% endif %}
+                                    </h3>
+                                </div>
+                                <div class="article-price">
+                                    <label for="unityPrice">Unity price :</label>
+                                    <h3>{{ article.unityPrice }} €</h3>
+                                </div>
+                                <div class="article-quantity">
+                                    <label for="quantity">Quantity :</label>
+                                    <h3>{{ article.quantity }}</h3>
+                                </div>
+                                <div class="article-total-price">
+                                    <label for="totalPrice">Total price :</label>
+                                    <h3>{{ article.totalPrice }} €</h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
+                <div class="total-price">
+                    <div class="words">
+                        <p>Number of articles : </p>
+                        <p>Total price : </p>
+                    </div>
+                    <div class="results">
+                        <p>{{ shopping_list.nbArticles }}</p>
+                        <p>{{ shopping_list.totalPrice }} €</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-            <div class="total-price">
-                <div class="words">
-                    <p>Number of articles : </p>
-                    <p>Total price (€) : </p>
-                </div>
-                <div class="results">
-                    <p>{{ shopping_list.nbArticles }}</p>
-                    <p>{{ shopping_list.totalPrice }}</p>
-                </div>
-            </div>
+        </article>
+        <div class="modify-list-container">
+            <a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
+            <a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-dark">edit</a>
+            <form method="post" action="{{ path('list_delete', {'id': shopping_list.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ shopping_list.id) }}">
+                <button class="btn btn-danger">Delete</button>
+            </form>
         </div>
-    </article>
-
-    <a href="{{ path('list') }}">back to lists</a>
-
-    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}">edit</a>
-
-    {{ include('list/_delete_form.html.twig') }}
 {% endblock %}

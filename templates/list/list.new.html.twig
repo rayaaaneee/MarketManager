@@ -5,7 +5,10 @@
 {% block body %}
     <h1>Create new ShoppingList</h1>
 
-    {{ include('shopping_list/_form.html.twig') }}
+    {{ form_start(ShoppingListform) }}
+        {{ form_widget(ShoppingListform) }}
+        <button class="btn btn-success">Save</button>
+    {{ form_end(ShoppingListform) }}
 
-    <a href="{{ path('list') }}">back to list</a>
+    <a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
 {% endblock %}
