@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleInListRepository;
+use DateTime;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
@@ -21,9 +22,46 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
+        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+        $new_lists = [];
+        foreach ($shopping_lists as $shopping_list) {
+            if (!$shopping_list->hasEndDate()) {
+                array_push($new_lists, $shopping_list);
+            } else {
+                $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
+                $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                $now = $now->setTime(0, 0, 0);
+                if ($endDate >= $now) {
+                    array_push($new_lists, $shopping_list);
+                }
+            }
+        }
         return $this->render('list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
-            'shopping_lists' => $shoppingListRepository->findBy(['user' => $session->get('id')]),
+            'shopping_lists' => $new_lists,
+            'canEdit' => true
+        ]);
+    }
+
+    #[Route('/old', name: 'old_list', methods: ['GET'])]
+    public function oldLists(ShoppingListRepository $shoppingListRepository, Session $session): Response
+    {
+        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+        $old_lists = [];
+        foreach ($shopping_lists as $shopping_list) {
+            if ($shopping_list->hasEndDate()) {
+                $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
+                $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                $now = $now->setTime(0, 0, 0);
+                if ($endDate < $now) {
+                    array_push($old_lists, $shopping_list);
+                }
+            }
+        }
+        return $this->render('list/list.old.html.twig', [
+            // recupere que les listes de l'utilisateur connecté
+            'shopping_lists' => $old_lists,
+            'canEdit' => false
         ]);
     }
 
@@ -54,14 +92,24 @@ class ShoppingListController extends AbstractController
     #[Route('/{id}', name: 'list_show', methods: ['GET'])]
     public function show(ShoppingList $shoppingList): Response
     {
+        $canEdit = true;
+        if ($shoppingList->hasEndDate()) {
+            $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
+            $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $now = $now->setTime(0, 0, 0);
+            if ($endDate < $now) {
+                $canEdit = false;
+            }
+        }
         $articles = $shoppingList->getArticles()->getValues();
         return $this->render('list/list.show.html.twig', [
             'shopping_list' => $shoppingList,
-            'articles' => $articles
+            'articles' => $articles,
+            'canEdit' => $canEdit
         ]);
     }
 
-    #[Route('/edit/{id}', name: 'list_edit', methods: ['GET', 'POST'])]
+    #[Route('{id}/edit/', name: 'list_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
