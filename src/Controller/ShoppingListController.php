@@ -2,18 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\ArticleInList;
 use App\Entity\ShoppingList;
 use App\Form\ShoppingListType;
 use App\Repository\ShoppingListRepository;
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ArticleInListRepository;
 use DateTime;
 
 #[Route('/list')]

@@ -3,7 +3,8 @@
     align-items: center;
     justify-content: center;
     column-gap: 15px;
-    margin-top: 30px;
+    width: 700px;
+    margin: 30px auto;
 }
 
 [name="shopping_list"] {
@@ -14,8 +15,8 @@
     row-gap: 30px;
 }
 
-[name="shopping_list"] button[type="submit"] {
-    width: 200px;
+[name="shopping_list"] button[type="submit"], .buttons-container a {
+    width: 700px;
 }
 
 #shopping_list {

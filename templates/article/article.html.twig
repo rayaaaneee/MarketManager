@@ -8,7 +8,7 @@
 {% endblock stylesheet%}
 
 {{ include('title.page.html.twig', {title: 'Articles ('~ articles|length ~')', 'file' : 'article.png'}) }}
-
+{{ include('article/article.search.html.twig') }}
 <table class="table table-hover">
     <thead>
       <tr>
@@ -35,7 +35,12 @@
             <a class="btn {{ classButton }}" href="{{ path('article_show', { 'id' : article.id} ) }}">View</a>
         </td>
       </tr> 
-{% endfor %}
-    </tbody>
+    {% endfor %}
+  </tbody>
 </table>
+{% if articles|length == 0 %}
+  <div class="alert alert-warning" role="alert">
+      <h1 style="text-align:center;">No articles found</h1>
+  </div>
+{% endif %}
 {% endblock body %}

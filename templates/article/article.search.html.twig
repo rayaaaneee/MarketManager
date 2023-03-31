@@ -1,13 +1,12 @@
-{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('assets/css/article.search.css') }}">
+{% endblock %}
 
-{%block title%}Search article{%endblock%}
-
-{%block body%}
-    {% for article in articles %}
-        <div class = article>
-            <h1>{{ article.name }}</h1>
-            <p>{{ article.stock }}</p>
-    {% endfor %}
-{%endblock body%}
-
-
+{{ form_start(formSearch, {'attr': {'id': 'formSearchArticle'}}) }}
+  <div class="input-group mb-3" id="inputGroupSearchArticle">
+    {{ form_widget(formSearch.search) }}
+    <div class="separator"></div>
+    {{ form_widget(formSearch.type) }}
+    {{ form_widget(formSearch.submit) }}
+  </div>
+{{ form_end(formSearch) }}

@@ -1,0 +1,20 @@
+#formSearchArticle {
+    margin-top: 20px;
+}
+
+#formSearchArticle select {
+    width: 5%;
+}
+
+#formSearchArticle #article_search {
+    width: 55%;
+}
+
+#formSearchArticle #article_submit {
+    width: 150px;
+}
+
+.separator {
+    width: 5px;
+    background-color: #d0d0d0;
+}

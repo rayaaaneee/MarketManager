@@ -54,13 +54,14 @@
                 <a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
             </td>
         </tr>
-    {% else %}
-        <tr>
-            <td colspan="7">You have no shopping lists yet.</td>
-        </tr>
     {% endfor %}
     </tbody>
 </table>
+{% if not shopping_lists|length %}
+    <div class="alert alert-warning" role="alert">
+        <h1 style="text-align:center;">You have no shopping lists yet</h1>
+    </div>
+{% endif %}
 {% if canEdit %}
     <div class="create-new-container">
         <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
