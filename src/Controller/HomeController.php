@@ -11,10 +11,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function index(Session $session): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        if (!$session->get('id')) {
+            return $this->redirectToRoute('connect', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->render('home.html.twig', [
+                'controller_name' => 'HomeController',
+            ]);
+        }
     }
 }

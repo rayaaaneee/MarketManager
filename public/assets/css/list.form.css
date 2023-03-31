@@ -19,7 +19,7 @@
 }
 
 #shopping_list {
-    width: 100%;
+    width: 700px;
     display: flex;
     flex-direction: column;
     row-gap: 20px;

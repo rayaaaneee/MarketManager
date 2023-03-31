@@ -1,9 +1,7 @@
-.form-control {
-    margin-left: 15px;
-}
 .btn {
     display: block;
 }
+
 form {
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ShoppingList{% endblock %}
+{% block title %}{{ shopping_list.name }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -51,29 +51,29 @@
                                         </a>
                                     </div>
                                     <div class="article-name">
-                                        <h3>{{ article.name }}</h3>
+                                        <h4>{{ article.name }}</h4>
                                         <label for="type" class="type-label">{{ article.article.type.name }}</label>
                                     </div>
                                     <div class="article-category">
                                         <label for="brand">Brand :</label>
-                                        <h3>{% if article.brand is not null %}
+                                        <h4>{% if article.brand is not null %}
                                                 {{ article.brand }}
                                             {% else %}
                                                 Unknown
                                             {% endif %}
-                                        </h3>
+                                        </h4>
                                     </div>
                                     <div class="article-price">
                                         <label for="unityPrice">Unity price :</label>
-                                        <h3>{{ article.unityPrice }} €</h3>
+                                        <h4>{{ article.unityPrice }} €</h4>
                                     </div>
                                     <div class="article-quantity">
                                         <label for="quantity">Quantity :</label>
-                                        <h3>{{ article.quantity }}</h3>
+                                        <h4>{{ article.quantity }}</h4>
                                     </div>
                                     <div class="article-total-price">
                                         <label for="totalPrice">Total price :</label>
-                                        <h3>{{ article.totalPrice }} €</h3>
+                                        <h4>{{ article.totalPrice }} €</h4>
                                     </div>
                                 </div>
                             {% endfor %}

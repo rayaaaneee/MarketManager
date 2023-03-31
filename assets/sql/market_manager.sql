@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 30 mars 2023 à 16:12
+-- Généré le : jeu. 30 mars 2023 à 17:28
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -91,7 +91,15 @@ CREATE TABLE IF NOT EXISTS `article_in_list` (
   PRIMARY KEY (`id`),
   KEY `IDX_83A183CB23245BF9` (`shopping_list_id`),
   KEY `IDX_83A183CB7294869C` (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `article_in_list`
+--
+
+INSERT INTO `article_in_list` (`id`, `shopping_list_id`, `article_id`, `quantity`, `total_price`, `unity_price`, `name`, `brand`) VALUES
+(6, 14, 33, 1, 1.6, 1.6, 'Cookies', 'Bonne maman'),
+(7, 14, 34, 3, 15, 5, 'Chocolat Nestlé coeur foncant', 'Nestlé');
 
 -- --------------------------------------------------------
 
@@ -150,18 +158,19 @@ CREATE TABLE IF NOT EXISTS `shopping_list` (
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nb_articles` int NOT NULL DEFAULT '0',
   `total_price` double NOT NULL DEFAULT '0',
-  `end_date` datetime DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A459A76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `shopping_list`
 --
 
 INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_articles`, `total_price`, `end_date`) VALUES
-(12, 2, 'Liste de courses du 31/03/23', 'Importante', 0, 0, NULL),
-(13, 2, 'Liste de courses du 31/03/23', 'Important', 0, 0, '2023-04-07 00:00:00');
+(14, 2, 'Marché de noel', NULL, 4, 16.6, '2023-04-20'),
+(15, 2, 'Liste de courses du 31/03/23', 'Importante', 0, 0, NULL),
+(16, 2, 'Future liste', NULL, 0, 0, '2023-04-07');
 
 -- --------------------------------------------------------
 

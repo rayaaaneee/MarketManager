@@ -20,6 +20,7 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Shopping date</th>
                 <th>Number of articles</th>
                 <th>Total price</th>
                 <th>actions</th>
@@ -28,10 +29,33 @@
         <tbody>
         {% for shopping_list in shopping_lists %}
             <tr>
-                <td>{{ shopping_list.name }}</td>
-                <td>{{ shopping_list.description }}</td>
+                <td>
+                    {% if shopping_list.name|length > 25 %}
+                      {{ shopping_list.name|slice(0, 25) ~ '...' }}
+                    {% else %}
+                      {{ shopping_list.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if shopping_list.description is not null %}
+                        {% if shopping_list.description|length > 25 %}
+                          {{ shopping_list.description|slice(0, 25) ~ '...' }}
+                        {% else %}
+                          {{ shopping_list.description }}
+                        {% endif %}
+                    {% else %}
+                        No description
+                    {% endif %}
+                </td>
+                <td>
+                {% if shopping_list.endDate is not null %}
+                    {{ shopping_list.endDate|date('d/m/Y') }}
+                {% else %}
+                    Not set
+                {% endif %}
+                </td>
                 <td>{{ shopping_list.nbArticles }}</td>
-                <td>{{ shopping_list.totalPrice }}</td>
+                <td>{{ shopping_list.totalPrice }} €</td>
                 <td>
                     <a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
                     <a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
