@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit ShoppingList{% endblock %}
+{% block title %}Edit ShoppingList
+{% endblock %}
 
 {% block body %}
-    {{ include('title.page.html.twig', {title: 'New shoppingList', 'file' : 'edit.png', 'title' : 'Edit my shoppingList'}) }}
-    {{ include('list/list.form.html.twig', {'button_label': 'Update', 'form': shoppingListForm, 'displayDelete': true}) }}
+	{{ include('title.page.html.twig', {title: 'New shoppingList', 'file' : 'edit.png', 'title' : 'Edit my shoppingList'}) }}
+	{{ include('list/list.form.html.twig', {'button_label': 'Update', 'form': shoppingListForm, 'displayDelete': true}) }}
 {% endblock %}

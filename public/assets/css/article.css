@@ -23,7 +23,7 @@
     padding : 1.1rem;
   }
 
-  .table tr:not(:last-child) {
+  .table tr:not(#header) {
     height: 200px;
   }
 

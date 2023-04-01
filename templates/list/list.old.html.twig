@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block body %}
-    {% if shopping_lists is empty %}
-        {% set title = 'No old shopping lists' %}
+    {% if shopping_lists|length == 0 %}
+        {% set title = 'Old shopping lists' %}
     {% else %}
         {% set title = 'My old shopping lists ('~ shopping_lists|length ~')' %}
     {% endif %}

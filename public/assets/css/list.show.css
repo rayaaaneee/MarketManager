@@ -98,8 +98,18 @@ div.total-price > * {
 }
 
 .article-card {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.modify-form {
+    width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr;
+    grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.2fr;
     column-gap: 15px;
     padding: 20px;
     background-color: #b0b0b0;
@@ -144,10 +154,6 @@ div.total-price > * {
     column-gap: 20px;
     align-items: center;
     justify-content: center;
-}
-
-.add-articles-button-container a {
-    border-radius: 50px;
 }
 
 .empty-image-container {
@@ -195,4 +201,125 @@ html {
 
 .total-price .words p {
     text-align: end;
+}
+
+.inputs-modify-article-in-list.switched {
+    display: none;
+}
+
+.inputs-modify-article-in-list:not(#modify_article_in_list_form_name) {
+    margin-top: 3px;
+}
+
+#modify_article_in_list_form_name {
+    margin-bottom: 5px;
+}
+
+.inputs-modify-article-in-list {
+    font-size: 22px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    position: relative;
+    height: 20px;
+    padding: 0;
+}
+
+.inputs-modify-article-in-list:not(.switched, [type="submit"])::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #ff0000;
+}
+
+.inputs-modify-article-in-list:focus {
+    outline: none;
+}
+
+
+.switched {
+    display: none;
+}
+
+#modify_article_in_list_form_submit {
+    background-color: #87a587;
+    width: 45px;
+    height: 45px;
+}
+
+#modify_article_in_list_form_submit:hover {
+    background-color: #557855;
+    width: 45px;
+    height: 45px;
+}
+
+.btn-submit-modify-article-in-list {
+    width: 35px;
+    height: 45px;
+}
+
+.btn-submit-modify-article-in-list:not(.switched), #modify_article_in_list_form_submit:not(.switched) {
+    display: flex;
+    border-radius: 50%;
+    background-size: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.btn-submit-modify-article-in-list {
+    background-image: url(../../img/edit.png);
+}
+
+#modify_article_in_list_form_submit:not(.switched) {
+    background-image: url(../../img/ok.png);
+}
+.btn-submit-modify-article-in-list.switched {
+    display: none;
+}
+
+.btn-submit-modify-article-in-list:hover {
+    background-color: #be6a6a;
+}
+.btn-submit-modify-article-in-list:focus-visible {
+    outline: none;
+}
+.btn-submit-modify-article-in-list.switched {
+    display: none;
+}
+
+.close-modification-article {
+    width: 35px;
+    height: 35px;
+    background-image: url(../../img/close.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    border: none;
+    background-color: #be6a6a;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    opacity: 0;
+    pointer-events: none;
+    scale: 0.8;
+    transition: opacity 0.15s, scale 0.15s;
+}
+
+.close-modification-article.active {
+    opacity: 1;
+    scale: 1;
+    pointer-events: all;
+}
+
+[name="modify_article_in_list_form"] {
+    position: relative;
+    width: 1000px;
 }

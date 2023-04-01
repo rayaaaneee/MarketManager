@@ -93,7 +93,7 @@ class ArticleController extends AbstractController
             return $this->redirectToRoute('list_show', ['id' => $request["shoppingList"]]);
             exit;
         } else {
-            $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request);
+            $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request)["formSearch"];
 
             $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
 
