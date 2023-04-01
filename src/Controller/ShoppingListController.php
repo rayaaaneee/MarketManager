@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleInListRepository;
+use InfiniteIterator;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
@@ -21,6 +22,21 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
+        $listUserTotalPrice=0;
+        $lowerPrice = 1000000000000000000;
+        $higherPrice = -1;
+        $nb = 0;
+        $average =0;
+        foreach($shoppingListRepository->findBy(['user'=>$session->get('id')]) as $listUser){
+            $listUserTotalPrice += $listUser->getTotalPrice();
+            foreach($listUser->getArticles() as $listArticle){
+                $nb+=1;
+                if ($listArticle->getUnityPrice() > $higherPrice) $higherPrice = $listArticle->getUnityPrice();
+                if($listArticle->getUnityPrice()< $lowerPrice) $lowerPrice=$listArticle->getUnityPrice();
+                
+            }
+        }
+        $average = $listUserTotalPrice / $nb;
         return $this->render('list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $shoppingListRepository->findBy(['user' => $session->get('id')]),
