@@ -228,6 +228,10 @@ html {
     position: relative;
     height: 20px;
     padding: 0;
+    height: 30px;
+    text-decoration: underline;
+    text-decoration-thickness: 10px;
+    color: antiquewhite;
 }
 
 .inputs-modify-article-in-list:not(.switched, [type="submit"])::after{

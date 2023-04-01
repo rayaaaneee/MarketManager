@@ -1,9 +1,16 @@
+var lastForm = null;
+
 const switchButton = (event) => {
     const button = event.currentTarget;
     const buttonsContainer = button.parentElement;
     const otherButton = buttonsContainer.querySelector("*.switched");
+    const form = button.closest('form');
     
-    appearInputs(button.closest('form'));
+    if (lastForm !== null) {
+        disappearInputs(event, lastForm);
+    }
+    lastForm = form;
+    appearInputs(form);
     
     otherButton.classList.remove('switched');
     button.classList.add('switched');
@@ -22,10 +29,16 @@ const appearInputs = (form) => {
     cross.classList.add('active');
 }
 
-const disappearInputs = (event) => {
+const disappearInputs = (event, form = null) => {
     event.preventDefault();
-    const cross = event.currentTarget;
-    const form = cross.closest('form');
+    let cross;
+    if (form === null) {
+        cross = event.currentTarget;
+        form = cross.closest('form');
+    } else {
+        cross = form.querySelector('.close-modification-article');
+        form = cross.closest('form');
+    }
     const inputs = form.querySelectorAll('input');
 
     inputs.forEach(input => {
