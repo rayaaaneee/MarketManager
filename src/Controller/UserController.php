@@ -85,6 +85,7 @@ class UserController extends AbstractController
 
         $isWrongPassword = $request->query->get('wrongPassword');
         $isUnknown = $request->query->get('unknown');
+        $isDisconnected = $request->query->get('disconnected');
 
         if ($isWrongPassword) {
             $printMessage = true;
@@ -94,6 +95,10 @@ class UserController extends AbstractController
             $printMessage = true;
             $isSuccess = false;
             $message = "User unknown.";
+        } else if ($isDisconnected) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "You have been disconnected.";
         }
 
         $form = $this->createForm(UserConnectionFormType::class);
@@ -142,6 +147,12 @@ class UserController extends AbstractController
     public function disconnect(Session $session)
     {
         $session->clear();
-        return $this->redirectToRoute('connect');
+        return $this->redirectToRoute(
+            'connect',
+            [
+                'disconnected' => true
+            ],
+            Response::HTTP_SEE_OTHER
+        );
     }
 }
