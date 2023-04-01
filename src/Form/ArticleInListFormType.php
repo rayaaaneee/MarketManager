@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use DateTime;
 
 class ArticleInListFormType extends AbstractType
 {
@@ -22,7 +23,14 @@ class ArticleInListFormType extends AbstractType
         $shoppingLists = $options['shopping_lists'];
         $tabChoices = [];
         foreach ($shoppingLists as $shoppingList) {
-            $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
+            if ($shoppingList->hasEndDate()) {
+                $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
+                $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                $now = $now->setTime(0, 0, 0);
+                if ($endDate >= $now) {
+                    $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
+                }
+            }
         }
         $builder
             ->setAttributes([

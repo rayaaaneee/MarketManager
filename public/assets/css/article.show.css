@@ -72,3 +72,17 @@
     align-items: center;
     justify-content: center;
   }
+
+  #inputGroupSearchArticle {
+    height: fit-content;
+    margin-top: 20px;
+  }
+
+  #inputGroupSearchArticle input[type="text"], #inputGroupSearchArticle button[type="submit"]{
+    height: fit-content;
+    margin: 0;
+  }
+
+  #formSearchArticle .form-control{
+    height: fit-content;
+  }

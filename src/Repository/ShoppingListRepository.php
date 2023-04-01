@@ -39,6 +39,23 @@ class ShoppingListRepository extends ServiceEntityRepository
         }
     }
 
+    public function updateTotalPriceAndNbArticles(ShoppingList $entity, bool $flush = false): void
+    {
+        $nbArticles = 0;
+        $totalPrice = 0;
+        $articles = $entity->getArticles()->toArray();
+        foreach ($articles as $articleInList) {
+            $nbArticles += $articleInList->getQuantity();
+            $totalPrice += $articleInList->getTotalPrice();
+        }
+        $entity->setTotalPrice($totalPrice);
+        $entity->setNbArticles($nbArticles);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return ShoppingList[] Returns an array of ShoppingList objects
     //     */

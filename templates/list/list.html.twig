@@ -2,38 +2,17 @@
 
 {% block title %}Shopping lists{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Shopping lists</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Number of articles</th>
-                <th>Total price</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for shopping_list in shopping_lists %}
-            <tr>
-                <td>{{ shopping_list.name }}</td>
-                <td>{{ shopping_list.description }}</td>
-                <td>{{ shopping_list.nbArticles }}</td>
-                <td>{{ shopping_list.totalPrice }}</td>
-                <td>
-                    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
-                    <a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
+    {% if shopping_lists is empty %}
+        {% set title = 'My shopping lists' %}
+    {% else %}
+        {% set title = 'My shopping lists ('~ shopping_lists|length ~')' %}
+    {% endif %}
+    {{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
+    {{ include('list/list.new.old.template.html.twig')}}
 {% endblock %}

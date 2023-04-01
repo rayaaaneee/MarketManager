@@ -1,0 +1,12 @@
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/article.search.css') }}">
+{% endblock %}
+
+{{ form_start(formSearch, {'attr': {'id': 'formSearchArticle'}}) }}
+<div class="input-group mb-3" id="inputGroupSearchArticle">
+	{{ form_widget(formSearch.search) }}
+	<div class="separator"></div>
+	{{ form_widget(formSearch.type) }}
+	{{ form_widget(formSearch.submit) }}
+</div>
+{{ form_end(formSearch) }}

@@ -6,12 +6,12 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/article.css') }}">
 {% endblock stylesheet%}
-<main>
-  <h1>All articles ({{ articles|length }})</h1>
-</main>
+
+{{ include('title.page.html.twig', {title: 'Articles ('~ articles|length ~')', 'file' : 'article.png'}) }}
+{{ include('article/article.search.bar.html.twig') }}
 <table class="table table-hover">
     <thead>
-      <tr>
+      <tr id="header">
         <th scope="col"></th>
         <th scope="col">Name</th>
         <th scope="col">Unity Price</th>
@@ -35,7 +35,12 @@
             <a class="btn {{ classButton }}" href="{{ path('article_show', { 'id' : article.id} ) }}">View</a>
         </td>
       </tr> 
-{% endfor %}
-    </tbody>
+    {% endfor %}
+  </tbody>
 </table>
+{% if articles|length == 0 %}
+  <div class="alert alert-warning" role="alert">
+      <h1 style="text-align:center;">No articles found</h1>
+  </div>
+{% endif %}
 {% endblock body %}

@@ -14,6 +14,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      {% if app.session.get('id') %}
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
@@ -29,17 +30,20 @@
             <a class="nav-link" href="{{ path('stat')}}">Stats</a>
           </li>
         </ul>
-        {% if app.session.get('id') %}
           <div class="nav-text-right">
             <div class="hello-text-image-container">
               <img class="hello-image" src="{{ asset('img/hello.png') }}" alt="hello" draggable="false" width="25" height="25">
-              <p class="name-menu-container">Hello {{ app.session.get('Surname') }}</p>
+              <div class="hello-text-container">
+                <p class="hello-text">Hello {{ app.session.get('Surname') }}</p>
+              </div>
             </div>
             <a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
           </div>
         {% else %}
+        <div class="nav-text-right-disconnected">
           <a href="{{ path('connect') }}" type="button" class="btn btn-primary">Connect</a>
           <a href="{{ path('register') }}"type="button" class="btn btn-primary">Sign Up</a>
+        </div>
         {% endif %}
       </div>
     </div>

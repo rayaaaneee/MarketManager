@@ -14,7 +14,7 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
 
     #[ORM\Column]
     private ?float $UnityPrice = null;
@@ -33,12 +33,12 @@ class Article
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function setName(string $Name): self
     {
-        $this->Name = $Name;
+        $this->name = $Name;
 
         return $this;
     }

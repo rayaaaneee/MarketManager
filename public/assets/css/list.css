@@ -1,0 +1,40 @@
+.create-new-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table td, .table th{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.date-filter-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 40px;
+    padding: 22px 0;
+}
+
+.button-nav-lists {
+    padding-left: 45px;
+    background-repeat: no-repeat;
+    background-position: left 10px center;
+    background-size: 25px;
+}
+
+.button-nav-lists.new-lists {
+    background-image: url(../../img/new.png);
+}
+
+.button-nav-lists.old-lists {
+    background-image: url(../../img/old.png);
+}
