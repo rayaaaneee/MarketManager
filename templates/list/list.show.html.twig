@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block body %}
+	{{ include('/message.html.twig') }}
 	<article class="main-container">
 		<div class="list-card">
 			{% if shopping_list.hasEndDate() %}
@@ -53,7 +54,7 @@
 						{% for article in articles %}
 							<div class="article-card">
 								{{ form_start(modifyForms[i], {'attr': {'class': 'modify-form'}}) }}
-								<a href="{{ path('app_article_in_list_edit', {'id': article.id}) }}" class="delete-article-in-list" title="Modify this article"></a>
+								<a href="{{ path('app_article_in_list_delete_page', {'id': article.id}) }}" class="delete-article-in-list" title="Modify this article"></a>
 								<div class="article-img">
 									<a href="{{ path('article_show', {'id': article.id}) }}">
 										<img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">
@@ -67,7 +68,7 @@
 								<div class="article-category">
 									<label for="brand">Brand :</label>
 									<h4 class="list-property-value">
-										{% if article.brand is not null %}
+										{% if article.brand != "" %}
 											{{ article.brand }}
 										{% else %}
 											Unknown

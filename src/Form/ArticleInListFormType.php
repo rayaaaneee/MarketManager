@@ -28,8 +28,11 @@ class ArticleInListFormType extends AbstractType
                 $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
                 $now = $now->setTime(0, 0, 0);
                 if ($endDate >= $now) {
+                    dd($shoppingList->getName());
                     $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
                 }
+            } else {
+                $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
             }
         }
         $builder
@@ -111,7 +114,9 @@ class ArticleInListFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ArticleInList::class,
-            'shopping_lists' => null
+            'shopping_lists' => []
         ]);
+
+        $resolver->setAllowedTypes('shopping_lists', 'array');
     }
 }

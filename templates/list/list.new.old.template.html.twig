@@ -1,69 +1,70 @@
 <div class="date-filter-container">
-    <a class="btn btn-primary button-nav-lists new-lists" href="{{path('list')}}">
-        New lists
-      </a>
-      <a class="btn btn-primary button-nav-lists old-lists" href="{{path('old_list')}}">
-        Old lists
-      </a>
+	<a class="btn btn-primary button-nav-lists new-lists" href="{{path('list')}}">
+		New lists
+	</a>
+	<a class="btn btn-primary button-nav-lists old-lists" href="{{path('old_list')}}">
+		Old lists
+	</a>
 </div>
 <table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Shopping date</th>
-            <th>Number of articles</th>
-            <th>Total price</th>
-            <th>actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for shopping_list in shopping_lists %}
-        <tr>
-            <td>
-                {% if shopping_list.name|length > 25 %}
-                  {{ shopping_list.name|slice(0, 25) ~ '...' }}
-                {% else %}
-                  {{ shopping_list.name }}
-                {% endif %}
-            </td>
-            <td>
-                {% if shopping_list.description is not null %}
-                    {% if shopping_list.description|length > 25 %}
-                      {{ shopping_list.description|slice(0, 25) ~ '...' }}
-                    {% else %}
-                      {{ shopping_list.description }}
-                    {% endif %}
-                {% else %}
-                    No description
-                {% endif %}
-            </td>
-            <td>
-            {% if shopping_list.endDate is not null %}
-                {{ shopping_list.endDate|date('d/m/Y') }}
-            {% else %}
-                Not set
-            {% endif %}
-            </td>
-            <td>{{ shopping_list.nbArticles }}</td>
-            <td>{{ shopping_list.totalPrice }} €</td>
-            <td>
-                {% if canEdit %}
-                    <a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
-                {% endif %}
-                <a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Shopping date</th>
+			<th>Number of articles</th>
+			<th>Total price</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for shopping_list in shopping_lists %}
+			<tr>
+				<td>
+					{% if shopping_list.name|length > 25 %}
+						{{ shopping_list.name|slice(0, 25) ~ '...' }}
+					{% else %}
+						{{ shopping_list.name }}
+					{% endif %}
+				</td>
+				<td>
+					{% if shopping_list.description is not null %}
+						{% if shopping_list.description|length > 25 %}
+							{{ shopping_list.description|slice(0, 25) ~ '...' }}
+						{% else %}
+							{{ shopping_list.description }}
+						{% endif %}
+					{% else %}
+						No description
+					{% endif %}
+				</td>
+				<td>
+					{% if shopping_list.endDate is not null %}
+						{{ shopping_list.endDate|date('d/m/Y') }}
+					{% else %}
+						Not set
+					{% endif %}
+				</td>
+				<td>{{ shopping_list.nbArticles }}</td>
+				<td>{{ shopping_list.totalPrice }}
+					€</td>
+				<td>
+					{% if canEdit %}
+						<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
+					{% endif %}
+					<a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
 </table>
-{% if not shopping_lists|length %}
-    <div class="alert alert-warning" role="alert">
-        <h1 style="text-align:center;">You have no shopping lists yet</h1>
-    </div>
+{% if shopping_lists|length == 0 %}
+	<div class="alert alert-warning" role="alert">
+		<h1 style="text-align:center;">You have no shopping lists yet</h1>
+	</div>
 {% endif %}
 {% if canEdit %}
-    <div class="create-new-container">
-        <a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
-    </div>
+	<div class="create-new-container">
+		<a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
+	</div>
 {% endif %}

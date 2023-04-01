@@ -21,8 +21,29 @@ use DateTime;
 class ShoppingListController extends AbstractController
 {
     #[Route('/', name: 'list', methods: ['GET'])]
-    public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
+    public function index(ShoppingListRepository $shoppingListRepository, Session $session, Request $request): Response
     {
+        $printMessage = false;
+        $isSuccess = false;
+        $message = "";
+
+        $isEdited = $request->query->get('edited') == "1" ? true : false;
+        $isCreated = $request->query->get('created') == "1" ? true : false;
+        $isDeleted = $request->query->get('deleted') == "1" ? true : false;
+        if ($isEdited) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "List successfully edited";
+        } else if ($isCreated) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "List successfully created";
+        } else if ($isDeleted) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "List successfully deleted";
+        }
+
         $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
         $new_lists = [];
         foreach ($shopping_lists as $shopping_list) {
@@ -40,7 +61,10 @@ class ShoppingListController extends AbstractController
         return $this->render('list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $new_lists,
-            'canEdit' => true
+            'canEdit' => true,
+            'printMessage' => $printMessage,
+            'isSuccess' => $isSuccess,
+            'message' => $message
         ]);
     }
 
@@ -81,7 +105,9 @@ class ShoppingListController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $shoppingListRepository->save($shoppingList, true);
 
-            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('list', [
+                'created' => true
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('list/list.new.html.twig', [
@@ -93,6 +119,49 @@ class ShoppingListController extends AbstractController
     #[Route('/{id}', name: 'list_show', methods: ['GET', 'POST'])]
     public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository): Response
     {
+        $printMessage = false;
+        $isSuccess = false;
+        $message = "";
+
+        $added = $request->query->get('add') == "1" ? true : false;
+        $deleted = $request->query->get('delete') == "1" ? true : false;
+        if ($added) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "Article added successfully";
+        } else if ($deleted) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "Article deleted successfully";
+        }
+
+        if ($request->isMethod('POST')) {
+            $inputBag = $request->request;
+            $nameForm = $inputBag->keys()[0];
+            if ($this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm)) {
+                $printMessage = true;
+                $isSuccess = true;
+                $message = "Article modifié avec succès";
+            } else {
+                $printMessage = true;
+                $isSuccess = false;
+                $message = "Erreur lors de la modification de l'article";
+            }
+        }
+
+        $articles = $shoppingList->getArticles()->getValues();
+
+        $modifyForms = [];
+        for ($i = 0; $i < count($articles); $i++) {
+            $modifyForms[$i] = $this->createForm(
+                ModifyArticleInListFormType::class,
+                $articles[$i],
+                [
+                    'id' => $articles[$i]->getId(),
+                ]
+            );
+        }
+
         $canEdit = true;
         if ($shoppingList->hasEndDate()) {
             $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
@@ -102,29 +171,6 @@ class ShoppingListController extends AbstractController
                 $canEdit = false;
             }
         }
-        $articles = $shoppingList->getArticles()->getValues();
-
-        $modifyForms = [];
-        $deleteForms = [];
-        for ($i = 0; $i < count($articles); $i++) {
-            $modifyForms[$i] = $this->createForm(
-                ModifyArticleInListFormType::class,
-                $articles[$i],
-                [
-                    'id' => $articles[$i]->getId(),
-                ]
-            );
-            $deleteForms[$i] = $this->createForm(
-                ArticleInListType::class,
-                $articles[$i]
-            );
-            $deleteForms[$i]->handleRequest($request);
-        }
-
-        if ($request->isMethod('POST')) {
-            $nameForm = $modifyForms[0]->getName();
-            $this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm);
-        }
 
         return $this->render('list/list.show.html.twig', [
             'shopping_list' => $shoppingList,
@@ -133,11 +179,14 @@ class ShoppingListController extends AbstractController
             'i' => 0,
             'modifyForms' => array_map(function ($form) {
                 return $form->createView();
-            }, $modifyForms)
+            }, $modifyForms),
+            'printMessage' => $printMessage,
+            'isSuccess' => $isSuccess,
+            'message' => $message
         ]);
     }
 
-    private function saveArticle(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, string $nameForm)
+    private function saveArticle(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, string $nameForm): bool
     {
         $data = $request->request->all()[$nameForm];
 
@@ -146,31 +195,42 @@ class ShoppingListController extends AbstractController
         $articleName = $data['name'];
         $articleQuantity = $data['quantity'];
         $articleUnityPrice = $data['unityPrice'];
+        $articleBrand = $data['brand'];
 
-        if ($this->verifyValues($articleName, $articleQuantity, $articleUnityPrice)) {
+        $valuesOkay = $this->verifyValues($articleQuantity, $articleUnityPrice);
+        if ($valuesOkay) {
             $articleInList = $articleInListRepository->findOneBy(['id' => $articleId]);
             $articleInList->setQuantity($articleQuantity);
             $articleInList->setUnityPrice($articleUnityPrice);
+            if (empty($articleName)) {
+                $articleName = $articleInList->getArticle()->getName();
+            }
             $articleInList->setName($articleName);
             $articleInList->setTotalPrice($articleQuantity * $articleUnityPrice);
+            $articleInList->setBrand($articleBrand);
 
             $articleInListRepository->save($articleInList, true);
 
             $shoppingListRepository->updateTotalPriceAndNbArticles($shoppingList, true);
-        } else {
-            $this->addFlash('error', 'Veuillez remplir tous les champs');
+
+            return true;
         }
+
+        return false;
     }
 
-    private function verifyValues(string $articleName, string $articleQuantity, string $articleUnityPrice): bool
+    private function verifyValues(string $articleQuantity, string $articleUnityPrice): bool
     {
-        if (empty($articleName) || empty($articleQuantity) || empty($articleUnityPrice)) {
+        if (empty($articleQuantity) || empty($articleUnityPrice)) {
+            if ($articleQuantity > 0 && $articleUnityPrice > 0 && is_float($articleUnityPrice)) {
+                return true;
+            }
             return false;
         }
         return true;
     }
 
-    #[Route('{id}/edit/', name: 'list_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'list_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
@@ -179,7 +239,9 @@ class ShoppingListController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $shoppingListRepository->save($shoppingList, true);
 
-            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('list', [
+                'edited' => true
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('list/list.edit.html.twig', [
@@ -188,13 +250,15 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'list_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'list_delete', methods: ['POST'])]
     public function delete(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $shoppingList->getId(), $request->request->get('_token'))) {
             $shoppingListRepository->remove($shoppingList, true);
         }
 
-        return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('list', [
+            'deleted' => true
+        ], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,0 +1,35 @@
+.article-in-list-viewer {
+    margin-bottom: 60px;
+    margin-top: 25px;
+    column-gap: 40px;
+}
+
+.article-card {
+    background-color: #f0ad4e;
+    padding: 20px;
+    border-radius: 44px;
+    color: white !important;
+}
+
+.list-property-value, .article-total-price * {
+    color: white;
+}
+
+.delete-article-in-list-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 40px;
+}
+
+.main-container .list-card {
+    margin-top: 20px;
+}
+
+.card {
+    width: 20vw;
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+}

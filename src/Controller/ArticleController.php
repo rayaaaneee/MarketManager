@@ -90,7 +90,10 @@ class ArticleController extends AbstractController
 
             $shoppingListRepository->save($shoppingList, true);
 
-            return $this->redirectToRoute('list_show', ['id' => $request["shoppingList"]]);
+            return $this->redirectToRoute('list_show', [
+                'id' => $request["shoppingList"],
+                'add' => true
+            ]);
             exit;
         } else {
             $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request)["formSearch"];

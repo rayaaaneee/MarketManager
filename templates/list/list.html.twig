@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Shopping lists{% endblock %}
+{% block title %}Shopping lists
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
 {% endblock %}
 
 {% block body %}
-    {% if shopping_lists is empty %}
-        {% set title = 'My shopping lists' %}
-    {% else %}
-        {% set title = 'My shopping lists ('~ shopping_lists|length ~')' %}
-    {% endif %}
-    {{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
-    {{ include('list/list.new.old.template.html.twig')}}
+	{{ include('/message.html.twig') }}
+	{% if shopping_lists is empty %}
+		{% set title = 'My shopping lists' %}
+	{% else %}
+		{% set title = 'My shopping lists ('~ shopping_lists|length ~')' %}
+	{% endif %}
+	{{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
+	{{ include('list/list.new.old.template.html.twig')}}
 {% endblock %}
