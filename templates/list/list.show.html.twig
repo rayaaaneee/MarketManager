@@ -53,7 +53,7 @@
 						{% for article in articles %}
 							<div class="article-card">
 								{{ form_start(modifyForms[i], {'attr': {'class': 'modify-form'}}) }}
-								<button type="submit" name="delete-article"></button>
+								<a href="{{ path('app_article_in_list_edit', {'id': article.id}) }}" class="delete-article-in-list" title="Modify this article"></a>
 								<div class="article-img">
 									<a href="{{ path('article_show', {'id': article.id}) }}">
 										<img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">

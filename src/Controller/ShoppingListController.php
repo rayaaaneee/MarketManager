@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ShoppingList;
+use App\Form\ArticleInListType;
 use App\Form\ShoppingListType;
 use App\Form\ModifyArticleInListFormType;
 use App\Repository\ShoppingListRepository;
@@ -104,10 +105,20 @@ class ShoppingListController extends AbstractController
         $articles = $shoppingList->getArticles()->getValues();
 
         $modifyForms = [];
+        $deleteForms = [];
         for ($i = 0; $i < count($articles); $i++) {
-            $modifyForms[$i] = $this->createForm(ModifyArticleInListFormType::class, $articles[$i], [
-                'id' => $articles[$i]->getId(),
-            ]);
+            $modifyForms[$i] = $this->createForm(
+                ModifyArticleInListFormType::class,
+                $articles[$i],
+                [
+                    'id' => $articles[$i]->getId(),
+                ]
+            );
+            $deleteForms[$i] = $this->createForm(
+                ArticleInListType::class,
+                $articles[$i]
+            );
+            $deleteForms[$i]->handleRequest($request);
         }
 
         if ($request->isMethod('POST')) {
@@ -119,10 +130,10 @@ class ShoppingListController extends AbstractController
             'shopping_list' => $shoppingList,
             'articles' => $articles,
             'canEdit' => $canEdit,
+            'i' => 0,
             'modifyForms' => array_map(function ($form) {
                 return $form->createView();
-            }, $modifyForms),
-            'i' => 0
+            }, $modifyForms)
         ]);
     }
 

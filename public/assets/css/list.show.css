@@ -327,3 +327,29 @@ html {
     position: relative;
     width: 1000px;
 }
+
+.delete-article-in-list {
+    opacity: 0;
+    pointer-events: none;
+    width: 50px;
+    height: 50px;
+    background-color: #ff8d8d;
+    position: absolute;
+    left: -25px;
+    background-image : url(../../img/bin.png);
+    background-size: 30px;
+    border-radius: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-color 0.15s, opacity 0.15s;
+}
+
+.delete-article-in-list.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.delete-article-in-list:hover {
+    background-color: #c86363;
+    transition: background-color 0.15s;
+}
