@@ -53,7 +53,18 @@ class StatController extends AbstractController
                 
             }
         }
-        $average = $listUserTotalPrice / $nb;
+        if ($nb != 0){
+            $average = $listUserTotalPrice / $nb;
+            //force le nombre de chiffre après la virgule
+            $average = round($average,2);
+        }
+        else{
+            $average = 0;
+            $lowerPrice = 0;
+            $higherPrice = 0;
+
+        }
+
         $finalTab = [];
         array_push($finalTab,$lowerPrice);
         array_push($finalTab,$higherPrice);

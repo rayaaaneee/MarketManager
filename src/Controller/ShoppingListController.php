@@ -22,21 +22,6 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
-        $listUserTotalPrice=0;
-        $lowerPrice = 1000000000000000000;
-        $higherPrice = -1;
-        $nb = 0;
-        $average =0;
-        foreach($shoppingListRepository->findBy(['user'=>$session->get('id')]) as $listUser){
-            $listUserTotalPrice += $listUser->getTotalPrice();
-            foreach($listUser->getArticles() as $listArticle){
-                $nb+=1;
-                if ($listArticle->getUnityPrice() > $higherPrice) $higherPrice = $listArticle->getUnityPrice();
-                if($listArticle->getUnityPrice()< $lowerPrice) $lowerPrice=$listArticle->getUnityPrice();
-                
-            }
-        }
-        $average = $listUserTotalPrice / $nb;
         $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
         $new_lists = [];
         foreach ($shopping_lists as $shopping_list) {
