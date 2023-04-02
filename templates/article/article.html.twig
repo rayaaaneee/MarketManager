@@ -6,10 +6,9 @@
 	{% block stylesheet %}
 		<link rel="stylesheet" href="{{ asset('assets/css/article.css') }}">
 	{% endblock stylesheet%}
-
-	{{ include('title.page.html.twig', {title: 'Articles ('~ articles|length ~')', 'file' : 'article.png'}) }}
-	{{ include('article/article.search.bar.html.twig', {'nbArticles' : articles|length}) }}
-	{{ include('article/article.pagination.html.twig', { 'class' : 'pagination-top', 'nbArticles' : pagination|length}) }}
+	{{ include('title.page.html.twig', {title: 'Articles ('~ pagination.totalItemCount ~')', 'file' : 'article.png'}) }}
+	{{ include('article/article.search.bar.html.twig', {'nbArticles' : pagination|length}) }}
+	{{ include('pagination.html.twig', { 'class' : 'pagination-top', 'nbArticles' : pagination|length, 'parameterClass' : 'pagination-lg'}) }}
 	<table class="table table-hover">
 		<thead>
 			<tr id="header">
@@ -40,10 +39,12 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{% if articles|length == 0 %}
+	{% if pagination|length == 0 %}
 		<div class="alert alert-warning" role="alert">
 			<h1 style="text-align:center;">No articles found</h1>
 		</div>
 	{% endif %}
-	{{ include('article/article.pagination.html.twig', { 'pagination' : pagination}) }}
+	{% if pagination|length >= 5 %}
+		{{ include('pagination.html.twig', { 'pagination' : pagination, 'parameterClass' : 'pagination-lg'}) }}
+	{% endif %}
 {% endblock %}

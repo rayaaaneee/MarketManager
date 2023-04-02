@@ -26,27 +26,16 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'article', methods: ['GET', 'POST'])]
     public function index(ArticleRepository $articleRepository, TypeRepository $typeRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        $requestPage = $request->query->getInt('p', 1);
-        $pagination = $paginator->paginate(
-            $articleRepository->findAllQuery(),
-            $requestPage < 1 ? 1 : $requestPage,
-            7
-        );
-
         $types = $typeRepository->findAll();
-        $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request);
-        $articles = null;
-        if ($formSearch["isSearch"]) {
-            $articles = $formSearch["articles"];
-        } else {
-            $articles = $articleRepository->findAll();
-        }
+        $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request, $paginator);
+
+        $pagination = $formSearch["pagination"];
         $formSearch = $formSearch["formSearch"];
+
         $classesTable = ['table-active', ''];
         $classesButtons = ['btn-light', 'btn-primary'];
         return $this->render('article/article.html.twig', [
             'controller_name' => 'ArticleController',
-            'articles' => $articles,
             'classesTable' => $classesTable,
             'classesButtons' => $classesButtons,
             'i' => 0,
@@ -65,7 +54,7 @@ class ArticleController extends AbstractController
 
     // On precise que l'id est un parametre de la route et forcement un entier
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
-    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, TypeRepository $typeRepository, Session $session, Request $request): Response | RedirectResponse
+    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, TypeRepository $typeRepository, Session $session, Request $request, PaginatorInterface $paginator): Response | RedirectResponse
     {
         $types = $typeRepository->findAll();
         if ($request->isMethod('POST')) {
@@ -106,7 +95,7 @@ class ArticleController extends AbstractController
             ]);
             exit;
         } else {
-            $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request)["formSearch"];
+            $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request, $paginator)["formSearch"];
 
             $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
 
@@ -134,26 +123,45 @@ class ArticleController extends AbstractController
         }
     }
 
-    private function createAndVerifyFormSearch(ArticleRepository $articleRepository, array $types, Request $request): FormInterface | array
+    private function createAndVerifyFormSearch(ArticleRepository $articleRepository, array $types, Request $request, PaginatorInterface $paginator): FormInterface | array
     {
         $formSearch = $this->createForm(ArticleType::class, null, [
             'types' => $types
         ]);
 
-        $articles = null;
         $isSearch = false;
+        $pagination = null;
         $formSearch->handleRequest($request);
+
+
         if ($formSearch->isSubmitted() && $formSearch->isValid()) {
+            $data = $formSearch->getData();
+
+            if ($data['type'] == null && $data['search'] == null) {
+                $url = $this->generateUrl('article');
+                Header("Location: $url");
+                exit;
+            }
             $isSearch = true;
 
-            $data = $formSearch->getData();
-            $articles = array();
-            $articles = $articleRepository->findByNameAndType($data, $articleRepository);
+            $requestPage = $request->query->getInt('p', 1);
+            $pagination = $paginator->paginate(
+                $articleRepository->findByNameAndTypeQuery($data, $articleRepository),
+                $requestPage < 1 ? 1 : $requestPage,
+                7
+            );
+        } else {
+            $requestPage = $request->query->getInt('p', 1);
+            $pagination = $paginator->paginate(
+                $articleRepository->findAllQuery(),
+                $requestPage < 1 ? 1 : $requestPage,
+                7
+            );
         }
         return [
             "formSearch" => $formSearch,
-            "articles" => $articles,
-            "isSearch" => $isSearch
+            "isSearch" => $isSearch,
+            "pagination" => $pagination
         ];
     }
 }

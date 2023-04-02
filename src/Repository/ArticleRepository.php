@@ -38,7 +38,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 
-    public function findByNameAndType(array $data, ArticleRepository $articleRepository): array | RedirectResponse
+    public function findByNameAndTypeQuery(array $data, ArticleRepository $articleRepository): array | Query
     {
         $keyword = $data['search'];
         $type = $data['type'];
@@ -61,8 +61,6 @@ class ArticleRepository extends ServiceEntityRepository
                 ->setParameter('type', $type);
         }
 
-        $articles = $queryBuilder->getQuery()->getResult();
-
-        return $articles;
+        return $queryBuilder->getQuery()->getResult();
     }
 }
