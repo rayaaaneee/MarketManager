@@ -81,5 +81,8 @@
 			</div>
 		</div>
 	</article>
-	{{ include('article_in_list/_delete_form.html.twig') }}
+	<div class="buttons-container">
+		<a href="{{ path('list_show', {'id' : shopping_list.id }) }}" class="btn btn-dark">Back to my list</a>
+		{{ include('article_in_list/_delete_form.html.twig') }}
+	</div>
 {% endblock %}

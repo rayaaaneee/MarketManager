@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\ArticleInList;
+use App\Entity\ShoppingList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,16 @@ class ArticleInListRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByAllByShoppingListQuery(ShoppingList $shoppingList): Query
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder
+            ->where('a.shoppingList = :shoppingList')
+            ->setParameter('shoppingList', $shoppingList->getId());
+
+        return $queryBuilder->getQuery();
     }
 
     //    /**

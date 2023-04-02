@@ -17,7 +17,6 @@ use App\Repository\TypeRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\FormInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Class\PaginatorManager\PaginatorManager;
 
 
 #[Route('/article')]
@@ -146,7 +145,7 @@ class ArticleController extends AbstractController
 
             $requestPage = $request->query->getInt('p', 1);
             $pagination = $paginator->paginate(
-                $articleRepository->findByNameAndTypeQuery($data, $articleRepository),
+                $articleRepository->findByNameAndTypeQuery($data),
                 $requestPage < 1 ? 1 : $requestPage,
                 7
             );

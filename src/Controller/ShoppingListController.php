@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 use DateTime;
 
 
@@ -117,8 +118,15 @@ class ShoppingListController extends AbstractController
     }
 
     #[Route('/{id}', name: 'list_show', methods: ['GET', 'POST'])]
-    public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository): Response
+    public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator): Response
     {
+        $requestPage = $request->query->getInt('p', 1);
+        $pagination = $paginator->paginate(
+            $articleInListRepository->findByAllByShoppingListQuery($shoppingList),
+            $requestPage < 1 ? 1 : $requestPage,
+            4
+        );
+
         $printMessage = false;
         $isSuccess = false;
         $message = "";
@@ -149,7 +157,7 @@ class ShoppingListController extends AbstractController
             }
         }
 
-        $articles = $shoppingList->getArticles()->getValues();
+        $articles = $pagination->getItems();
 
         $modifyForms = [];
         for ($i = 0; $i < count($articles); $i++) {
@@ -182,7 +190,8 @@ class ShoppingListController extends AbstractController
             }, $modifyForms),
             'printMessage' => $printMessage,
             'isSuccess' => $isSuccess,
-            'message' => $message
+            'message' => $message,
+            'pagination' => $pagination
         ]);
     }
 

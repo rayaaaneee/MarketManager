@@ -38,12 +38,12 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 
-    public function findByNameAndTypeQuery(array $data, ArticleRepository $articleRepository): array | Query
+    public function findByNameAndTypeQuery(array $data): array | Query
     {
         $keyword = $data['search'];
         $type = $data['type'];
 
-        $queryBuilder = $articleRepository->createQueryBuilder('a');
+        $queryBuilder = $this->createQueryBuilder('a');
 
         // Ajouter une condition LIKE pour rechercher les variations de mots-clés
         $queryBuilder
