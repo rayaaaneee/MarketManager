@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : sam. 01 avr. 2023 à 19:56
+-- Généré le : dim. 02 avr. 2023 à 05:25
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_23A0E66C54C8C93` (`type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `article`
@@ -70,7 +70,37 @@ INSERT INTO `article` (`id`, `type_id`, `name`, `unity_price`, `image`) VALUES
 (54, 8, 'Mascara', 8, 'mascara.png'),
 (55, 8, 'Nail polish', 5, 'nail-polish.png'),
 (56, 9, 'Book', 10, 'book.png'),
-(57, 9, 'Magazine', 3.5, 'magazine.png');
+(57, 9, 'Magazine', 3.5, 'magazine.png'),
+(58, 2, 'Fruit salad', 3.99, 'fruit-salad.png'),
+(59, 1, 'Cheese', 8.49, 'cheese.png'),
+(60, 3, 'Nettoyant', 4.29, 'cleaner.png'),
+(61, 4, 'T-shirt homme', 14.99, 'mens-tshirt.png'),
+(62, 4, 'Pantalon femme', 29.99, 'womens-pants.png'),
+(63, 5, 'Serviette de bain', 12.99, 'bath-towel.png'),
+(64, 5, 'Rideau', 19.99, 'curtain.png'),
+(65, 6, 'Brosse à dents électrique', 39.99, 'electric-toothbrush.png'),
+(66, 6, 'Thermomètre médical', 8.99, 'thermometer.png'),
+(67, 7, 'Ping-pong kit', 0.99, 'ping-pong-kit.png'),
+(68, 8, 'Kit de maquillage', 39.99, 'makeup-kit.png'),
+(69, 10, 'Sac de sport', 34.99, 'sports-bag.png'),
+(70, 10, 'Ballon de rugby', 19.99, 'rugby-ball.png'),
+(71, 6, 'Tea', 3.99, 'tea.png'),
+(72, 3, 'Mouchoirs en papier', 1.49, 'tissue-box.png'),
+(73, 4, 'Sac à main', 49.99, 'handbag.png'),
+(74, 5, 'Table de chevet', 59.99, 'nightstand.png'),
+(75, 5, 'Fer à repasser', 29.99, 'iron.png'),
+(76, 4, 'Manteau homme', 89.99, 'mens-coat.png'),
+(77, 4, 'Veste femme', 69.99, 'womens-jacket.png'),
+(78, 1, 'Graines de tournesol', 2.99, 'sunflower-seeds.png'),
+(79, 2, 'Chips de maïs', 2.49, 'corn-chips.png'),
+(80, 3, 'Savon liquide pour les mains', 3.49, 'hand-soap.png'),
+(81, 7, 'Crayon de couleur', 1.99, 'colored-pencils.png'),
+(82, 10, 'Ballon de volley-ball', 24.99, 'volleyball.png'),
+(83, 10, 'Tennis de table', 99.99, 'ping-pong-table.png'),
+(84, 8, 'Éponge de maquillage', 9.99, 'makeup-sponge.png'),
+(85, 10, 'Raquette de badminton', 39.99, 'badminton-racket.png'),
+(86, 10, 'Chaussures de course', 79.99, 'running-shoes.png'),
+(87, 5, 'Balai brosse', 14.99, 'broom.png');
 
 -- --------------------------------------------------------
 
@@ -91,7 +121,20 @@ CREATE TABLE IF NOT EXISTS `article_in_list` (
   PRIMARY KEY (`id`),
   KEY `IDX_83A183CB23245BF9` (`shopping_list_id`),
   KEY `IDX_83A183CB7294869C` (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `article_in_list`
+--
+
+INSERT INTO `article_in_list` (`id`, `shopping_list_id`, `article_id`, `quantity`, `total_price`, `unity_price`, `name`, `brand`) VALUES
+(30, 39, 31, 6, 13.8, 2.3, 'Rice', ''),
+(31, 39, 52, 2, 112, 56, 'Tennis racket adult', 'Prince'),
+(32, 39, 31, 3, 6.9, 2.3, 'Rice', NULL),
+(33, 39, 40, 1, 25, 25, 'Woman dress', ''),
+(34, 39, 46, 1, 6, 6, 'Vitamin C', ''),
+(35, 39, 35, 2, 80, 40, 'Bonbons de ouf', NULL),
+(36, 39, 32, 4, 7.2, 1.8, 'Chips', NULL);
 
 -- --------------------------------------------------------
 
@@ -153,7 +196,14 @@ CREATE TABLE IF NOT EXISTS `shopping_list` (
   `end_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A459A76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `shopping_list`
+--
+
+INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_articles`, `total_price`, `end_date`) VALUES
+(39, 7, 'My first list', NULL, 19, 250.9, '2023-04-13');
 
 -- --------------------------------------------------------
 
@@ -198,7 +248,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`surname`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `name`, `surname`, `password`) VALUES
+(7, 'root', 'root', '$2y$10$77C9EU8y5s1zxdnO1aBNuuw5rR0mvy1qdN5HJ.upGZqgdr8J08/Gm');
 
 --
 -- Contraintes pour les tables déchargées
