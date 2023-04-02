@@ -59,7 +59,7 @@
 								{{ form_start(modifyForms[i], {'attr': {'class': 'modify-form'}}) }}
 								<a href="{{ path('app_article_in_list_delete_page', {'id': article.id}) }}" class="delete-article-in-list" title="Modify this article"></a>
 								<div class="article-img">
-									<a href="{{ path('article_show', {'id': article.id}) }}">
+									<a href="{{ path('article_show', {'id': article.article.id}) }}">
 										<img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">
 									</a>
 								</div>
