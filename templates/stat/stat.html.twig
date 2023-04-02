@@ -3,21 +3,13 @@
 {% block title %}Statistics
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/stats.css') }}">
+{% endblock %}
+
 {% block body %}
-
-	<style>
-		/*minscule style pas besoin d'un fichier pour ça */
-		.container_chart {
-			display: flex;
-			justify-content: center;
-		}
-
-		.alert {
-			margin-top: 100px;
-			margin-bottom: 100px;
-		}
-	</style>
-
+	{{ include('title.page.html.twig', { 'title' : 'My statistics' , 'file' : 'stats.png' }) }}
 	{% if print %}
 		<div class="container_chart" id="piechart">
 			<input type="" id="pie" value='{{data|json_encode|raw}}' style="display:none">

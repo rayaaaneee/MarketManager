@@ -11,7 +11,12 @@
 }
 
 #formSearchArticle #article_submit {
-    width: 150px;
+    width: 170px;
+    padding-left: 57px;
+    background-image: url(../../img/glasses.png);
+    background-repeat: no-repeat;
+    background-position: 22px center;
+    background-size: 22px;
 }
 
 .separator {
