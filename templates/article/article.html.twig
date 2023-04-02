@@ -45,5 +45,5 @@
 			<h1 style="text-align:center;">No articles found</h1>
 		</div>
 	{% endif %}
-	{{ include('article/article.pagination.html.twig', { 'nbArticles' : pagination|length} )}}
+	{{ include('article/article.pagination.html.twig', { 'pagination' : pagination}) }}
 {% endblock %}

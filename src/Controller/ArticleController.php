@@ -17,6 +17,7 @@ use App\Repository\TypeRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\FormInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Class\PaginatorManager\PaginatorManager;
 
 
 #[Route('/article')]
@@ -25,11 +26,13 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'article', methods: ['GET', 'POST'])]
     public function index(ArticleRepository $articleRepository, TypeRepository $typeRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $requestPage = $request->query->getInt('p', 1);
         $pagination = $paginator->paginate(
             $articleRepository->findAllQuery(),
-            $request->query->getInt('p', 1),
+            $requestPage < 1 ? 1 : $requestPage,
             7
         );
+
         $types = $typeRepository->findAll();
         $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request);
         $articles = null;

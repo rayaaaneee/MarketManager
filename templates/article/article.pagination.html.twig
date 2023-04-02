@@ -1,27 +1,18 @@
 {% set class = class|default('') %}
-{% set nbArticles = nbArticles|default(0) %}
-<div class="pagination-bar-container {{ class }} {% if nbArticles == 0 %}hidden{% endif %}">
+{% set totalPages = pagination.paginationData['pageCount'] %}
+{% set currentPage = pagination.paginationData['current'] %}
+<div class="pagination-bar-container {{ class }} {% if pagination.totalItemCount == 0 %}hidden{% endif %}">
 	<ul class="pagination pagination-lg">
-		<li class="page-item disabled">
-			<a class="page-link" href="./?p=1">&laquo;</a>
-		</li>
-		<li class="page-item active">
-			<a class="page-link" href="./?p=1">1</a>
-		</li>
 		<li class="page-item">
-			<a class="page-link" href="./?p=2">2</a>
+			<a class="page-link" href="./?p={{ pagination.currentPageNumber - 1 }}">&laquo;</a>
 		</li>
+		{% for i in 1..totalPages %}
+			<li class="page-item {% if loop.index == pagination.currentPageNumber %}active{% endif %}">
+				<a class="page-link" href="./?p={{ loop.index }}">{{ loop.index }}</a>
+			</li>
+		{% endfor %}
 		<li class="page-item">
-			<a class="page-link" href="./?p=3">3</a>
-		</li>
-		<li class="page-item">
-			<a class="page-link" href="./?p=4">4</a>
-		</li>
-		<li class="page-item">
-			<a class="page-link" href="./?p=5">5</a>
-		</li>
-		<li class="page-item">
-			<a class="page-link" href="./?p=5">&raquo;</a>
+			<a class="page-link" href="./?p={{ pagination.currentPageNumber + 1 }}">&raquo;</a>
 		</li>
 	</ul>
 </div>
