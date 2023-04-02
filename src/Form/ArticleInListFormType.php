@@ -28,7 +28,6 @@ class ArticleInListFormType extends AbstractType
                 $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
                 $now = $now->setTime(0, 0, 0);
                 if ($endDate >= $now) {
-                    dd($shoppingList->getName());
                     $tabChoices[$shoppingList->getName()] = $shoppingList->getId();
                 }
             } else {
