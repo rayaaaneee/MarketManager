@@ -8,7 +8,8 @@
 {% endblock stylesheet%}
 
 {{ include('title.page.html.twig', {title: 'Articles ('~ articles|length ~')', 'file' : 'article.png'}) }}
-{{ include('article/article.search.bar.html.twig') }}
+{{ include('article/article.search.bar.html.twig', {'nbArticles' : articles|length}) }}
+{{ include('article/article.pagination.html.twig', { 'class' : 'pagination-top', 'nbArticles' : articles|length}) }}
 <table class="table table-hover">
 	<thead>
 		<tr id="header">
@@ -43,4 +44,5 @@
 	<div class="alert alert-warning" role="alert">
 		<h1 style="text-align:center;">No articles found</h1>
 	</div>
-{% endif %}{% endblock body %}
+{% endif %}
+{{ include('article/article.pagination.html.twig')}}{% endblock body %}

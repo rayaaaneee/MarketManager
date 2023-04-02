@@ -54,3 +54,19 @@
     height: 75px;
     margin-top: 30px;
   }
+
+  .pagination-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .pagination-bar-container.hidden {
+    display: none;
+  }
+
+  .pagination-bar-container .pagination, .pagination-top {
+    margin: 0;
+  }
