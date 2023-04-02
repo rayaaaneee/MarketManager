@@ -87,7 +87,7 @@ class ShoppingListController extends AbstractController
         return $this->render('list/list.old.html.twig', [
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $old_lists,
-            'canEdit' => false
+            'canEdit' => false,
         ]);
     }
 
@@ -170,20 +170,20 @@ class ShoppingListController extends AbstractController
             );
         }
 
-        $canEdit = true;
+        $oldList = false;
         if ($shoppingList->hasEndDate()) {
             $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
             $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
             $now = $now->setTime(0, 0, 0);
             if ($endDate < $now) {
-                $canEdit = false;
+                $oldList = true;
             }
         }
 
         return $this->render('list/list.show.html.twig', [
             'shopping_list' => $shoppingList,
             'articles' => $articles,
-            'canEdit' => $canEdit,
+            'oldList' => $oldList,
             'i' => 0,
             'modifyForms' => array_map(function ($form) {
                 return $form->createView();
