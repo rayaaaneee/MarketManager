@@ -353,3 +353,17 @@ html {
     background-color: #c86363;
     transition: background-color 0.15s;
 }
+
+.pagination {
+    margin: 0;
+    padding: 20px 45px;
+    background-color: white;
+    border-radius: 77px;
+}
+
+.pagination-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}

@@ -50,6 +50,7 @@
 				{% else %}
 					<h2 class="title-part">
 						My articles ({{ shopping_list.nbArticles }}) :</h2>
+					{{ include('pagination.html.twig', { 'pagination': pagination}) }}
 					<div class="article-container">
 						{% for article in articles %}
 							<div class="article-card">
@@ -104,7 +105,6 @@
 						{% endfor %}
 					</div>
 				</div>
-				{{ include('pagination.html.twig', { 'pagination': pagination}) }}
 				<div class=" total-price">
 					<div class="words">
 						<p>Number of articles :

@@ -29,20 +29,23 @@
 {% block javascripts %}
 	<script src="{{ asset('assets/js/pagination.js') }}" defer></script>
 {% endblock %}
-<div class="pagination-bar-container {{ class }} {% if pagination.totalItemCount == 0 %}hidden{% endif %}">
-	<ul class="pagination {{ parameterClass }}">
-		<li class="page-item">
-			<a class="page-link" href="{{ previousPage }}">&laquo;</a>
-		</li>
-		{% for i in start..end %}
-			{% if i <= totalPages %}
-				<li class="page-item {% if i == pagination.currentPageNumber %}active{% endif %}">
-					<a class="page-link" href="{{ i }}">{{ i }}</a>
-				</li>
-			{% endif %}
-		{% endfor %}
-		<li class="page-item">
-			<a class="page-link" href="{{ nextPage }}">&raquo;</a>
-		</li>
-	</ul>
-</div>
+
+{% if totalPages != 1 %}
+	<div class="pagination-bar-container {{ class }} {% if pagination.totalItemCount == 0 %}hidden{% endif %}">
+		<ul class="pagination {{ parameterClass }}">
+			<li class="page-item">
+				<a class="page-link" href="{{ previousPage }}">&laquo;</a>
+			</li>
+			{% for i in start..end %}
+				{% if i <= totalPages %}
+					<li class="page-item {% if i == pagination.currentPageNumber %}active{% endif %}">
+						<a class="page-link" href="{{ i }}">{{ i }}</a>
+					</li>
+				{% endif %}
+			{% endfor %}
+			<li class="page-item">
+				<a class="page-link" href="{{ nextPage }}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+{% endif %}
