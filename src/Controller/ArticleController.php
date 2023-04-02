@@ -16,14 +16,20 @@ use App\Form\ArticleType;
 use App\Repository\TypeRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\FormInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'article', methods: ['GET', 'POST'])]
-    public function index(ArticleRepository $articleRepository, TypeRepository $typeRepository, Request $request): Response
+    public function index(ArticleRepository $articleRepository, TypeRepository $typeRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $articleRepository->findAllQuery(),
+            $request->query->getInt('p', 1),
+            7
+        );
         $types = $typeRepository->findAll();
         $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request);
         $articles = null;
@@ -41,7 +47,8 @@ class ArticleController extends AbstractController
             'classesTable' => $classesTable,
             'classesButtons' => $classesButtons,
             'i' => 0,
-            'formSearch' => $formSearch->createView()
+            'formSearch' => $formSearch->createView(),
+            'pagination' => $pagination
         ]);
     }
 
@@ -138,41 +145,12 @@ class ArticleController extends AbstractController
 
             $data = $formSearch->getData();
             $articles = array();
-
-            $articles = $this->largeSearch($data, $articleRepository);
+            $articles = $articleRepository->findByNameAndType($data, $articleRepository);
         }
         return [
             "formSearch" => $formSearch,
             "articles" => $articles,
             "isSearch" => $isSearch
         ];
-    }
-
-    private function largeSearch(array $data, ArticleRepository $articleRepository): array | RedirectResponse
-    {
-        $keyword = $data['search'];
-        $type = $data['type'];
-
-        $queryBuilder = $articleRepository->createQueryBuilder('a');
-
-        // Ajouter une condition LIKE pour rechercher les variations de mots-clés
-        $queryBuilder
-            ->where('a.name LIKE :keyword')
-            ->orWhere('a.name LIKE :keywordStart')
-            ->orWhere('a.name LIKE :keywordEnd')
-            ->orWhere('a.name LIKE :keywordMiddle')
-            ->setParameter('keyword', "%{$keyword}%")
-            ->setParameter('keywordStart', "{$keyword}%")
-            ->setParameter('keywordEnd', "%{$keyword}")
-            ->setParameter('keywordMiddle', "%{$keyword}%");
-        if ($type !== null) {
-            $queryBuilder
-                ->andWhere('a.type = :type')
-                ->setParameter('type', $type);
-        }
-
-        $articles = $queryBuilder->getQuery()->getResult();
-
-        return $articles;
     }
 }

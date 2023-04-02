@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Article>
@@ -29,12 +31,38 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByType($type)
+    public function findAllQuery(): Query
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.type = :type')
-            ->setParameter('type', $type)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+    }
+
+
+    public function findByNameAndType(array $data, ArticleRepository $articleRepository): array | RedirectResponse
+    {
+        $keyword = $data['search'];
+        $type = $data['type'];
+
+        $queryBuilder = $articleRepository->createQueryBuilder('a');
+
+        // Ajouter une condition LIKE pour rechercher les variations de mots-clés
+        $queryBuilder
+            ->where('a.name LIKE :keyword')
+            ->orWhere('a.name LIKE :keywordStart')
+            ->orWhere('a.name LIKE :keywordEnd')
+            ->orWhere('a.name LIKE :keywordMiddle')
+            ->setParameter('keyword', "%{$keyword}%")
+            ->setParameter('keywordStart', "{$keyword}%")
+            ->setParameter('keywordEnd', "%{$keyword}")
+            ->setParameter('keywordMiddle', "%{$keyword}%");
+        if ($type !== null) {
+            $queryBuilder
+                ->andWhere('a.type = :type')
+                ->setParameter('type', $type);
+        }
+
+        $articles = $queryBuilder->getQuery()->getResult();
+
+        return $articles;
     }
 }
