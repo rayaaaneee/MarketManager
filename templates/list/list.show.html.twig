@@ -50,9 +50,8 @@
 						</div>
 					{% endif %}
 				{% else %}
-					<h2 class="title-part">
-						My articles ({{ shopping_list.nbArticles }}) :</h2>
 					{{ include('pagination.html.twig', { 'pagination': pagination}) }}
+					<h2 class="title-part">My items ({{ shopping_list.nbArticles }}) :</h2>
 					<div class="article-container">
 						{% for article in articles %}
 							<div class="article-card">

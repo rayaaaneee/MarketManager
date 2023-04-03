@@ -6,7 +6,7 @@
 	{% block stylesheet %}
 		<link rel="stylesheet" href="{{ asset('assets/css/article.css') }}">
 	{% endblock stylesheet%}
-	{{ include('title.page.html.twig', {title: 'Articles ('~ pagination.totalItemCount ~')', 'file' : 'article.png'}) }}
+	{{ include('title.page.html.twig', {'title' : title, 'file' : 'article.png'}) }}
 	{{ include('article/article.search.bar.html.twig', {'nbArticles' : pagination|length}) }}
 	{{ include('pagination.html.twig', { 'class' : 'pagination-top', 'nbArticles' : pagination|length, 'parameterClass' : 'pagination-lg'}) }}
 	<table class="table table-hover">

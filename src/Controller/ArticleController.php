@@ -29,7 +29,27 @@ class ArticleController extends AbstractController
         $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request, $paginator);
 
         $pagination = $formSearch["pagination"];
+        $isSearch = $formSearch["isSearch"];
         $formSearch = $formSearch["formSearch"];
+
+        $title = "";
+        if ($isSearch) {
+            $search = $formSearch->getData()["search"];
+            $type = $formSearch->getData()["type"];
+
+            $plural = "";
+            if ($pagination->getTotalItemCount() > 1) $plural = "s";
+            $title .= $pagination->getTotalItemCount() . " item" . $plural . " found";
+            if ($search) {
+                $title .= " - \"" . $search . "\"";
+            }
+            if ($type) {
+                $title .= " - " . $typeRepository->find($type)->getName() . "";
+            }
+        } else {
+            $title .= "Items (" . $pagination->getTotalItemCount() . ")";
+        }
+
 
         $classesTable = ['table-active', ''];
         $classesButtons = ['btn-light', 'btn-primary'];
@@ -39,7 +59,8 @@ class ArticleController extends AbstractController
             'classesButtons' => $classesButtons,
             'i' => 0,
             'formSearch' => $formSearch->createView(),
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'title' => $title
         ]);
     }
 
@@ -147,14 +168,14 @@ class ArticleController extends AbstractController
             $pagination = $paginator->paginate(
                 $articleRepository->findByNameAndTypeQuery($data),
                 $requestPage < 1 ? 1 : $requestPage,
-                7
+                10
             );
         } else {
             $requestPage = $request->query->getInt('p', 1);
             $pagination = $paginator->paginate(
                 $articleRepository->findAllQuery(),
                 $requestPage < 1 ? 1 : $requestPage,
-                7
+                10
             );
         }
         return [

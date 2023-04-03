@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Shopping lists
+{% block title %}
+	{% if shopping_lists|length > 0 %}
+		{{ 'Shopping lists ('~ shopping_lists|length ~')' }}
+	{% else %}
+		{{ 'Shopping lists' }}
+	{% endif %}
 {% endblock %}
 
 {% block stylesheets %}
