@@ -123,6 +123,7 @@
 		</div>
 	</article>
 	<div class="modify-list-container">
+		<a href="{{ path('list_show_stat', {'id':shopping_list.id}) }}" class="btn btn-success">stat of my list</a>
 		<a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
 		{% if not isOldList %}
 			<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-dark">edit</a>

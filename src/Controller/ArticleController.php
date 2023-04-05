@@ -81,6 +81,9 @@ class ArticleController extends AbstractController
             $articleInListInputBag = $request->request;
             $articleInListParameters = $articleInListInputBag->all();
             $request = $articleInListParameters["article_in_list_form"];
+            $same = false;
+
+            
 
             $article = $articleRepository->find($id);
             $brand = null;
@@ -90,24 +93,57 @@ class ArticleController extends AbstractController
             $totalPrice = $request["quantity"] * $request["unityPrice"];
             $shoppingList = $shoppingListRepository->find($request["shoppingList"]);
 
-            $articleInList = new ArticleInList();
-            $articleInList
-                ->setName($request["name"])
-                ->setQuantity($request["quantity"])
-                ->setUnityPrice($request["unityPrice"])
-                ->setShoppingList($shoppingList)
-                ->setTotalPrice($totalPrice)
-                ->setBrand($brand)
-                ->setArticle($article);
-            $articleInListRepository->save($articleInList, true);
+            foreach($shoppingList->getArticles() as $art){
+                if( $art->getName() == $request['name'] && $art->getUnityPrice() == $request['unityPrice'] && $art->getBrand() == $request['brand'] && $art->getArticle() ==$article){
+                    $same = true;
+                }
+            }
+            
+            if ($same){
+                foreach($shoppingList->getArticles() as $art){
+                    //ajoute dans temp dans le tableau 
+                    
+                    if( $art->getName() == $request['name'] && $art->getUnityPrice() == $request['unityPrice'] && $art->getBrand() == $request['brand'] && $art->getArticle() ==$article){
+                        $art->setQuantity($art->getQuantity() + $request['quantity']);
+                        $art->setTotalPrice($art->getTotalPrice() + $totalPrice);
+                    }
+                }
 
-            $totalArticles = $articleInList->getQuantity() + $shoppingList->getNbArticles();
-            $shoppingList->setNbArticles($totalArticles);
+                $articleInListRepository->save($art, true);
 
-            $totalPrice = $articleInList->getTotalPrice() + $shoppingList->getTotalPrice();
-            $shoppingList->setTotalPrice($totalPrice);
+                $totalArticles = $request['quantity'] + $shoppingList->getNbArticles();
+                $shoppingList->setNbArticles($totalArticles);
 
-            $shoppingListRepository->save($shoppingList, true);
+                $totalPrice = $totalPrice + $shoppingList->getTotalPrice();
+                $shoppingList->setTotalPrice($totalPrice);
+
+                $shoppingListRepository->save($shoppingList, true);
+            }
+            else{
+
+                $articleInList = new ArticleInList();
+                $articleInList
+                    ->setName($request["name"])
+                    ->setQuantity($request["quantity"])
+                    ->setUnityPrice($request["unityPrice"])
+                    ->setShoppingList($shoppingList)
+                    ->setTotalPrice($totalPrice)
+                    ->setBrand($brand)
+                    ->setArticle($article);
+
+
+
+                
+                $articleInListRepository->save($articleInList, true);
+
+                $totalArticles = $articleInList->getQuantity() + $shoppingList->getNbArticles();
+                $shoppingList->setNbArticles($totalArticles);
+
+                $totalPrice = $articleInList->getTotalPrice() + $shoppingList->getTotalPrice();
+                $shoppingList->setTotalPrice($totalPrice);
+
+                $shoppingListRepository->save($shoppingList, true);
+            }
 
             return $this->redirectToRoute('list_show', [
                 'id' => $request["shoppingList"],

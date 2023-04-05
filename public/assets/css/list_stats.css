@@ -1,0 +1,33 @@
+.charts{
+    display:flex;
+    justify-content:space-evenly;
+}
+
+.alert {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#piechart svg {
+    background-color: #d5d5d5 !important;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+#piechart .apexcharts-legend {
+    top: 80px !important;
+}
+
+#barchart svg {
+    background-color: #d5d5d5 !important;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+#barchart .apexcharts-legend {
+    display: none;
+}
+
+#barchart .apexcharts-toolbar{
+    display: none;
+}
