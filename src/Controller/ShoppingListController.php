@@ -214,6 +214,50 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/stat', name: 'list_show_stat', methods: ['GET', 'POST'])]
+    public function show_stat(ShoppingList $shoppingList): Response
+    {
+        $data = [];
+        $ArticlesOfList = $shoppingList->getArticles();
+        foreach ($ArticlesOfList as $articleInList) {
+            $nameTypeArticle = $articleInList->getArticle()->getType()->getName();
+            if (!(in_array($nameTypeArticle, $data))) {
+                array_push($data, $nameTypeArticle);
+            }
+        }
+
+        $associated_tab = array();
+        foreach ($data as $type) {
+            $associated_tab[$type] = 0;
+        }
+
+        foreach ($ArticlesOfList as $articleInList) {
+            $nameTypeArticle = $articleInList->getArticle()->getType()->getName();
+            $associated_tab[$nameTypeArticle] += $articleInList->getQuantity();
+        }
+
+        $lowerPrice = 1000000000000000000;
+        $higherPrice = -1;
+
+        foreach ($shoppingList->getArticles() as $listArticle) {
+            if ($listArticle->getUnityPrice() > $higherPrice) $higherPrice = $listArticle->getUnityPrice();
+            if ($listArticle->getUnityPrice() < $lowerPrice) $lowerPrice = $listArticle->getUnityPrice();
+        }
+
+        $finalTab = [];
+        array_push($finalTab, $lowerPrice);
+        array_push($finalTab, $higherPrice);
+        return $this->render('list/list.stat.html.twig', [
+            "shoppingListName" => $shoppingList->getName(),
+            'controller_name' => 'StatController',
+            'data' => $associated_tab,
+            'stats' => $finalTab,
+            'print' => true
+        ]);
+    }
+
+
+
     private function saveArticle(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, string $nameForm): bool
     {
         $data = $request->request->all()[$nameForm];
