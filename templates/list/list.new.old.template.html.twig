@@ -56,15 +56,38 @@
 				</td>
 			</tr>
 		{% endfor %}
-	</tbody>
-</table>
-{% if shopping_lists|length == 0 %}
-	<div class="alert alert-warning" role="alert">
-		<h1 style="text-align:center;">You have no shopping lists yet</h1>
-	</div>
-{% endif %}
-{% if canEdit %}
-	<div class="create-new-container">
-		<a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
-	</div>
-{% endif %}
+		{% if shopping_lists|length > 0 %}
+			<tr>
+				<td>
+					<h2>Total  :</td>
+				</td>
+				<td></td>
+				<td></td>
+				<td>
+					<div class="total-list-price-container">
+						<div class="bar"></div>
+						<div class="total-container">
+							<div class="total-list-price">
+								<h2>{{ nbItems }}</h2>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="total-list-price-container">
+						<div class="bar"></div>
+						<div class="total-container">
+							<div class="total-list-price">
+								<h2>{{ totalPriceList }}
+									€</h2>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td></td>
+			</tr>
+		</tr>
+	{% endif %}
+</tbody></tbody></table>{% if shopping_lists|length == 0 %}<div class="alert alert-warning" role="alert">
+<h1 style="text-align:center;">You have no shopping lists yet</h1></div>{% endif %}{% if canEdit %}<div class="create-new-container">
+<a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a></div>{% endif %}

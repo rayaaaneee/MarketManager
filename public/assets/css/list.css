@@ -38,3 +38,31 @@
 .button-nav-lists.old-lists {
     background-image: url(../../img/old.png);
 }
+
+#createListIcon {
+    position: absolute;
+}
+
+.total-list-price-container {
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 9px;
+}
+.total-list-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.bar {
+    width: 100%;
+    height: 2px;
+    background-color: black;
+}

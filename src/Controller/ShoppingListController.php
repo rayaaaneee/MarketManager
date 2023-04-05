@@ -45,17 +45,24 @@ class ShoppingListController extends AbstractController
             $message = "List successfully deleted";
         }
 
+
         $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
         $new_lists = [];
+        $totalPriceList = 0;
+        $nbItems = 0;
         foreach ($shopping_lists as $shopping_list) {
             if (!$shopping_list->hasEndDate()) {
                 array_push($new_lists, $shopping_list);
+                $totalPriceList += $shopping_list->getTotalPrice();
+                $nbItems += $shopping_list->getNbArticles();
             } else {
                 $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
                 $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
                 $now = $now->setTime(0, 0, 0);
                 if ($endDate >= $now) {
                     array_push($new_lists, $shopping_list);
+                    $totalPriceList += $shopping_list->getTotalPrice();
+                    $nbItems += $shopping_list->getNbArticles();
                 }
             }
         }
@@ -65,7 +72,9 @@ class ShoppingListController extends AbstractController
             'canEdit' => true,
             'printMessage' => $printMessage,
             'isSuccess' => $isSuccess,
-            'message' => $message
+            'message' => $message,
+            'totalPriceList' => $totalPriceList,
+            'nbItems' => $nbItems
         ]);
     }
 
@@ -74,13 +83,21 @@ class ShoppingListController extends AbstractController
     {
         $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
         $old_lists = [];
+        $totalPriceList = 0;
+        $nbItems = 0;
         foreach ($shopping_lists as $shopping_list) {
             if ($shopping_list->hasEndDate()) {
                 $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
                 $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
                 $now = $now->setTime(0, 0, 0);
                 if ($endDate < $now) {
+                    if ($shopping_list->getNbArticles() === 0) {
+                        $shoppingListRepository->remove($shopping_list, true);
+                        continue;
+                    }
                     array_push($old_lists, $shopping_list);
+                    $totalPriceList += $shopping_list->getTotalPrice();
+                    $nbItems += $shopping_list->getNbArticles();
                 }
             }
         }
@@ -88,6 +105,8 @@ class ShoppingListController extends AbstractController
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $old_lists,
             'canEdit' => false,
+            'totalPriceList' => $totalPriceList,
+            'nbItems' => $nbItems
         ]);
     }
 

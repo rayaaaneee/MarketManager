@@ -69,7 +69,7 @@ class StatController extends AbstractController
                 $lowerPrice = 0;
                 $higherPrice = 0;
             }
-
+            $listUserTotalPrice = round($listUserTotalPrice, 2);
             $finalTab = [];
             array_push($finalTab, $lowerPrice);
             array_push($finalTab, $higherPrice);
