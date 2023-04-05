@@ -123,7 +123,9 @@
 		</div>
 	</article>
 	<div class="modify-list-container">
+	{% if shopping_list.nbArticles > 0%}
 		<a href="{{ path('list_show_stat', {'id':shopping_list.id}) }}" class="btn btn-success">stat of my list</a>
+	{% endif %}
 		<a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
 		{% if not isOldList %}
 			<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-dark">edit</a>
