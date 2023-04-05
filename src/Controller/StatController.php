@@ -74,7 +74,6 @@ class StatController extends AbstractController
             array_push($finalTab, $lowerPrice);
             array_push($finalTab, $higherPrice);
             array_push($finalTab, $average);
-            array_push($finalTab, $listUserTotalPrice);
 
             return $this->render('stat/stat.html.twig', [
                 'controller_name' => 'StatController',

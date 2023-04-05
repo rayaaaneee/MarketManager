@@ -1,6 +1,9 @@
 .charts{
-    display:flex;
-    justify-content:space-evenly;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 35px 0;
+    column-gap: 45px;
 }
 
 .alert {
@@ -9,7 +12,7 @@
 }
 
 #piechart svg {
-    background-color: #d5d5d5 !important;
+    background-color: #ececec !important;
     border-radius: 50px;
     margin: 20px;
 }
@@ -19,7 +22,7 @@
 }
 
 #barchart svg {
-    background-color: #d5d5d5 !important;
+    background-color: #ececec !important;
     border-radius: 50px;
     margin: 20px;
 }
@@ -30,4 +33,14 @@
 
 #barchart .apexcharts-toolbar{
     display: none;
+}
+
+.buttons-container {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    justify-content: center;
+    margin: 35px 0;
+    column-gap: 45px;
 }

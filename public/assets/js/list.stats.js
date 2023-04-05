@@ -27,7 +27,7 @@ var options = {
     };
 // titre du diagramme
 options.title = {
-    text: 'Types of article in your Lists',
+    text: 'Types of article in your list',
     align: 'center',
     margin: 20,
     offsetX: 0,
@@ -74,7 +74,7 @@ var options = {
     };
 // titre du diagramme
 options.title = {
-    text: 'Statistics of your Lists',
+    text: 'Statistics of your list',
     align: 'center',
     margin: 20,
     offsetX: 0,

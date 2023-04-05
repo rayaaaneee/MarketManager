@@ -44,12 +44,13 @@
 }
 
 .total-list-price-container {
-    right: 0;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     row-gap: 9px;
+    margin: 0 auto;
 }
 .total-list-price {
     display: flex;
@@ -62,7 +63,14 @@
 }
 
 .bar {
-    width: 100%;
+    width: 120%;
     height: 2px;
     background-color: black;
+}
+
+.description-old-page {
+    color: #515151;
+    text-align: center;
+    margin: 10px 10%;
+    text-transform: none;
 }

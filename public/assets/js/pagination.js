@@ -1,4 +1,5 @@
 pageLinks = document.querySelectorAll('.page-link');
+console.log(pageLinks);
 pageLinks.forEach(function (pageLink) {
     pageLink.addEventListener('click', function (event) {
         event.preventDefault();
@@ -15,23 +16,5 @@ pageLinks.forEach(function (pageLink) {
 
         // Recharger la page avec la nouvelle URL
         window.location.replace(url.toString());
-
-
-
-/*         var data = {
-            page: page
-        };
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url + '?page=' + page, true);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                var content = document.getElementById('content');
-                content.innerHTML = response.html;
-            }
-        };
-        xhr.send(JSON.stringify(data)); */
     });
 });

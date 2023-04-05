@@ -109,7 +109,7 @@ div.total-price > * {
 .modify-form {
     width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.2fr;
+    grid-template-columns: 0.2fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.2fr;
     column-gap: 15px;
     padding: 20px;
     background-color: #b0b0b0;

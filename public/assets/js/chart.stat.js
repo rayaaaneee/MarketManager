@@ -27,7 +27,7 @@ position: 'bottom'
 };
 // titre du diagramme
 options.title = {
-text: 'Types of article in your Lists',
+text: 'Types of article in your lists',
 align: 'center',
 margin: 20,
 offsetX: 0,
@@ -70,12 +70,12 @@ dataLabels: {
 enabled: true
 },
 xaxis: {
-categories: ["Lower price article", "Higher price article", "Average price list", "Total price list"]
+categories: ["Lower price article", "Higher price article", "Average price list"]
 }
 };
 
 options.title = {
-text: 'Statistics of your Lists',
+text: 'Statistics of your lists',
 align: 'center',
 margin: 20,
 offsetX: 0,

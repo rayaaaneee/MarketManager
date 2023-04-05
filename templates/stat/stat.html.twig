@@ -8,6 +8,11 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/stats.css') }}">
 {% endblock %}
 
+{% block javascripts %}
+	<script src="{{ asset('assets/js/apexcharts.min.js') }}" defer></script>
+	<script src="{{ asset('assets/js/chart.stat.js') }}" defer></script>
+{% endblock %}
+
 {% block body %}
 	{{ include('title.page.html.twig', { 'title' : 'My statistics' , 'file' : 'stats.png' }) }}
 	{% if print %}
@@ -22,10 +27,4 @@
 			<h1 style="text-align:center;">You have no shopping lists yet</h1>
 		</div>
 	{% endif %}
-
-	{% block javascripts %}
-		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-		<script src="{{ asset('assets/js/chart.stat.js') }}"></script>
-	{% endblock %}
-
 {% endblock %}

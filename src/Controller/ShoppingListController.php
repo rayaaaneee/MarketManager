@@ -165,15 +165,10 @@ class ShoppingListController extends AbstractController
         if ($request->isMethod('POST')) {
             $inputBag = $request->request;
             $nameForm = $inputBag->keys()[0];
-            if ($this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm)) {
-                $printMessage = true;
-                $isSuccess = true;
-                $message = "Article modifié avec succès";
-            } else {
-                $printMessage = true;
-                $isSuccess = false;
-                $message = "Erreur lors de la modification de l'article";
-            }
+            $this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm);
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "Article modifié avec succès";
         }
 
         $articles = $pagination->getItems();
@@ -248,59 +243,45 @@ class ShoppingListController extends AbstractController
         array_push($finalTab, $lowerPrice);
         array_push($finalTab, $higherPrice);
         return $this->render('list/list.stat.html.twig', [
-            "shoppingListName" => $shoppingList->getName(),
+            "shoppingList" => $shoppingList,
             'controller_name' => 'StatController',
             'data' => $associated_tab,
             'stats' => $finalTab,
-            'print' => true
         ]);
     }
 
-
-
-    private function saveArticle(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, string $nameForm): bool
+    private function saveArticle(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, string $nameForm): void
     {
         $data = $request->request->all()[$nameForm];
 
         $articleId =  $data['id'];
 
         $articleName = $data['name'];
-        $articleQuantity = $data['quantity'];
-        $articleUnityPrice = $data['unityPrice'];
+        $articleQuantity = intval($data['quantity']);
+        $articleUnityPrice = floatval($data['unityPrice']);
         $articleBrand = $data['brand'];
 
-        $valuesOkay = $this->verifyValues($articleQuantity, $articleUnityPrice);
-        if ($valuesOkay) {
-            $articleInList = $articleInListRepository->findOneBy(['id' => $articleId]);
-            $articleInList->setQuantity($articleQuantity);
-            $articleInList->setUnityPrice($articleUnityPrice);
-            if (empty($articleName)) {
-                $articleName = $articleInList->getArticle()->getName();
-            }
-            $articleInList->setName($articleName);
-            $articleInList->setTotalPrice($articleQuantity * $articleUnityPrice);
-            $articleInList->setBrand($articleBrand);
-
-            $articleInListRepository->save($articleInList, true);
-
-            $shoppingListRepository->updateTotalPriceAndNbArticles($shoppingList, true);
-
-            return true;
+        $articleInList = $articleInListRepository->findOneBy(['id' => $articleId]);
+        if (empty($articleName)) {
+            $articleName = $articleInList->getArticle()->getName();
         }
+        if (empty($articleQuantity) || $articleQuantity < 0 || $articleQuantity > 1000 || $articleQuantity < 1) {
+            $articleQuantity = 1;
+        }
+        if (empty($articleUnityPrice) || $articleUnityPrice < 0) {
+            $articleUnityPrice = $articleInList->getArticle()->getUnityPrice();
+        }
+        $articleInList->setQuantity($articleQuantity);
+        $articleInList->setUnityPrice($articleUnityPrice);
+        $articleInList->setName($articleName);
+        $articleInList->setTotalPrice($articleQuantity * $articleUnityPrice);
+        $articleInList->setBrand($articleBrand);
 
-        return false;
+        $articleInListRepository->save($articleInList, true);
+
+        $shoppingListRepository->updateTotalPriceAndNbArticles($shoppingList, true);
     }
 
-    private function verifyValues(string $articleQuantity, string $articleUnityPrice): bool
-    {
-        if (empty($articleQuantity) || empty($articleUnityPrice)) {
-            if ($articleQuantity > 0 && $articleUnityPrice > 0 && is_float($articleUnityPrice)) {
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
 
     #[Route('/edit/{id}', name: 'list_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
