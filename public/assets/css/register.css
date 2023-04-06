@@ -22,7 +22,7 @@ form > h1 {
 
 main form {
     box-sizing: content-box;
-    width: 35vw;
+    width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: center;

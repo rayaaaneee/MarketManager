@@ -367,3 +367,61 @@ html {
     justify-content: center;
     margin-bottom: 10px;
 }
+
+.collaborators {
+    position: absolute;
+    z-index: 100;
+    top: 100px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    background-color: antiquewhite;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
+}
+
+.collaborators div.collaborators-content {
+    display: none;
+}
+.collaborators.active {
+    width: 300px;
+    height: 300px;
+    border-radius: 30px;
+}
+
+.collaborators.active img {
+    display: none;
+}
+
+.collaborators.active div.collaborators-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+    background-color: antiquewhite;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
+}
+
+.collaborators:hover {
+    background-color: #ff8d8d;
+    scale: 1.03;
+    transition: background-color 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
+}
+
+.collaborators img {
+    height: 80%;
+    width: 80%;
+    object-fit: cover;
+    border-radius: 50%;
+}

@@ -38,9 +38,13 @@ class ShoppingList
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
 
+    #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: Collaborator::class, orphanRemoval: true)]
+    private Collection $collaborators;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
 
@@ -159,5 +163,35 @@ class ShoppingList
     public function hasEndDate(): bool
     {
         return $this->endDate != null;
+    }
+
+    /**
+     * @return Collection<int, Collaborator>
+     */
+    public function getCollaborators(): Collection
+    {
+        return $this->collaborators;
+    }
+
+    public function addCollaborator(Collaborator $collaborator): self
+    {
+        if (!$this->collaborators->contains($collaborator)) {
+            $this->collaborators->add($collaborator);
+            $collaborator->setShoppingList($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborator(Collaborator $collaborator): self
+    {
+        if ($this->collaborators->removeElement($collaborator)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborator->getShoppingList() === $this) {
+                $collaborator->setShoppingList(null);
+            }
+        }
+
+        return $this;
     }
 }
