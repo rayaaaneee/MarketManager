@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 07 avr. 2023 à 01:31
+-- Généré le : ven. 07 avr. 2023 à 14:19
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `collaboration_request` (
   PRIMARY KEY (`id`),
   KEY `IDX_6CCAF4EE23245BF9` (`shopping_list_id`),
   KEY `IDX_6CCAF4EECD53EDB6` (`receiver_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -166,7 +166,15 @@ CREATE TABLE IF NOT EXISTS `collaborator` (
   PRIMARY KEY (`id`),
   KEY `IDX_606D487CA76ED395` (`user_id`),
   KEY `IDX_606D487C23245BF9` (`shopping_list_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `collaborator`
+--
+
+INSERT INTO `collaborator` (`id`, `user_id`, `shopping_list_id`) VALUES
+(25, 8, 39),
+(26, 9, 39);
 
 -- --------------------------------------------------------
 
@@ -283,14 +291,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `surname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `password`) VALUES
-(7, 'root', 'root', '$2y$10$77C9EU8y5s1zxdnO1aBNuuw5rR0mvy1qdN5HJ.upGZqgdr8J08/Gm');
+(7, 'root', 'root', '$2y$10$77C9EU8y5s1zxdnO1aBNuuw5rR0mvy1qdN5HJ.upGZqgdr8J08/Gm'),
+(8, 'Rayane', 'Merlin', '$2y$10$rzJWYwuFj4mWBGhcFFCGte.LWwRn82MP80TALjwArkmm0ykFEbk1G'),
+(9, 'rooti', 'root', '$2y$10$3SJIXkdYlhXyo6QSdn7hGezgZh6.DQ9yAr4PstZJl2GYVoSYvPZv6');
 
 --
 -- Contraintes pour les tables déchargées

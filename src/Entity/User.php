@@ -27,16 +27,20 @@ class User implements \JsonSerializable
     #[ORM\Column(length: 255)]
     private ?string $Password = null;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: ShoppingList::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ShoppingList::class, orphanRemoval: true)]
     private Collection $shoppingLists;
 
     #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: CollaborationRequest::class, orphanRemoval: true)]
     private Collection $collaborationRequestsReceived;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Collaborator::class, orphanRemoval: true)]
+    private Collection $collaborators;
+
     public function __construct()
     {
         $this->shoppingLists = new ArrayCollection();
         $this->collaborationRequestsReceived = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,5 +152,44 @@ class User implements \JsonSerializable
             'surname' => $this->getSurname(),
             'password' => $this->getPassword(),
         ];
+    }
+
+    /**
+     * @return Collection<int, Collaborator>
+     */
+    public function getCollaborators(): Collection
+    {
+        return $this->collaborators;
+    }
+
+    public function addCollaborator(Collaborator $collaborator): self
+    {
+        if (!$this->collaborators->contains($collaborator)) {
+            $this->collaborators->add($collaborator);
+            $collaborator->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborator(Collaborator $collaborator): self
+    {
+        if ($this->collaborators->removeElement($collaborator)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborator->getUser() === $this) {
+                $collaborator->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAllShoppingLists(): array
+    {
+        $shoppingLists = $this->getShoppingLists()->toArray();
+        foreach ($this->getCollaborators() as $collaborator) {
+            $shoppingLists[] = $collaborator->getShoppingList();
+        }
+        return $shoppingLists;
     }
 }

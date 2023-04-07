@@ -4,9 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CollaboratorRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[UniqueEntity(fields: ['user', 'shoppingList'])]
 #[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
 class Collaborator
 {
@@ -15,7 +13,7 @@ class Collaborator
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'collaborators')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

@@ -38,17 +38,17 @@ class ShoppingList
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: Collaborator::class, orphanRemoval: true)]
-    private Collection $collaborators;
-
     #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: CollaborationRequest::class, orphanRemoval: true)]
     private Collection $collaborationRequests;
+
+    #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: Collaborator::class, orphanRemoval: true)]
+    private Collection $collaborators;
 
     public function __construct()
     {
         $this->articles = new ArrayCollection();
-        $this->collaborators = new ArrayCollection();
         $this->collaborationRequests = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
 
@@ -170,6 +170,36 @@ class ShoppingList
     }
 
     /**
+     * @return Collection<int, CollaborationRequest>
+     */
+    public function getcollaborationRequests(): Collection
+    {
+        return $this->collaborationRequests;
+    }
+
+    public function addcollaborationRequests(CollaborationRequest $collaborationRequests): self
+    {
+        if (!$this->collaborationRequests->contains($collaborationRequests)) {
+            $this->collaborationRequests->add($collaborationRequests);
+            $collaborationRequests->setShoppingList($this);
+        }
+
+        return $this;
+    }
+
+    public function removecollaborationRequests(CollaborationRequest $collaborationRequests): self
+    {
+        if ($this->collaborationRequests->removeElement($collaborationRequests)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborationRequests->getShoppingList() === $this) {
+                $collaborationRequests->setShoppingList(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Collaborator>
      */
     public function getCollaborators(): Collection
@@ -199,33 +229,13 @@ class ShoppingList
         return $this;
     }
 
-    /**
-     * @return Collection<int, CollaborationRequest>
-     */
-    public function getcollaborationRequests(): Collection
+    public function isCollaborator(User $user): bool
     {
-        return $this->collaborationRequests;
-    }
-
-    public function addcollaborationRequests(CollaborationRequest $collaborationRequests): self
-    {
-        if (!$this->collaborationRequests->contains($collaborationRequests)) {
-            $this->collaborationRequests->add($collaborationRequests);
-            $collaborationRequests->setShoppingList($this);
-        }
-
-        return $this;
-    }
-
-    public function removecollaborationRequests(CollaborationRequest $collaborationRequests): self
-    {
-        if ($this->collaborationRequests->removeElement($collaborationRequests)) {
-            // set the owning side to null (unless already changed)
-            if ($collaborationRequests->getShoppingList() === $this) {
-                $collaborationRequests->setShoppingList(null);
+        foreach ($this->collaborators as $collaborator) {
+            if ($collaborator->getUser()->getId() === $user->getId()) {
+                return true;
             }
         }
-
-        return $this;
+        return false;
     }
 }

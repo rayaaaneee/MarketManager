@@ -30,6 +30,10 @@ class ShoppingListController extends AbstractController
     #[Route('/', name: 'list', methods: ['GET'])]
     public function index(ShoppingListRepository $shoppingListRepository, UserRepository $userRepository, Session $session, Request $request): Response
     {
+
+        $user = $userRepository->find($session->get('user')->getId());
+
+
         $printMessage = false;
         $isSuccess = false;
         $message = "";
@@ -51,7 +55,7 @@ class ShoppingListController extends AbstractController
             $message = "List successfully deleted";
         }
 
-        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('user')->getId()]);
+        $shopping_lists = $user->getAllShoppingLists();
 
         $new_lists = [];
         $totalPriceList = 0;
@@ -144,8 +148,11 @@ class ShoppingListController extends AbstractController
     }
 
     #[Route('/{id}', name: 'list_show', methods: ['GET', 'POST'])]
-    public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator): Response
+    public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator, UserRepository $userRepository, Session $session): Response
     {
+
+        $isOwner = $session->get('user')->getId() === $shoppingList->getUser()->getId();
+
         $addCollaboratorForm = $this->createFormAddCollaborator();
 
         $requestPage = $request->query->getInt('p', 1);
@@ -216,6 +223,7 @@ class ShoppingListController extends AbstractController
             'message' => $message,
             'pagination' => $pagination,
             'addCollaboratorForm' => $addCollaboratorForm->createView(),
+            'isOwner' => $isOwner,
         ]);
     }
 
