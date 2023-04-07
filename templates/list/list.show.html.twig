@@ -136,7 +136,7 @@
 								</div>
 							</div>
 							{% if collaborator.user.id == app.session.get('user').id %}
-								<a href="{{ path('app_collaborator_delete', { id : collaborator.id }) }}" class="leave-list">Leave list</a>
+								<a href="{{ path('app_collaborator_delete_redirection', { id : collaborator.id }) }}" class="leave-list">Leave list</a>
 							{% endif %}
 						{% endfor %}
 					</div>

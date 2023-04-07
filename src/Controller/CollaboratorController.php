@@ -25,7 +25,7 @@ class CollaboratorController extends AbstractController
         ], 200);
     }
 
-    #[Route('/{id}/delete', name: 'app_collaborator_delete', methods: ['GET'])]
+    #[Route('/{id}/delete', name: 'app_collaborator_delete_redirection', methods: ['GET'])]
     public function deleteGet(int $id, CollaboratorRepository $collaboratorRepository): RedirectResponse
     {
         $collaborator = $collaboratorRepository->find(['id' => $id]);

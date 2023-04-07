@@ -67,8 +67,10 @@
 				<td>{{ shopping_list.totalPrice }}
 					€</td>
 				<td>
-					{% if canEdit %}
+					{% if canEdit and shopping_list.user.id == app.session.get('user').id %}
 						<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
+					{% else %}
+						<div></div>
 					{% endif %}
 					<a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
 				</td>
