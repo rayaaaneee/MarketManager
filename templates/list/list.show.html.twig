@@ -14,10 +14,34 @@
 {% endblock %}
 
 {% block body %}
-	<div class="collaborators" title="List collaborators" onclick="this.classList.add('active')">
+	<div id="collaborators" title="List collaborators">
 		<div class="collaborators-content">
-			<h1>
-				My collaborators</h1>
+			<div class="collaborators-cross-page" title="Close"></div>
+			<h1>collaborators</h1>
+			<nav class="collaborators-menu">
+				<ul>
+					<li class="show active">
+						<p>My collaborators</p>
+					</li>
+					<li class="add">
+						<p>Add collaborator</p>
+					</li>
+				</ul>
+			</nav>
+			<div class="content-pages-collaborators">
+				<div class="collaborators-list container active">
+					<h2>Liste</h2>
+				</div>
+				<div class="collaborator-add container">
+					{{ form_start(addCollaboratorForm) }}
+					<div class="collaborator-add-input">
+						{{ form_widget(addCollaboratorForm.Name) }}
+						{{ form_widget(addCollaboratorForm.Surname) }}
+						{{ form_widget(addCollaboratorForm.Submit) }}
+					</div>
+					{{ form_end(addCollaboratorForm) }}
+				</div>
+			</div>
 		</div>
 		<img src="{{ asset('img/collaborators.png') }}" alt="collaborators" draggable="false">
 	</div>

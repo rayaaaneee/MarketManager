@@ -29,9 +29,13 @@ class User
     #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: ShoppingList::class)]
     private Collection $shoppingLists;
 
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: CollaborationRequest::class, orphanRemoval: true)]
+    private Collection $collaborationRequestsReceived;
+
     public function __construct()
     {
         $this->shoppingLists = new ArrayCollection();
+        $this->collaborationRequestsReceived = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +103,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($shoppingList->getUser() === $this) {
                 $shoppingList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollaborationRequest>
+     */
+    public function getCollaborationRequestsReceived(): Collection
+    {
+        return $this->collaborationRequestsReceived;
+    }
+
+    public function addCollaborationRequestsReceived(CollaborationRequest $collaborationRequestsReceived): self
+    {
+        if (!$this->collaborationRequestsReceived->contains($collaborationRequestsReceived)) {
+            $this->collaborationRequestsReceived->add($collaborationRequestsReceived);
+            $collaborationRequestsReceived->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborationRequestsReceived(CollaborationRequest $collaborationRequestsReceived): self
+    {
+        if ($this->collaborationRequestsReceived->removeElement($collaborationRequestsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborationRequestsReceived->getReceiver() === $this) {
+                $collaborationRequestsReceived->setReceiver(null);
             }
         }
 

@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormInterface;
+use App\Form\UserAsCollaboratorType;
 use DateTime;
 
 
@@ -139,6 +141,8 @@ class ShoppingListController extends AbstractController
     #[Route('/{id}', name: 'list_show', methods: ['GET', 'POST'])]
     public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator): Response
     {
+        $addCollaboratorForm = $this->createFormAddCollaborator();
+
         $requestPage = $request->query->getInt('p', 1);
         $pagination = $paginator->paginate(
             $articleInListRepository->findByAllByShoppingListQuery($shoppingList),
@@ -205,8 +209,15 @@ class ShoppingListController extends AbstractController
             'printMessage' => $printMessage,
             'isSuccess' => $isSuccess,
             'message' => $message,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'addCollaboratorForm' => $addCollaboratorForm->createView(),
         ]);
+    }
+
+    private function createFormAddCollaborator(): FormInterface
+    {
+        $form = $this->createForm(UserAsCollaboratorType::class);
+        return $form;
     }
 
     #[Route('/{id}/stat', name: 'list_show_stat', methods: ['GET', 'POST'])]

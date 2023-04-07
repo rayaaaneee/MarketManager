@@ -41,10 +41,14 @@ class ShoppingList
     #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: Collaborator::class, orphanRemoval: true)]
     private Collection $collaborators;
 
+    #[ORM\OneToMany(mappedBy: 'shoppingList', targetEntity: CollaborationRequest::class, orphanRemoval: true)]
+    private Collection $collaborationRequests;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
+        $this->collaborationRequests = new ArrayCollection();
     }
 
 
@@ -189,6 +193,36 @@ class ShoppingList
             // set the owning side to null (unless already changed)
             if ($collaborator->getShoppingList() === $this) {
                 $collaborator->setShoppingList(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollaborationRequest>
+     */
+    public function getcollaborationRequests(): Collection
+    {
+        return $this->collaborationRequests;
+    }
+
+    public function addcollaborationRequests(CollaborationRequest $collaborationRequests): self
+    {
+        if (!$this->collaborationRequests->contains($collaborationRequests)) {
+            $this->collaborationRequests->add($collaborationRequests);
+            $collaborationRequests->setShoppingList($this);
+        }
+
+        return $this;
+    }
+
+    public function removecollaborationRequests(CollaborationRequest $collaborationRequests): self
+    {
+        if ($this->collaborationRequests->removeElement($collaborationRequests)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborationRequests->getShoppingList() === $this) {
+                $collaborationRequests->setShoppingList(null);
             }
         }
 

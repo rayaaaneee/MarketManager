@@ -1,5 +1,5 @@
 pageLinks = document.querySelectorAll('.page-link');
-console.log(pageLinks);
+
 pageLinks.forEach(function (pageLink) {
     pageLink.addEventListener('click', function (event) {
         event.preventDefault();
