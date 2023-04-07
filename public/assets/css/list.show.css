@@ -722,3 +722,9 @@ html {
     text-align: center;
     margin-top: 20px;
 }
+
+.requests-sent-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}

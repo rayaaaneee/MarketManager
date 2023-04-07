@@ -9,8 +9,6 @@ var nbRequestsSent = document.querySelectorAll('.request-sent').length;
 const initTemplateCollaborator = (path, name, surname) => {
     res = document.createElement('div');
     res.classList.add('request-sent');
-    console.log(name);
-    console.log(surname);
     res.innerHTML = `
         <div class="request-sent-name">
             <p>•</p>
@@ -61,11 +59,14 @@ const addCollaborator = (formData, path) => {
                 let noRequestsText = document.querySelector('.no-requests');
                 let requestsSentList = document.querySelector('.requests-sent-list');
                 if (noRequestsText) {
-                    noRequestsText.textContent = 'Requests sent (' + nbRequestsSent + ')';
                     noRequestsText.classList.remove('no-requests');
                     noRequestsText.classList.add('requests-sent-title');
-                    requestsSentList.appendChild(template);
+                    noRequestsText.textContent = 'Requests sent (' + nbRequestsSent + ')';
+                } else {
+                    let requestsSentTitle = document.querySelector('.requests-sent-title');
+                    requestsSentTitle.textContent = 'Requests sent (' + nbRequestsSent + ') :';
                 }
+                requestsSentList.appendChild(template);
 
                 initDeleteCollaborationRequest();
             } else {
