@@ -86,7 +86,7 @@
 												{{ request.receiver.Name }}
 												{{ request.receiver.Surname }}</p>
 										</div>
-										<a class="request-sent-cancel" title="Cancel request" href="{{ path('app_collaboration_request_delete', { id : request.id }) }}"></a>
+										<div class="request-sent-cancel" title="Cancel request" href="{{ path('app_collaboration_request_delete', { id : request.id }) }}"></div>
 									</div>
 								{% endfor %}
 							</div>

@@ -15,10 +15,10 @@ const initTemplateCollaborator = (path, name, surname) => {
         <div class="request-sent-name">
             <p>•</p>
         </div>
-        <a class="request-sent-cancel" title="Cancel request" href=""></a
+        <div class="request-sent-cancel" title="Cancel request" href=""></div>
     `;
     res.querySelector('p').textContent += ' ' + name + ' ' + surname;
-    res.querySelector('a').setAttribute('href', path);
+    res.querySelector('.request-sent-cancel').setAttribute('href', path);
     return res;
 }
 
@@ -67,6 +67,7 @@ const addCollaborator = (formData, path) => {
                     requestsSentList.appendChild(template);
                 }
 
+                initDeleteCollaborationRequest();
             } else {
                 responseImg.classList.add('error');
                 responseImg.classList.remove('success');

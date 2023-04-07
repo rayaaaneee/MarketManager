@@ -712,4 +712,5 @@ html {
 .hidden {
     transition: opacity 0.15s;
     opacity: 0;
+    animation: disappear 0.15s forwards;
 }
