@@ -153,119 +153,100 @@ class ShoppingListController extends AbstractController
         $user = $userRepository->find($session->get('user')->getId());
         $shoppingLists = $user->getAllShoppingLists();
 
+        $access = false;
+        $exists = false;
 
         // if $shopingList is in $shoppingLists
-        if (!in_array($shoppingList, $shoppingLists)) {
-            $printMessage = true;
+        if (in_array($shoppingList, $shoppingLists)) {
+            $access = true;
+        }
+
+        // if $shoppingList is in $shoppingLists
+        if ($shoppingList) {
+            $exists = true;
+
+            $isOwner = $session->get('user')->getId() === $shoppingList->getUser()->getId();
+
+            $addCollaboratorForm = $this->createFormAddCollaborator();
+
+            $requestPage = $request->query->getInt('p', 1);
+            $pagination = $paginator->paginate(
+                $articleInListRepository->findByAllByShoppingListQuery($shoppingList),
+                $requestPage < 1 ? 1 : $requestPage,
+                4
+            );
+
+            $printMessage = false;
             $isSuccess = false;
-            $message = "You don't have access to view this list.";
-            $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
-            $new_lists = [];
-            $totalPriceList = 0;
-            $nbItems = 0;
-            foreach ($shopping_lists as $shopping_list) {
-                if (!$shopping_list->hasEndDate()) {
-                    array_push($new_lists, $shopping_list);
-                    $totalPriceList += $shopping_list->getTotalPrice();
-                    $nbItems += $shopping_list->getNbArticles();
-                } else {
-                    $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
-                    $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-                    $now = $now->setTime(0, 0, 0);
-                    if ($endDate >= $now) {
-                        array_push($new_lists, $shopping_list);
-                        $totalPriceList += $shopping_list->getTotalPrice();
-                        $nbItems += $shopping_list->getNbArticles();
-                    }
+            $message = "";
+
+            $added = $request->query->get('add') == "1" ? true : false;
+            $deleted = $request->query->get('delete') == "1" ? true : false;
+            if ($added) {
+                $printMessage = true;
+                $isSuccess = true;
+                $message = "Article added successfully";
+            } else if ($deleted) {
+                $printMessage = true;
+                $isSuccess = true;
+                $message = "Article deleted successfully";
+            }
+
+            if ($request->isMethod('POST')) {
+                $inputBag = $request->request;
+                $nameForm = $inputBag->keys()[0];
+                $this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm);
+                $printMessage = true;
+                $isSuccess = true;
+                $message = "Article modifié avec succès";
+            }
+
+            $articles = $pagination->getItems();
+
+            $modifyForms = [];
+            for ($i = 0; $i < count($articles); $i++) {
+                $modifyForms[$i] = $this->createForm(
+                    ModifyArticleInListFormType::class,
+                    $articles[$i],
+                    [
+                        'id' => $articles[$i]->getId(),
+                    ]
+                );
+            }
+
+            $oldList = false;
+            if ($shoppingList->hasEndDate()) {
+                $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
+                $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                $now = $now->setTime(0, 0, 0);
+                if ($endDate < $now) {
+                    $oldList = true;
                 }
             }
-            return $this->render('list/list.html.twig', [
-                // recupere que les listes de l'utilisateur connecté
-                'shopping_lists' => $new_lists,
-                'canEdit' => true,
+
+            return $this->render('list/list.show.html.twig', [
+                'shopping_list' => $shoppingList,
+                'articles' => $articles,
+                'oldList' => $oldList,
+                'i' => 0,
+                'modifyForms' => array_map(function ($form) {
+                    return $form->createView();
+                }, $modifyForms),
                 'printMessage' => $printMessage,
                 'isSuccess' => $isSuccess,
                 'message' => $message,
-                'totalPriceList' => $totalPriceList,
-                'nbItems' => $nbItems
+                'pagination' => $pagination,
+                'addCollaboratorForm' => $addCollaboratorForm->createView(),
+                'isOwner' => $isOwner,
+                'access' => $access,
+                'exists' => $exists
+            ]);
+        } else {
+            return $this->render('list/list.show.html.twig', [
+                'access' => $access,
+                'exists' => $exists
             ]);
         }
-        
-
-        $isOwner = $session->get('user')->getId() === $shoppingList->getUser()->getId();
-
-        $addCollaboratorForm = $this->createFormAddCollaborator();
-
-        $requestPage = $request->query->getInt('p', 1);
-        $pagination = $paginator->paginate(
-            $articleInListRepository->findByAllByShoppingListQuery($shoppingList),
-            $requestPage < 1 ? 1 : $requestPage,
-            4
-        );
-
-        $printMessage = false;
-        $isSuccess = false;
-        $message = "";
-
-        $added = $request->query->get('add') == "1" ? true : false;
-        $deleted = $request->query->get('delete') == "1" ? true : false;
-        if ($added) {
-            $printMessage = true;
-            $isSuccess = true;
-            $message = "Article added successfully";
-        } else if ($deleted) {
-            $printMessage = true;
-            $isSuccess = true;
-            $message = "Article deleted successfully";
-        }
-
-        if ($request->isMethod('POST')) {
-            $inputBag = $request->request;
-            $nameForm = $inputBag->keys()[0];
-            $this->saveArticle($request, $shoppingList, $shoppingListRepository, $articleInListRepository, $nameForm);
-            $printMessage = true;
-            $isSuccess = true;
-            $message = "Article modifié avec succès";
-        }
-
-        $articles = $pagination->getItems();
-
-        $modifyForms = [];
-        for ($i = 0; $i < count($articles); $i++) {
-            $modifyForms[$i] = $this->createForm(
-                ModifyArticleInListFormType::class,
-                $articles[$i],
-                [
-                    'id' => $articles[$i]->getId(),
-                ]
-            );
-        }
-
-        $oldList = false;
-        if ($shoppingList->hasEndDate()) {
-            $endDate = DateTime::createFromInterface($shoppingList->getEndDate())->setTime(0, 0, 0);
-            $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-            $now = $now->setTime(0, 0, 0);
-            if ($endDate < $now) {
-                $oldList = true;
-            }
-        }
-
-        return $this->render('list/list.show.html.twig', [
-            'shopping_list' => $shoppingList,
-            'articles' => $articles,
-            'oldList' => $oldList,
-            'i' => 0,
-            'modifyForms' => array_map(function ($form) {
-                return $form->createView();
-            }, $modifyForms),
-            'printMessage' => $printMessage,
-            'isSuccess' => $isSuccess,
-            'message' => $message,
-            'pagination' => $pagination,
-            'addCollaboratorForm' => $addCollaboratorForm->createView(),
-            'isOwner' => $isOwner,
-        ]);
     }
 
     private function createFormAddCollaborator(): FormInterface
