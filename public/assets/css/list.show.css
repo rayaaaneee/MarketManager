@@ -455,6 +455,9 @@ html {
     opacity: 1;
     pointer-events: all;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
     transition: opacity 0.15s, pointer-events 0.15s;
 }
 
@@ -691,7 +694,7 @@ html {
 .collaborator-name {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     font-size: 1.3em;
 }
 
@@ -713,4 +716,9 @@ html {
     transition: opacity 0.15s;
     opacity: 0;
     animation: disappear 0.15s forwards;
+}
+
+.no-collaborators {
+    text-align: center;
+    margin-top: 20px;
 }

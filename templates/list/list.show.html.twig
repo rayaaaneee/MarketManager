@@ -36,8 +36,7 @@
 			<div class="content-pages-collaborators">
 				<div class="collaborators-list container active">
 					{% if not shopping_list.collaborators is empty %}
-						<h3>List collaborators :
-							{{ shopping_list.collaborators|length }}</h3>
+						<h4 class="collaborators-title">List collaborators ({{ shopping_list.collaborators|length }}) :</h4>
 						{% for collaborator in shopping_list.collaborators %}
 							<div class="collaborator">
 								<div class="collaborator-name">
@@ -51,7 +50,7 @@
 							</div>
 						{% endfor %}
 					{% else %}
-						<h4 style="text-align:center">You have no collaborators</h4>
+						<h4 class="collaborators-title" style="text-align:center">You have no collaborators</h4>
 					{% endif %}
 				</div>
 				<div class="collaborator-add container">

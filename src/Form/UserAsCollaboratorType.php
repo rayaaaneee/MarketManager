@@ -41,7 +41,7 @@ class UserAsCollaboratorType extends AbstractType
                 'Submit',
                 SubmitType::class,
                 [
-                    'label' => 'Search',
+                    'label' => 'Add',
                     'attr' => [
                         'class' => 'btn btn-primary',
                     ]
