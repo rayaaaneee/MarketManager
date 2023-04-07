@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 
 
@@ -16,48 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatController extends AbstractController
 {
     #[Route('/', name: 'stat')]
-    public function index(ShoppingListRepository $shoppingListRepository, Session $session,UserRepository $userRepository): Response
+    public function index(ShoppingListRepository $shoppingListRepository, Session $session, UserRepository $userRepository): Response
     {
         $user = $userRepository->find($session->get('user')->getId());
         $shoppingLists = $user->getAllShoppingLists();
 
-
-        // if $shopingList is in $shoppingLists
-        if (!in_array($shoppingList, $shoppingLists)) {
-            $printMessage = true;
-            $isSuccess = false;
-            $message = "You don't have access to view this list.";
-            $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
-            $new_lists = [];
-            $totalPriceList = 0;
-            $nbItems = 0;
-            foreach ($shopping_lists as $shopping_list) {
-                if (!$shopping_list->hasEndDate()) {
-                    array_push($new_lists, $shopping_list);
-                    $totalPriceList += $shopping_list->getTotalPrice();
-                    $nbItems += $shopping_list->getNbArticles();
-                } else {
-                    $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
-                    $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-                    $now = $now->setTime(0, 0, 0);
-                    if ($endDate >= $now) {
-                        array_push($new_lists, $shopping_list);
-                        $totalPriceList += $shopping_list->getTotalPrice();
-                        $nbItems += $shopping_list->getNbArticles();
-                    }
-                }
-            }
-            return $this->render('list/list.html.twig', [
-                // recupere que les listes de l'utilisateur connecté
-                'shopping_lists' => $new_lists,
-                'canEdit' => true,
-                'printMessage' => $printMessage,
-                'isSuccess' => $isSuccess,
-                'message' => $message,
-                'totalPriceList' => $totalPriceList,
-                'nbItems' => $nbItems
-            ]);
-        }
         $data = [];
         $user = $userRepository->find($session->get('user')->getId());
         $shoppingLists = $user->getAllShoppingLists();

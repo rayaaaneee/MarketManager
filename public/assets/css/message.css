@@ -15,6 +15,11 @@
     z-index: 1;
 }
 
+.alert.to-right {
+    right: 30px;
+    left: unset;
+}
+
 .alert.disappear {
     animation: disappear 0.5s ease-in-out forwards;
     pointer-events: none;

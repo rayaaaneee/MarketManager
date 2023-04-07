@@ -9,6 +9,16 @@
 {% if not canEdit %}
 	<h4 class="description-old-page">Your shopping list will be saved here after the end date has passed provided that the list isn't empty.</h4>
 {% endif %}
+<div class="colors-responding">
+	<div class="color">
+		<p>Collaborative list :</p>
+		<div class="collaborator-color color-list"></div>
+	</div>
+	<div class="color">
+		<p>Personal list :</p>
+		<div class="personal-color color-list"></div>
+	</div>
+</div>
 <table class="table">
 	<thead>
 		<tr>
@@ -22,7 +32,7 @@
 	</thead>
 	<tbody>
 		{% for shopping_list in shopping_lists %}
-			<tr>
+			<tr class="{% if shopping_list.collaborators|length > 0 %}collaborator{% endif %}">
 				<td>
 					{% if shopping_list.name|length > 25 %}
 						{{ shopping_list.name|slice(0, 25) ~ '...' }}

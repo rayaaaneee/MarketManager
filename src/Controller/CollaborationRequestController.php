@@ -24,11 +24,7 @@ class CollaborationRequestController extends AbstractController
         $printMessage = false;
         $isSuccess = false;
         $message = '';
-        if ($request->query->get('accepted') == "1") {
-            $printMessage = true;
-            $isSuccess = true;
-            $message = 'Collaboration request successfully accepted';
-        } else if ($request->query->get('rejected') == "1") {
+        if ($request->query->get('rejected') == "1") {
             $printMessage = true;
             $isSuccess = true;
             $message = 'Collaboration request successfully rejected';
@@ -59,8 +55,9 @@ class CollaborationRequestController extends AbstractController
         $collaboratorRepository->save($collaborator, true);
         $collaborationRequestRepository->remove($request, true);
 
-        return $this->redirectToRoute('app_collaboration_request_index', [
+        return $this->redirectToRoute('list_show', [
             'accepted' => true,
+            'id' => $request->getShoppingList()->getId(),
         ], Response::HTTP_SEE_OTHER);
     }
 

@@ -776,3 +776,14 @@ html {
     text-decoration-thickness: 3px;
     text-underline-offset: 3px;
 }
+
+.leave-list {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: #dd8282;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+}

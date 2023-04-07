@@ -41,6 +41,7 @@ class ShoppingListController extends AbstractController
         $isEdited = $request->query->get('edited') == "1" ? true : false;
         $isCreated = $request->query->get('created') == "1" ? true : false;
         $isDeleted = $request->query->get('deleted') == "1" ? true : false;
+        $listIsQuitted = $request->query->get('quitted') == "1" ? true : false;
         if ($isEdited) {
             $printMessage = true;
             $isSuccess = true;
@@ -53,6 +54,10 @@ class ShoppingListController extends AbstractController
             $printMessage = true;
             $isSuccess = true;
             $message = "List successfully deleted";
+        } else if ($listIsQuitted) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = "You successfully quitted the list";
         }
         $user = $userRepository->find($session->get('user')->getId());
         $shopping_lists = $user->getAllShoppingLists();
@@ -161,6 +166,16 @@ class ShoppingListController extends AbstractController
             $access = true;
         }
 
+        $printMessage = false;
+        $isSuccess = false;
+        $message = "";
+
+        if ($request->query->get('accepted') == "1") {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = 'Collaboration request successfully accepted';
+        }
+
         // if $shoppingList is in $shoppingLists
         if ($shoppingList) {
             $exists = true;
@@ -175,10 +190,6 @@ class ShoppingListController extends AbstractController
                 $requestPage < 1 ? 1 : $requestPage,
                 4
             );
-
-            $printMessage = false;
-            $isSuccess = false;
-            $message = "";
 
             $added = $request->query->get('add') == "1" ? true : false;
             $deleted = $request->query->get('delete') == "1" ? true : false;
@@ -371,8 +382,13 @@ class ShoppingListController extends AbstractController
 
 
     #[Route('/edit/{id}', name: 'list_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository): Response
+    public function edit(Request $request, ShoppingList $shoppingList, ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
+        $access = false;
+        $exists = false;
+
+        $isOwner = $session->get('user')->getId() === $shoppingList->getUser()->getId();
+
         $form = $this->createForm(ShoppingListType::class, $shoppingList);
         $form->handleRequest($request);
 
@@ -387,6 +403,7 @@ class ShoppingListController extends AbstractController
         return $this->render('list/list.edit.html.twig', [
             'shopping_list' => $shoppingList,
             'shoppingListForm' => $form,
+            'isOwner' => $isOwner,
         ]);
     }
 
