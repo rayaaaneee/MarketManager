@@ -7,10 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JsonSerializable;
 
 #[UniqueEntity(fields: ['Name', 'Surname'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +27,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $Password = null;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: ShoppingList::class)]
+    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: ShoppingList::class, orphanRemoval: true)]
     private Collection $shoppingLists;
 
     #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: CollaborationRequest::class, orphanRemoval: true)]
@@ -137,5 +138,15 @@ class User
         }
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'surname' => $this->getSurname(),
+            'password' => $this->getPassword(),
+        ];
     }
 }

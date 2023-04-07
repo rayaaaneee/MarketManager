@@ -18,7 +18,7 @@ class StatController extends AbstractController
     {
         /* créer un diagramme circulaire */
         $data = [];
-        $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+        $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('user')->getId()]);
         if (count($shoppingLists) === 0) {
             return $this->render('stat/stat.html.twig', [
                 'controller_name' => 'StatController',
@@ -39,7 +39,7 @@ class StatController extends AbstractController
             foreach ($data as $type) {
                 $associated_tab[$type] = 0;
             }
-            foreach ($shoppingListRepository->findBy(['user' => $session->get('id')]) as $tab_list) {
+            foreach ($shoppingListRepository->findBy(['user' => $session->get('user')->getId()]) as $tab_list) {
                 $ArticlesOfList = $tab_list->getArticles();
                 foreach ($ArticlesOfList as $articleInList) {
                     $nameTypeArticle = $articleInList->getArticle()->getType()->getName();
@@ -52,7 +52,7 @@ class StatController extends AbstractController
             $higherPrice = -1;
             $nb = 0;
             $average = 0;
-            foreach ($shoppingListRepository->findBy(['user' => $session->get('id')]) as $listUser) {
+            foreach ($shoppingListRepository->findBy(['user' => $session->get('user')->getId()]) as $listUser) {
                 $listUserTotalPrice += $listUser->getTotalPrice();
                 foreach ($listUser->getArticles() as $listArticle) {
                     $nb += 1;

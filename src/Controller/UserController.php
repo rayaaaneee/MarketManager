@@ -54,10 +54,7 @@ class UserController extends AbstractController
                 }
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $session->set('Name', $user->getName());
-                $session->set('Surname', $user->getSurname());
-                $session->set('id', $user->getId());
-                $session->set('Password', $user->getPassword());
+                $session->set('user', $user);
 
                 // rediriger vers une autre page ou afficher un message de succès
                 return $this->redirectToRoute('home');
@@ -120,10 +117,7 @@ class UserController extends AbstractController
             } else {
                 // si le mot de passe est correct quand il est déhasher, on connecte l'utilisateur
                 if (password_verify($data->getPassword(), $user->getPassword())) {
-                    $session->set('Name', $user->getName());
-                    $session->set('Surname', $user->getSurname());
-                    $session->set('id', $user->getId());
-                    $session->set('Password', $user->getPassword());
+                    $session->set('user', $user);
                     return $this->redirectToRoute('home', [
                         'connected' => true
                     ], Response::HTTP_SEE_OTHER);

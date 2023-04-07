@@ -11,19 +11,25 @@
 
 {% block body %}
 	{{ include('title.page.html.twig', { 'title' : 'Statistics : ' ~ shoppingList.name , 'file' : 'stats.png' }) }}
-	<div class="charts">
-		<div class="container_chart" id="piechart">
-			<input type="" id="pie" value='{{data|json_encode|raw}}' style="display:none">
+	{% if shoppingList.nbArticles == 0 %}
+		<div class="alert alert-warning" role="alert">
+			<h1 style="text-align:center;">Your list is empty</h1>
 		</div>
-		<div class="container_chart" id="barchart">
-			<input type="" id="stats" value='{{stats|json_encode|raw}}' style="display:none">
+	{% else %}
+		<div class="charts">
+			<div class="container_chart" id="piechart">
+				<input type="" id="pie" value='{{data|json_encode|raw}}' style="display:none">
+			</div>
+			<div class="container_chart" id="barchart">
+				<input type="" id="stats" value='{{stats|json_encode|raw}}' style="display:none">
+			</div>
 		</div>
-	</div>
-	<div class="buttons-container">
-		<a href="{{ path('list_show', { 'id' : shoppingList.id}) }}" class="btn btn-dark">Back to this list</a>
-	</div>
-	{% block javascripts %}
-		<script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
-		<script src="{{ asset('assets/js/list.stats.js') }}"></script>
-	{% endblock javascripts %}
+		<div class="buttons-container">
+			<a href="{{ path('list_show', { 'id' : shoppingList.id}) }}" class="btn btn-dark">Back to this list</a>
+		</div>
+		{% block javascripts %}
+			<script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
+			<script src="{{ asset('assets/js/list.stats.js') }}"></script>
+		{% endblock javascripts %}
+	{% endif %}
 {% endblock %}

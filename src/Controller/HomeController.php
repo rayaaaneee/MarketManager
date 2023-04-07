@@ -19,33 +19,29 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(Session $session, TypeRepository $typeRepository, Request $request): Response | RedirectResponse
     {
-        if (!$session->get('id')) {
-            return $this->redirectToRoute('connect', [], Response::HTTP_SEE_OTHER);
-        } else {
-            $printMessage = false;
-            $isSuccess = false;
-            $message = '';
+        $printMessage = false;
+        $isSuccess = false;
+        $message = '';
 
-            $justConnected = $request->query->get('connected') == "1" ? true : false;
+        $justConnected = $request->query->get('connected') == "1" ? true : false;
 
-            if ($justConnected) {
-                $printMessage = true;
-                $isSuccess = true;
-                $message = 'You successfully connected';
-            }
-
-            $types = $typeRepository->findAll();
-            $formSearch = $this->createForm(ArticleType::class, null, [
-                'types' => $types,
-                'action' => $this->generateUrl('article', [], UrlGeneratorInterface::ABSOLUTE_URL)
-            ]);
-            return $this->render('home.html.twig', [
-                'controller_name' => 'HomeController',
-                'formSearch' => $formSearch->createView(),
-                'printMessage' => $printMessage,
-                'isSuccess' => $isSuccess,
-                'message' => $message
-            ]);
+        if ($justConnected) {
+            $printMessage = true;
+            $isSuccess = true;
+            $message = 'You successfully connected';
         }
+
+        $types = $typeRepository->findAll();
+        $formSearch = $this->createForm(ArticleType::class, null, [
+            'types' => $types,
+            'action' => $this->generateUrl('article', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        ]);
+        return $this->render('home.html.twig', [
+            'controller_name' => 'HomeController',
+            'formSearch' => $formSearch->createView(),
+            'printMessage' => $printMessage,
+            'isSuccess' => $isSuccess,
+            'message' => $message
+        ]);
     }
 }

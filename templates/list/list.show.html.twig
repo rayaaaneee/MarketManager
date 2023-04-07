@@ -8,9 +8,14 @@
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('assets/css/list.show.css') }}">
 {% endblock %}
+
 {% block javascripts %}
 	{{ parent() }}
 	<script src="{{ asset('assets/js/list.show.js') }}" defer></script>
+	<script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}" defer></script>
+	<script src="{{ asset('assets/js/addCollaborator.js') }}" defer></script>
+	<script src="{{ asset('assets/js/deleteCollaborationRequest.js') }}" defer></script>
+	<script src="{{ asset('assets/js/deleteCollaborator.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -30,23 +35,70 @@
 			</nav>
 			<div class="content-pages-collaborators">
 				<div class="collaborators-list container active">
-					<h2>Liste</h2>
+					{% if not shopping_list.collaborators is empty %}
+						<h3>List collaborators :
+							{{ shopping_list.collaborators|length }}</h3>
+						{% for collaborator in shopping_list.collaborators %}
+							<div class="collaborator">
+								<div class="collaborator-name">
+									<p>•
+										{{ collaborator.user.Name }}
+										{{ collaborator.user.Surname }}</p>
+								</div>
+								<a class="collaborator-delete" title="Remove collaborator" href="{{ path('app_collaborator_delete', { id : collaborator.id }) }}">
+									<div class="img"></div>
+								</a>
+							</div>
+						{% endfor %}
+					{% else %}
+						<h4 style="text-align:center">You have no collaborators</h4>
+					{% endif %}
 				</div>
 				<div class="collaborator-add container">
-					{{ form_start(addCollaboratorForm) }}
+					{{ form_start(addCollaboratorForm, { 'attr' : {
+						'method' : 'post',
+						'class' : 'add-collaborator-form',
+						'action' : path('list_add_collaborator', {'listId': shopping_list.id})
+					} }) }}
 					<div class="collaborator-add-input">
 						{{ form_widget(addCollaboratorForm.Name) }}
 						{{ form_widget(addCollaboratorForm.Surname) }}
 						{{ form_widget(addCollaboratorForm.Submit) }}
 					</div>
 					{{ form_end(addCollaboratorForm) }}
+					<div class="status-request-add">
+						<div class="loader">
+							{{ include('loader.html.twig') }}
+						</div>
+						<div class="status-request-add-text">
+							<div class="img"></div>
+							<p></p>
+						</div>
+					</div>
+					<div class="requests-sent">
+						{% if not shopping_list.collaborationRequests is empty %}
+							<h4 class="requests-sent-title">Requests sent ({{ shopping_list.collaborationRequests|length }})</h4>
+							<div class="requests-sent-list">
+								{% for request in shopping_list.collaborationRequests %}
+									<div class="request-sent">
+										<div class="request-sent-name">
+											<p>•
+												{{ request.receiver.Name }}
+												{{ request.receiver.Surname }}</p>
+										</div>
+										<a class="request-sent-cancel" title="Cancel request" href="{{ path('app_collaboration_request_delete', { id : request.id }) }}"></a>
+									</div>
+								{% endfor %}
+							</div>
+						{% else %}
+							<h4 class="no-requests">You have no requests sent</h4>
+							<div class="requests-sent-list"></div>
+						{% endif %}
+					</div>
 				</div>
 			</div>
-		</div>
-		<img src="{{ asset('img/collaborators.png') }}" alt="collaborators" draggable="false">
-	</div>
-	{{ include('/message.html.twig') }}
-	<article class="main-container">
+		</div><img src="{{ asset('img/collaborators.png') }}" alt="collaborators" draggable="false"></div>
+	{{ include('/message.html.twig') }}<article class="main-container">
 		<div class="list-card">
 			{% if shopping_list.hasEndDate() %}
 				<div class="end-date-container">

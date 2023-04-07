@@ -93,7 +93,6 @@ const menuCollabsLinks = menuCollabsPage.querySelectorAll('li');
 menuCollabsLinks.forEach(link => {
     link.addEventListener('click', (event) => {
         event.stopPropagation();
-        console.log(event.target.parentNode);
 
         other = event.target.closest('ul').querySelector('.active');
         other.classList.remove('active');

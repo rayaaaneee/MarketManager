@@ -537,6 +537,7 @@ html {
     justify-content: space-evenly;
     width: 100%;
     height: 100%;
+    padding-left: 0;
 }
 
 .collaborators-menu ul li {
@@ -574,4 +575,141 @@ html {
     text-transform: none;
     margin: 0;
     font-size: 1.2em;
+}
+
+.collaborator-add-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.4fr;
+    gap: 5px;
+    background-color: #0000004f;
+}
+
+.status-request-add {
+    margin-top: 10px;
+    display: none;
+}
+
+.status-request-add.visible {
+    display: block;
+}
+
+.status-request-add .loader {
+    opacity: 0;
+    display: none;
+}
+
+.status-request-add .loader.visible {
+    pointer-events: all;
+    display: flex;
+    animation: fadeIn 0.15s 0.05s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.status-request-add-text {
+    opacity: 0;
+    display: none;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-request-add-text div.img {
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.status-request-add-text div.img.success {
+    background-image: url(../../img/success.png);
+}
+
+.status-request-add-text div.img.error {
+    background-image: url(../../img/error.png);
+}
+
+.status-request-add-text p {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.status-request-add-text.visible {
+    display: flex;
+    animation: fadeIn 0.15s 0.05s forwards;
+}
+
+.requests-sent {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.requests-sent .request-sent-name p {
+    margin: 0;
+    margin-left: 15px;
+    font-size: 1.2em;
+}
+
+.requests-sent-list .request-sent {
+    display: grid;
+    grid-template-columns: 285px 35px;
+    height: 35px;
+    align-items: center;
+}
+
+.request-sent .request-sent-cancel, .collaborator-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background-image: url(../../img/close.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.collaborator {
+    display: grid;
+    grid-template-columns: 165px 30px;
+    width: 85%;
+    gap: 20px;
+    align-items: center;
+    justify-content: start;
+}
+
+.collaborator-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+}
+
+.collaborator-name p {
+    margin: 0;
+}
+
+.collaborators-list h3 {
+    align-self: start;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.no-requests {
+    text-align:center;
+}
+
+.hidden {
+    transition: opacity 0.15s;
+    opacity: 0;
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : dim. 02 avr. 2023 à 05:25
+-- Généré le : ven. 07 avr. 2023 à 01:31
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -48,7 +48,7 @@ INSERT INTO `article` (`id`, `type_id`, `name`, `unity_price`, `image`) VALUES
 (32, 1, 'Chips', 1.8, 'chips.png'),
 (33, 2, 'Cookies', 1.2, 'cookies.png'),
 (34, 2, 'Chocolate', 2.5, 'chocolate.png'),
-(35, 2, 'Bonbons', 0.8, 'candy.png'),
+(35, 2, 'Candies', 0.8, 'candy.png'),
 (36, 3, 'Laundry', 6.5, 'laundry.png'),
 (37, 3, 'Detergent', 2.2, 'detergent.png'),
 (38, 3, 'Toilet paper', 1.8, 'toilet-paper.png'),
@@ -73,34 +73,34 @@ INSERT INTO `article` (`id`, `type_id`, `name`, `unity_price`, `image`) VALUES
 (57, 9, 'Magazine', 3.5, 'magazine.png'),
 (58, 2, 'Fruit salad', 3.99, 'fruit-salad.png'),
 (59, 1, 'Cheese', 8.49, 'cheese.png'),
-(60, 3, 'Nettoyant', 4.29, 'cleaner.png'),
-(61, 4, 'T-shirt homme', 14.99, 'mens-tshirt.png'),
-(62, 4, 'Pantalon femme', 29.99, 'womens-pants.png'),
-(63, 5, 'Serviette de bain', 12.99, 'bath-towel.png'),
-(64, 5, 'Rideau', 19.99, 'curtain.png'),
-(65, 6, 'Brosse à dents électrique', 39.99, 'electric-toothbrush.png'),
-(66, 6, 'Thermomètre médical', 8.99, 'thermometer.png'),
+(60, 3, 'Cleaner', 4.29, 'cleaner.png'),
+(61, 4, 'Men t-shirt', 14.99, 'mens-tshirt.png'),
+(62, 4, 'Women pant', 29.99, 'womens-pants.png'),
+(63, 5, 'Bath towel', 12.99, 'bath-towel.png'),
+(64, 5, 'Curtain', 19.99, 'curtain.png'),
+(65, 6, 'Electric toothbrush', 39.99, 'electric-toothbrush.png'),
+(66, 6, 'Thermometer', 8.99, 'thermometer.png'),
 (67, 7, 'Ping-pong kit', 0.99, 'ping-pong-kit.png'),
-(68, 8, 'Kit de maquillage', 39.99, 'makeup-kit.png'),
-(69, 10, 'Sac de sport', 34.99, 'sports-bag.png'),
-(70, 10, 'Ballon de rugby', 19.99, 'rugby-ball.png'),
+(68, 8, 'Makeup kit', 39.99, 'makeup-kit.png'),
+(69, 10, 'Sports bag', 34.99, 'sports-bag.png'),
+(70, 10, 'Rugby ball', 19.99, 'rugby-ball.png'),
 (71, 6, 'Tea', 3.99, 'tea.png'),
-(72, 3, 'Mouchoirs en papier', 1.49, 'tissue-box.png'),
-(73, 4, 'Sac à main', 49.99, 'handbag.png'),
-(74, 5, 'Table de chevet', 59.99, 'nightstand.png'),
-(75, 5, 'Fer à repasser', 29.99, 'iron.png'),
-(76, 4, 'Manteau homme', 89.99, 'mens-coat.png'),
-(77, 4, 'Veste femme', 69.99, 'womens-jacket.png'),
-(78, 1, 'Graines de tournesol', 2.99, 'sunflower-seeds.png'),
-(79, 2, 'Chips de maïs', 2.49, 'corn-chips.png'),
-(80, 3, 'Savon liquide pour les mains', 3.49, 'hand-soap.png'),
-(81, 7, 'Crayon de couleur', 1.99, 'colored-pencils.png'),
-(82, 10, 'Ballon de volley-ball', 24.99, 'volleyball.png'),
-(83, 10, 'Tennis de table', 99.99, 'ping-pong-table.png'),
-(84, 8, 'Éponge de maquillage', 9.99, 'makeup-sponge.png'),
-(85, 10, 'Raquette de badminton', 39.99, 'badminton-racket.png'),
-(86, 10, 'Chaussures de course', 79.99, 'running-shoes.png'),
-(87, 5, 'Balai brosse', 14.99, 'broom.png');
+(72, 3, 'Tissue box', 1.49, 'tissue-box.png'),
+(73, 4, 'Handbag', 49.99, 'handbag.png'),
+(74, 5, 'Nightstand', 59.99, 'nightstand.png'),
+(75, 5, 'Iron', 29.99, 'iron.png'),
+(76, 4, 'Men coat', 89.99, 'mens-coat.png'),
+(77, 4, 'Women jacket', 69.99, 'womens-jacket.png'),
+(78, 1, 'Sunflower seeds', 2.99, 'sunflower-seeds.png'),
+(79, 2, 'Corn chips', 2.49, 'corn-chips.png'),
+(80, 3, 'Hand soap', 3.49, 'hand-soap.png'),
+(81, 7, 'Colored pencils', 1.99, 'colored-pencils.png'),
+(82, 10, 'Volley ball', 24.99, 'volleyball.png'),
+(83, 10, 'Ping pong table', 99.99, 'ping-pong-table.png'),
+(84, 8, 'Makeup sponge', 9.99, 'makeup-sponge.png'),
+(85, 10, 'Badminton racket', 39.99, 'badminton-racket.png'),
+(86, 10, 'Running shoe', 79.99, 'running-shoes.png'),
+(87, 5, 'Broom', 14.99, 'broom.png');
 
 -- --------------------------------------------------------
 
@@ -130,11 +130,43 @@ CREATE TABLE IF NOT EXISTS `article_in_list` (
 INSERT INTO `article_in_list` (`id`, `shopping_list_id`, `article_id`, `quantity`, `total_price`, `unity_price`, `name`, `brand`) VALUES
 (30, 39, 31, 6, 13.8, 2.3, 'Rice', ''),
 (31, 39, 52, 2, 112, 56, 'Tennis racket adult', 'Prince'),
-(32, 39, 31, 3, 6.9, 2.3, 'Rice', NULL),
+(32, 39, 31, 3, 6.9, 2.3, 'Rice', 'Oldel Paso'),
 (33, 39, 40, 1, 25, 25, 'Woman dress', ''),
 (34, 39, 46, 1, 6, 6, 'Vitamin C', ''),
 (35, 39, 35, 2, 80, 40, 'Bonbons de ouf', NULL),
 (36, 39, 32, 4, 7.2, 1.8, 'Chips', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `collaboration_request`
+--
+
+DROP TABLE IF EXISTS `collaboration_request`;
+CREATE TABLE IF NOT EXISTS `collaboration_request` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shopping_list_id` int NOT NULL,
+  `receiver_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_6CCAF4EE23245BF9` (`shopping_list_id`),
+  KEY `IDX_6CCAF4EECD53EDB6` (`receiver_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `collaborator`
+--
+
+DROP TABLE IF EXISTS `collaborator`;
+CREATE TABLE IF NOT EXISTS `collaborator` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `shopping_list_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_606D487CA76ED395` (`user_id`),
+  KEY `IDX_606D487C23245BF9` (`shopping_list_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -156,7 +188,10 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20230330102907', '2023-03-30 10:29:24', 654),
-('DoctrineMigrations\\Version20230330152432', '2023-03-30 15:24:43', 54);
+('DoctrineMigrations\\Version20230330152432', '2023-03-30 15:24:43', 54),
+('DoctrineMigrations\\Version20230405105624', '2023-04-06 19:13:43', 229),
+('DoctrineMigrations\\Version20230406191330', '2023-04-06 19:13:43', 260),
+('DoctrineMigrations\\Version20230406235957', '2023-04-07 00:00:16', 720);
 
 -- --------------------------------------------------------
 
@@ -193,17 +228,18 @@ CREATE TABLE IF NOT EXISTS `shopping_list` (
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nb_articles` int NOT NULL DEFAULT '0',
   `total_price` double NOT NULL DEFAULT '0',
-  `end_date` date DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3DC1A459A76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `shopping_list`
 --
 
 INSERT INTO `shopping_list` (`id`, `user_id`, `name`, `description`, `nb_articles`, `total_price`, `end_date`) VALUES
-(39, 7, 'My first list', NULL, 19, 250.9, '2023-04-13');
+(39, 7, 'My first list', NULL, 19, 250.9, '2023-04-13 00:00:00'),
+(40, 7, 'test list', NULL, 0, 0, '2023-04-27 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -246,8 +282,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `surname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`surname`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -273,6 +308,20 @@ ALTER TABLE `article`
 ALTER TABLE `article_in_list`
   ADD CONSTRAINT `FK_83A183CB23245BF9` FOREIGN KEY (`shopping_list_id`) REFERENCES `shopping_list` (`id`),
   ADD CONSTRAINT `FK_83A183CB7294869C` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`);
+
+--
+-- Contraintes pour la table `collaboration_request`
+--
+ALTER TABLE `collaboration_request`
+  ADD CONSTRAINT `FK_6CCAF4EE23245BF9` FOREIGN KEY (`shopping_list_id`) REFERENCES `shopping_list` (`id`),
+  ADD CONSTRAINT `FK_6CCAF4EECD53EDB6` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`);
+
+--
+-- Contraintes pour la table `collaborator`
+--
+ALTER TABLE `collaborator`
+  ADD CONSTRAINT `FK_606D487C23245BF9` FOREIGN KEY (`shopping_list_id`) REFERENCES `shopping_list` (`id`),
+  ADD CONSTRAINT `FK_606D487CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `shopping_list`

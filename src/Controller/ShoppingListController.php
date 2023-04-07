@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\CollaborationRequest;
+use App\Entity\Collaborator;
 use App\Entity\ShoppingList;
 use App\Form\ArticleInListType;
 use App\Form\ShoppingListType;
@@ -17,14 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormInterface;
 use App\Form\UserAsCollaboratorType;
+use App\Repository\CollaborationRequestRepository;
+use App\Repository\CollaboratorRepository;
 use DateTime;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/list')]
 class ShoppingListController extends AbstractController
 {
     #[Route('/', name: 'list', methods: ['GET'])]
-    public function index(ShoppingListRepository $shoppingListRepository, Session $session, Request $request): Response
+    public function index(ShoppingListRepository $shoppingListRepository, UserRepository $userRepository, Session $session, Request $request): Response
     {
         $printMessage = false;
         $isSuccess = false;
@@ -47,8 +51,8 @@ class ShoppingListController extends AbstractController
             $message = "List successfully deleted";
         }
 
+        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('user')->getId()]);
 
-        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
         $new_lists = [];
         $totalPriceList = 0;
         $nbItems = 0;
@@ -68,6 +72,7 @@ class ShoppingListController extends AbstractController
                 }
             }
         }
+
         return $this->render('list/list.html.twig', [
             // recupere que les listes de l'utilisateur connecté
             'shopping_lists' => $new_lists,
@@ -83,7 +88,7 @@ class ShoppingListController extends AbstractController
     #[Route('/old', name: 'old_list', methods: ['GET'])]
     public function oldLists(ShoppingListRepository $shoppingListRepository, Session $session): Response
     {
-        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+        $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('user')->getId()]);
         $old_lists = [];
         $totalPriceList = 0;
         $nbItems = 0;
@@ -117,7 +122,7 @@ class ShoppingListController extends AbstractController
     {
         $shoppingList = new ShoppingList();
         //recupere le user qui a les informations de session depuis le UserRepository
-        $user = $userRepository->findUserConnected($session->get('id'));
+        $user = $userRepository->findUserConnected($session->get('user')->getId());
         $shoppingList->setUser($user);
         $shoppingList->setNbArticles(0);
         $shoppingList->setTotalPrice(0);
@@ -253,6 +258,7 @@ class ShoppingListController extends AbstractController
         $finalTab = [];
         array_push($finalTab, $lowerPrice);
         array_push($finalTab, $higherPrice);
+
         return $this->render('list/list.stat.html.twig', [
             "shoppingList" => $shoppingList,
             'controller_name' => 'StatController',
@@ -324,5 +330,59 @@ class ShoppingListController extends AbstractController
         return $this->redirectToRoute('list', [
             'deleted' => true
         ], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{listId}/add/collaborator', name: 'list_add_collaborator', methods: ['POST'])]
+    public function addCollaborator(int $listId, Request $request, CollaborationRequestRepository $collaborationRequestRepository, CollaboratorRepository $collaboratorRepository, ShoppingListRepository $shoppingListRepository, UserRepository $userRepository, Session $session): JsonResponse
+    {
+        $code = 200;
+        $message = '';
+        $values = $request->request->all()['user_as_collaborator'];
+
+        $name = $values['Name'];
+        $surname = $values['Surname'];
+        $success = false;
+        $cancelRequestPath = null;
+        $name = $values['Name'];
+        $surname = $values['Surname'];
+
+        $list = $shoppingListRepository->findOneBy(['id' => $listId]);
+        $user = $userRepository->findOneBy(['Name' => $name, 'Surname' => $surname]);
+
+        if ($list) {
+            if ($user) {
+                if ($user->getId() === $session->get('user')->getId()) {
+                    $message = 'You cannot add yourself as collaborator';
+                } else {
+                    $collaborator = $collaboratorRepository->findOneBy(['user' => $user, 'shoppingList' => $list]);
+                    if ($collaborator) {
+                        $message = 'User is already collaborator of this list';
+                    } else {
+                        $collaboratorRequest = $collaborationRequestRepository->findOneBy(['receiver' => $user, 'shoppingList' => $list]);
+                        if ($collaboratorRequest) {
+                            $message = 'Collaboration request already sent to this user';
+                        } else {
+                            $collaborationRequest = new CollaborationRequest();
+                            $collaborationRequest->setReceiver($user);
+                            $collaborationRequest->setShoppingList($list);
+                            $collaborationRequestRepository->save($collaborationRequest, true);
+                            $success = true;
+                            $cancelRequestPath = $this->generateUrl('app_collaboration_request_delete', ['id' => $collaborationRequest->getId()]);
+                            $message = 'Collaboration request successfully sent';
+                        }
+                    }
+                }
+            } else {
+                $message = 'User not found';
+            }
+        }
+
+        return $this->json([
+            'message' => $message,
+            'success' => $success,
+            'cancelRequestPath' => $cancelRequestPath,
+            'name' => $name,
+            'surname' => $surname
+        ], $code);
     }
 }
