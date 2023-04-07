@@ -284,7 +284,7 @@ html {
 }
 
 .btn-submit-modify-article-in-list {
-    background-image: url(../../img/edit.png);
+    background-image: url(../../img/edit-white.png);
 }
 
 #modify_article_in_list_form_submit:not(.switched) {

@@ -69,10 +69,10 @@
 						</div>
 						<div class="collaborator-add container">
 							{{ form_start(addCollaboratorForm, { 'attr' : {
-						'method' : 'post',
-						'class' : 'add-collaborator-form',
-						'action' : path('list_add_collaborator', {'listId': shopping_list.id})
-					} }) }}
+								'method' : 'post',
+								'class' : 'add-collaborator-form',
+								'action' : path('list_add_collaborator', {'listId': shopping_list.id})
+							}}) }}
 							<div class="collaborator-add-input">
 								{{ form_widget(addCollaboratorForm.Name) }}
 								{{ form_widget(addCollaboratorForm.Surname) }}
