@@ -34,11 +34,16 @@
 		{% for shopping_list in shopping_lists %}
 			<tr class="{% if shopping_list.collaborators|length > 0 %}collaborator{% endif %}">
 				<td>
-					{% if shopping_list.name|length > 25 %}
-						{{ shopping_list.name|slice(0, 25) ~ '...' }}
-					{% else %}
-						{{ shopping_list.name }}
+					{% if shopping_list.user.id == app.session.get('user').id and shopping_list.collaborators|length > 0 %}
+						<img src="{{ asset('img/crown.png') }}" alt="shopping-list" class="shopping-list-icon" style="width:25px;" title="You are the owner of this list" draggable="false">
 					{% endif %}
+					<p style="vertical-align:middle;margin:0;">
+						{% if shopping_list.name|length > 25 %}
+							{{ shopping_list.name|slice(0, 25) ~ '...' }}
+						{% else %}
+							{{ shopping_list.name }}
+						{% endif %}
+					</p>
 				</td>
 				<td>
 					{% if shopping_list.description is not null %}
