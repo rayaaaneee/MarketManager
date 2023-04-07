@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\ShoppingListRepository;
 use App\Form\ArticleType;
 use App\Repository\TypeRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\FormInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -74,7 +75,7 @@ class ArticleController extends AbstractController
 
     // On precise que l'id est un parametre de la route et forcement un entier
     #[Route('/{id}', name: 'article_show', requirements: ['id' => '\d+'])]
-    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, TypeRepository $typeRepository, Session $session, Request $request, PaginatorInterface $paginator): Response | RedirectResponse
+    public function article(string $id, ArticleRepository $articleRepository, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, TypeRepository $typeRepository, Session $session, Request $request, PaginatorInterface $paginator,UserRepository $userRepository): Response | RedirectResponse
     {
         $types = $typeRepository->findAll();
         if ($request->isMethod('POST')) {
@@ -153,7 +154,8 @@ class ArticleController extends AbstractController
         } else {
             $formSearch = $this->createAndVerifyFormSearch($articleRepository, $types, $request, $paginator)["formSearch"];
 
-            $shoppingLists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+            $user = $userRepository->find($session->get('user')->getId());
+            $shoppingLists = $user->getAllShoppingLists();
 
             $article = $articleRepository->find($id);
 

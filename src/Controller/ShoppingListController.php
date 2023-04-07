@@ -54,7 +54,7 @@ class ShoppingListController extends AbstractController
             $isSuccess = true;
             $message = "List successfully deleted";
         }
-
+        $user = $userRepository->find($session->get('user')->getId());
         $shopping_lists = $user->getAllShoppingLists();
 
         $new_lists = [];
@@ -148,8 +148,49 @@ class ShoppingListController extends AbstractController
     }
 
     #[Route('/{id}', name: 'list_show', methods: ['GET', 'POST'])]
-    public function show(ShoppingList $shoppingList, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator, UserRepository $userRepository, Session $session): Response
+    public function show(ShoppingList $shoppingList = null, Request $request, ShoppingListRepository $shoppingListRepository, ArticleInListRepository $articleInListRepository, PaginatorInterface $paginator, UserRepository $userRepository, Session $session): Response
     {
+        $user = $userRepository->find($session->get('user')->getId());
+        $shoppingLists = $user->getAllShoppingLists();
+
+
+        // if $shopingList is in $shoppingLists
+        if (!in_array($shoppingList, $shoppingLists)) {
+            $printMessage = true;
+            $isSuccess = false;
+            $message = "You don't have access to view this list.";
+            $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+            $new_lists = [];
+            $totalPriceList = 0;
+            $nbItems = 0;
+            foreach ($shopping_lists as $shopping_list) {
+                if (!$shopping_list->hasEndDate()) {
+                    array_push($new_lists, $shopping_list);
+                    $totalPriceList += $shopping_list->getTotalPrice();
+                    $nbItems += $shopping_list->getNbArticles();
+                } else {
+                    $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
+                    $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                    $now = $now->setTime(0, 0, 0);
+                    if ($endDate >= $now) {
+                        array_push($new_lists, $shopping_list);
+                        $totalPriceList += $shopping_list->getTotalPrice();
+                        $nbItems += $shopping_list->getNbArticles();
+                    }
+                }
+            }
+            return $this->render('list/list.html.twig', [
+                // recupere que les listes de l'utilisateur connecté
+                'shopping_lists' => $new_lists,
+                'canEdit' => true,
+                'printMessage' => $printMessage,
+                'isSuccess' => $isSuccess,
+                'message' => $message,
+                'totalPriceList' => $totalPriceList,
+                'nbItems' => $nbItems
+            ]);
+        }
+        
 
         $isOwner = $session->get('user')->getId() === $shoppingList->getUser()->getId();
 
@@ -234,8 +275,48 @@ class ShoppingListController extends AbstractController
     }
 
     #[Route('/{id}/stat', name: 'list_show_stat', methods: ['GET', 'POST'])]
-    public function show_stat(ShoppingList $shoppingList): Response
+    public function show_stat(ShoppingList $shoppingList = null, Session $session, UserRepository $userRepository, ShoppingListRepository $shoppingListRepository): Response
     {
+        $user = $userRepository->find($session->get('user')->getId());
+        $shoppingLists = $user->getAllShoppingLists();
+
+
+        // if $shopingList is in $shoppingLists
+        if (!in_array($shoppingList, $shoppingLists)) {
+            $printMessage = true;
+            $isSuccess = false;
+            $message = "You don't have access to view this list, you cannot view its statistics";
+            $shopping_lists = $shoppingListRepository->findBy(['user' => $session->get('id')]);
+            $new_lists = [];
+            $totalPriceList = 0;
+            $nbItems = 0;
+            foreach ($shopping_lists as $shopping_list) {
+                if (!$shopping_list->hasEndDate()) {
+                    array_push($new_lists, $shopping_list);
+                    $totalPriceList += $shopping_list->getTotalPrice();
+                    $nbItems += $shopping_list->getNbArticles();
+                } else {
+                    $endDate = DateTime::createFromInterface($shopping_list->getEndDate())->setTime(0, 0, 0);
+                    $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                    $now = $now->setTime(0, 0, 0);
+                    if ($endDate >= $now) {
+                        array_push($new_lists, $shopping_list);
+                        $totalPriceList += $shopping_list->getTotalPrice();
+                        $nbItems += $shopping_list->getNbArticles();
+                    }
+                }
+            }
+            return $this->render('list/list.html.twig', [
+                // recupere que les listes de l'utilisateur connecté
+                'shopping_lists' => $new_lists,
+                'canEdit' => true,
+                'printMessage' => $printMessage,
+                'isSuccess' => $isSuccess,
+                'message' => $message,
+                'totalPriceList' => $totalPriceList,
+                'nbItems' => $nbItems
+            ]);
+        }
         $data = [];
         $ArticlesOfList = $shoppingList->getArticles();
         foreach ($ArticlesOfList as $articleInList) {
