@@ -267,14 +267,16 @@
 	{% else %}
 		{% if not access and not exists %}
 			<div class="alert alert-warning" role="alert" style="margin-top:40px">
-				<h1 style="text-align:center;">This list doesn't exist</h1>
+				<h1 style="text-align:center;">ERROR 404</h1>
+				<h2 style="text-align:center;">This list doesn't exist</h2>
 			</div>
 			<div class="buttons-container">
 				<a href="{{ path('list') }}" class="btn btn-dark" style="margin:0 auto;">Back to lists</a>
 			</div>
 		{% elseif not access and exists %}
 			<div class="alert alert-warning" role="alert" style="margin-top:40px">
-				<h1 style="text-align:center;">You haven't access to this list</h1>
+				<h1 style="text-align:center;">ERROR 403</h1>
+				<h2 style="text-align:center;">You cannot access to this list</h2>
 			</div>
 			<div class="buttons-container">
 				<a href="{{ path('list') }}" class="btn btn-dark" style="margin:0 auto;">Back to lists</a>
