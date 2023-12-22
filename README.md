@@ -8,9 +8,7 @@ Un système de connection / enregistrement a été mis en place à cette occasio
 
 ## Lancer le projet
 
-Avant tout assurez vous d'avoir une version de php 8.2 ou supérieur, composer et npm installés sur votre machine
-
-Pour lancer le projet, pensez à lancer un serveur (php -S localhost:8000) dans le dossier public
+Avant tout assurez vous d'avoir une version de php 8.2 ou supérieur, composer et npm installés sur votre machine.
 
 Insérer les tables situées dans assets/sql/MarketManager.sql dans votre base de données "MarketManager" pour pouvoir utiliser le projet, cela est indispensable à son bon fonctionnement.
 Passez un coup de composer install puis npm install pour installer les dépendances nécéssaires au bon fonctionnement du projet
