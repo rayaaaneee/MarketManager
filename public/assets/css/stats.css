@@ -1,0 +1,24 @@
+/*minscule style pas besoin d'un fichier pour ça */
+.container_chart {
+    display: flex;
+    justify-content: center;
+}
+
+.alert {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#piechart svg {
+    background-color: #ececec !important;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+#piechart .apexcharts-legend {
+    top: 80px !important;
+}
+
+#barchart {
+    margin-top: 45px;
+}

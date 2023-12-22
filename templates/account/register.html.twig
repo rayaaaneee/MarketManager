@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{%block title%}Register{%endblock%}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
+{% endblock %}
+
+{% block body %}
+	{{ include('/message.html.twig')}}
+	<main>
+		{{ form_start(registrationForm) }}
+		<h1>Register</h1>
+		{{ form_row(registrationForm.Name) }}
+		{{ form_row(registrationForm.Surname) }}
+		{{ form_row(registrationForm.Password) }}
+		<button type="submit" class="btn btn-primary">Sign Up</button>
+		{{ form_end(registrationForm) }}
+	</main>
+{% endblock %}

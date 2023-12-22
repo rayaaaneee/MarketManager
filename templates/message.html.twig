@@ -1,0 +1,13 @@
+{% set option_class = option_class|default('') %}
+{% if printMessage %}
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('assets/css/message.css') }}">
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{ asset('assets/js/message.js') }}" defer></script>
+	{% endblock %}
+	<div class="alert alert-dismissible alert-{% if isSuccess %}success{% else %}danger{% endif %} {{ option_class }}">
+		<button type="button" class="btn-close" onclick="clickCross(event)" data-bs-dismiss="alert"></button>
+		<strong>{{ message }}</strong>
+	</div>
+{% endif %}

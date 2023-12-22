@@ -1,0 +1,51 @@
+{% set class = class|default('') %}
+{% set parameterClass = parameterClass|default('') %}
+{% set totalPages = pagination.paginationData['pageCount'] %}
+{% set currentPage = pagination.paginationData['current'] %}
+{% set previousPage = pagination.currentPageNumber > 1 ? pagination.currentPageNumber - 1 : 1 %}
+{% set nextPage = pagination.currentPageNumber < totalPages ? pagination.currentPageNumber + 1 : totalPages %}
+
+{% set start = null %}
+{% set end = null %}
+
+{% if totalPages <= 5 %}
+	{% set start = 1 %}
+	{% set end = totalPages %}
+{% else %}
+	{% if pagination.currentPageNumber < 5 %}
+		{% set start = 1 %}
+		{% set end = 5 %}
+	{% else %}
+		{% set end = totalPages %}
+		{% if currentPage + 2 > totalPages %}
+			{% set start = totalPages - 4 %}
+		{% else %}
+			{% set start = currentPage - 2 %}
+		{% endif %}
+		{% set end = currentPage + 2 %}
+	{% endif %}
+{% endif %}
+
+{% block javascripts %}
+	<script src="{{ asset('assets/js/pagination.js') }}" defer></script>
+{% endblock %}
+
+{% if totalPages != 1 %}
+	<div class="pagination-bar-container {{ class }} {% if pagination.totalItemCount == 0 %}hidden{% endif %}">
+		<ul class="pagination {{ parameterClass }}">
+			<li class="page-item">
+				<a class="page-link" href="{{ previousPage }}">&laquo;</a>
+			</li>
+			{% for i in start..end %}
+				{% if i <= totalPages %}
+					<li class="page-item {% if i == pagination.currentPageNumber %}active{% endif %}">
+						<a class="page-link" href="{{ i }}">{{ i }}</a>
+					</li>
+				{% endif %}
+			{% endfor %}
+			<li class="page-item">
+				<a class="page-link" href="{{ nextPage }}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+{% endif %}

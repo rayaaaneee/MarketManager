@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistics
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/stats.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('assets/js/apexcharts.min.js') }}" defer></script>
+	<script src="{{ asset('assets/js/chart.stat.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+	{{ include('title.page.html.twig', { 'title' : 'My statistics' , 'file' : 'stats.png' }) }}
+	{% if print %}
+		<div class="container_chart" id="piechart">
+			<input type="" id="pie" value='{{ data|json_encode|raw }}' style="display:none">
+		</div>
+		<div class="container_chart" id="barchart">
+			<input type="" id="stats" value='{{ stats|json_encode|raw }}' style="display:none">
+		</div>
+	{% else %}
+		<div class="alert alert-warning" role="alert">
+			<h1 style="text-align:center;">You have no shopping lists yet</h1>
+		</div>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+.btn {
+    display: block;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    width: 350px;
+}
+
+main {
+    height: 62vh;
+}
+
+form button[type="submit"] {
+    align-self: center;
+    justify-self: center;
+    width: fit-content;
+    padding: 13px 25px;
+}
+form > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+form > h1 {
+    align-self: center;
+}

@@ -14,16 +14,17 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $Stock = null;
+    private ?float $UnityPrice = null;
 
-    #[ORM\Column]
-    private ?int $UnityPrice = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Type $type = null;
 
-    #[ORM\Column]
-    private ?int $Type = null;
+    #[ORM\Column(length: 100)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
@@ -32,48 +33,48 @@ class Article
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function setName(string $Name): self
     {
-        $this->Name = $Name;
+        $this->name = $Name;
 
         return $this;
     }
 
-    public function getStock(): ?int
-    {
-        return $this->Stock;
-    }
-
-    public function setStock(int $Stock): self
-    {
-        $this->Stock = $Stock;
-
-        return $this;
-    }
-
-    public function getUnityPrice(): ?int
+    public function getUnityPrice(): ?float
     {
         return $this->UnityPrice;
     }
 
-    public function setUnityPrice(int $UnityPrice): self
+    public function setUnityPrice(float $UnityPrice): self
     {
         $this->UnityPrice = $UnityPrice;
 
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): ?Type
     {
-        return $this->Type;
+        return $this->type;
     }
 
-    public function setType(int $Type): self
+    public function setType(?Type $type): self
     {
-        $this->Type = $Type;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

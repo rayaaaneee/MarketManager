@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collaboration requests
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/collaborations.requests.css') }}">
+{% endblock %}
+
+{% block body %}
+	{{ include('/message.html.twig') }}
+	{{ include('title.page.html.twig', {'title' : 'Collaborations requests', 'file' : 'letter.png'}) }}
+	<div class="requests-container">
+		{% if not collaboration_requests is empty %}
+			{% for collaboration_request in collaboration_requests %}
+				<div class="separator-collaborators-requests-bar"></div>
+				<div class="collaboration-request">
+					<h3>{{ collaboration_request.shoppingList.user.Name }}
+						{{ collaboration_request.shoppingList.user.Surname }}
+						sent you a collaboration request on "{{ collaboration_request.shoppingList.name }}"</h3>
+					<a href="{{ path('collaboration_request_accept', {'id': collaboration_request.id}) }}">
+						<button class="btn btn-success">Accept</button>
+					</a>
+					<a href="{{ path('collaboration_request_reject', {'id': collaboration_request.id}) }}">
+						<button class="btn btn-danger">Reject</button>
+					</a>
+				</div>
+			{% endfor %}
+		{% else %}
+			<div class="alert alert-warning" role="alert">
+				<h1 style="text-align:center;">You have no collaborations requests yet</h1>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

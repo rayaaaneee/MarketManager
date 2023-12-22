@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% if shopping_lists|length > 0 %}
+		{{ 'Shopping lists ('~ shopping_lists|length ~')' }}
+	{% else %}
+		{{ 'Shopping lists' }}
+	{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
+{% endblock %}
+
+{% block body %}
+	{{ include('/message.html.twig') }}
+	{% if shopping_lists is empty %}
+		{% set title = 'My shopping lists' %}
+	{% else %}
+		{% set title = 'My shopping lists ('~ shopping_lists|length ~')' %}
+	{% endif %}
+	{{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
+	{{ include('list/list.new.old.template.html.twig')}}
+{% endblock %}

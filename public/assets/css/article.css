@@ -1,0 +1,72 @@
+
+
+.img-container img {
+    width : 100px;
+    height : fit-content;
+    object-fit : cover;
+    border-radius : 10px;
+    transform : translateX(20px);
+  }
+
+  main {
+    margin-top : 20px;
+  }
+
+  .table td {
+    vertical-align : middle;
+    text-align: center;
+  }
+
+  .table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+    padding : 1.1rem;
+  }
+
+  .table tr:not(#header) {
+    height: 200px;
+  }
+
+  table {
+    margin-top : 20px;
+  }
+  
+  #formSearchArticle {
+    width: 100%;
+    display: flex;
+    height: 75px;
+    margin-top: 30px;
+  }
+
+  #inputGroupSearchArticle {
+    width: 100%;
+  }
+
+  #formSearchArticle {
+    width: 100%;
+    display: flex;
+    height: 75px;
+    margin-top: 30px;
+  }
+  #formSearchArticle {
+    width: 100%;
+    display: flex;
+    height: 75px;
+    margin-top: 30px;
+  }
+
+  .pagination-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .pagination-bar-container.hidden {
+    display: none;
+  }
+
+  .pagination-bar-container .pagination, .pagination-top {
+    margin: 0;
+  }

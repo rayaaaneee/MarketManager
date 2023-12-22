@@ -1,0 +1,286 @@
+{% extends 'base.html.twig' %}
+{% set isOldList = oldList|default(false) %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.show.css') }}">
+{% endblock %}
+
+{% block title %}
+	{% if exists %}
+		{{ shopping_list.name }}
+	{% else %}
+		{{ 'List not found' }}
+	{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('assets/js/list.show.js') }}" defer></script>
+	<script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}" defer></script>
+	{% if exists %}
+		{% if isOwner %}
+			<script src="{{ asset('assets/js/collaboratorOwner.js') }}" defer></script>
+			<script src="{{ asset('assets/js/addCollaborator.js') }}" defer></script>
+			<script src="{{ asset('assets/js/deleteCollaborationRequest.js') }}" defer></script>
+			<script src="{{ asset('assets/js/deleteCollaborator.js') }}" defer></script>
+		{% else %}
+			<script src="{{ asset('assets/js/simpleCollaborator.js') }}" defer></script>
+		{% endif %}
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+	{% if access and exists %}
+		<div id="collaborators" title="List collaborators">
+			<div class="collaborators-content">
+				<div class="collaborators-cross-page" title="Close"></div>
+				{% if isOwner %}
+					<h1>collaborators</h1>
+					<nav class="collaborators-menu">
+						<ul>
+							<li class="show active">
+								<p>My collaborators</p>
+							</li>
+							<li class="add">
+								<p>Add collaborator</p>
+							</li>
+						</ul>
+					</nav>
+					<div class="content-pages-collaborators">
+						<div class="collaborators-list container active">
+							{% if not shopping_list.collaborators is empty %}
+								<h4 class="collaborators-title">List collaborators ({{ shopping_list.collaborators|length }}) :</h4>
+								{% for collaborator in shopping_list.collaborators %}
+									<div class="collaborator">
+										<div class="collaborator-name">
+											<p>•
+												{{ collaborator.user.Name }}
+												{{ collaborator.user.Surname }}</p>
+										</div>
+										<a class="collaborator-delete" title="Remove collaborator" href="{{ path('app_collaborator_delete', { id : collaborator.id }) }}">
+											<div class="img"></div>
+										</a>
+									</div>
+								{% endfor %}
+							{% else %}
+								<h4 class="collaborators-title" style="text-align:center">You have no collaborators</h4>
+							{% endif %}
+						</div>
+						<div class="collaborator-add container">
+							{{ form_start(addCollaboratorForm, { 'attr' : {
+								'method' : 'post',
+								'class' : 'add-collaborator-form',
+								'action' : path('list_add_collaborator', {'listId': shopping_list.id})
+							}}) }}
+							<div class="collaborator-add-input">
+								{{ form_widget(addCollaboratorForm.Name) }}
+								{{ form_widget(addCollaboratorForm.Surname) }}
+								{{ form_widget(addCollaboratorForm.Submit) }}
+							</div>
+							{{ form_end(addCollaboratorForm) }}
+							<div class="status-request-add">
+								<div class="loader">
+									{{ include('loader.html.twig') }}
+								</div>
+								<div class="status-request-add-text">
+									<div class="img"></div>
+									<p></p>
+								</div>
+							</div>
+							<div class="requests-sent">
+								{% if not shopping_list.collaborationRequests is empty %}
+									<h4 class="requests-sent-title">Requests sent ({{ shopping_list.collaborationRequests|length }})</h4>
+									<div class="requests-sent-list">
+										{% for request in shopping_list.collaborationRequests %}
+											<div class="request-sent">
+												<div class="request-sent-name">
+													<p>•
+														{{ request.receiver.Name }}
+														{{ request.receiver.Surname }}</p>
+												</div>
+												<div class="request-sent-cancel" title="Cancel request" href="{{ path('app_collaboration_request_delete', { id : request.id }) }}"></div>
+											</div>
+										{% endfor %}
+									</div>
+								{% else %}
+									<h4 class="no-requests">You have no requests sent</h4>
+									<div class="requests-sent-list"></div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<div class="collaborator-page-content">
+						<div class="title-collaborator-page-content">
+							<img src="{{ asset('img/crown.png') }}" alt="collaborator">
+							<h1>List owner</h1>
+						</div>
+						<div class="list-owner list-person">
+							<div class="list-person-name">
+								<p class="person-name">•
+									{{ shopping_list.user.Name }}
+									{{ shopping_list.user.Surname }}</p>
+							</div>
+						</div>
+						<div class="title-collaborator-page-content">
+							<img src="{{ asset('img/collaborators-icon.png') }}" alt="collaborator">
+							<h1>Collaborators</h1>
+						</div>
+						{% for collaborator in shopping_list.collaborators %}
+							<div class="list-collaborator list-person">
+								<div class="list-person-name">
+									<p class="person-name {% if collaborator.user.id == app.session.get('user').id %}me{% endif %}">•
+										{{ collaborator.user.Name }}
+										{{ collaborator.user.Surname }}</p>
+								</div>
+							</div>
+							{% if collaborator.user.id == app.session.get('user').id %}
+								<a href="{{ path('app_collaborator_delete_redirection', { id : collaborator.id }) }}" class="leave-list">Leave list</a>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+			<img src="{{ asset('img/collaborators.png') }}" alt="collaborators" draggable="false" class="btn-collab-icon">
+		</div>
+		{{ include('/message.html.twig', { 'option_class' : 'to-right'}) }}<article class="main-container">
+			<div class="list-card">
+				{% if shopping_list.hasEndDate() %}
+					<div class="end-date-container">
+						<img src="{{ asset('img/calendar.png') }}" alt="calendar" draggable="false">
+						<h1 class=" list-name">{{ shopping_list.endDate|date('d/m/Y') }}</h1>
+					</div>
+				{% endif %}
+				<div class="title-container">
+					<div class="title-list">
+						<img src="{{ asset('img/list.png') }}" width="40" height="40" alt="list" draggable="false">
+						<h1>{{ shopping_list.name }}</h1>
+					</div>
+					{% if shopping_list.hasDescription %}
+						<div class="description-list">
+							<img src="{{ asset('img/description.png') }}" width="25" height="25" alt="description">
+							<div class="description-text">
+								<h3>Description :</h3>
+								<h3>{{ shopping_list.description }}</h3>
+							</div>
+						</div>
+					{% endif %}
+				</div>
+				<div class="article-container">
+					{% if shopping_list.nbArticles == 0 %}
+						<h2 class="title-part empty-list">Your list is empty</h2>
+						<div class="empty-image-container">
+							<img class="empty-list" src="{{ asset('img/empty-list.png') }}" height="170" alt="empty-list" draggable="false">
+						</div>
+						{% if not isOldList %}
+							<div class="add-articles-button-container">
+								<a href="{{ path('article') }}" class="btn btn-primary">Add articles</a>
+							</div>
+						{% endif %}
+					{% else %}
+						{{ include('pagination.html.twig', { 'pagination': pagination}) }}
+						<h2 class="title-part">My items ({{ shopping_list.articles|length }}) :</h2>
+						<div class="article-container">
+							{% for article in articles %}
+								<div class="article-card">
+									{{ form_start(modifyForms[i], {'attr': {'class': 'modify-form'}}) }}
+									<a href="{{ path('app_article_in_list_delete_page', {'id': article.id}) }}" class="delete-article-in-list" title="Modify this article"></a>
+									<div class="article-img">
+										<a href="{{ path('article_show', {'id': article.article.id}) }}">
+											<img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">
+										</a>
+									</div>
+									<div class="article-name">
+										<h3 class="list-property-value">{{ article.name }}</h3>
+										{{ form_widget(modifyForms[i].name)}}
+										<label for="type" class="type-label">{{ article.article.type.name }}</label>
+									</div>
+									<div class="article-category">
+										<label for="brand">Brand :</label>
+										<h4 class="list-property-value">
+											{% if article.brand != "" %}
+												{{ article.brand }}
+											{% else %}
+												Unknown
+											{% endif %}
+										</h4>
+										{{ form_widget(modifyForms[i].brand) }}
+									</div>
+									<div class="article-price">
+										<label for="unityPrice">Unity price :</label>
+										<h4 class="list-property-value">{{ article.unityPrice }}
+											€</h4>
+										{{ form_widget(modifyForms[i].unityPrice) }}
+									</div>
+									<div class="article-quantity">
+										<label for="quantity">Quantity :</label>
+										<h4 class="list-property-value">{{ article.quantity }}</h4>
+										{{ form_widget(modifyForms[i].quantity) }}
+									</div>
+									<div class="article-total-price">
+										<label for="totalPrice">Total price :</label>
+										<h4>{{ article.totalPrice }}
+											€</h4>
+									</div>
+									<div class="article-modify-container">
+										<input type="text" class="btn btn-primary btn-submit-modify-article-in-list" onclick="switchButton(event);" title="Modify this article">
+										{{ form_widget(modifyForms[i].submit) }}
+									</div>
+									<button class="close-modification-article" onclick="disappearInputs(event);" title="Close modification"></button>
+									{{ form_widget(modifyForms[i].id) }}
+									{{ form_end(modifyForms[i]) }}
+								</div>
+								{% set i = i + 1 %}
+							{% endfor %}
+						</div>
+					</div>
+					<div class=" total-price">
+						<div class="words">
+							<p>Number of articles :
+							</p>
+							<p>Total price :
+							</p>
+						</div>
+						<div class="numbers">
+							<p>{{ shopping_list.nbArticles }}</p>
+							<p>{{ shopping_list.totalPrice }}
+								€</p>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</article>
+		<div class="modify-list-container">
+			<a href="{{ path('list_show_stat', {'id':shopping_list.id}) }}" class="btn btn-success">Stats of my list</a>
+			<a href="{{ path('list') }}" class="btn btn-dark">Back to lists</a>
+			{% if isOwner %}
+				{% if not isOldList %}
+					<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-dark">edit</a>
+				{% endif %}
+				<form method="post" action="{{ path('list_delete', {'id': shopping_list.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ shopping_list.id) }}">
+					<button class="btn btn-danger">Delete</button>
+				</form>
+			{% endif %}
+		</div>
+	{% else %}
+		{% if not access and not exists %}
+			<div class="alert alert-warning" role="alert" style="margin-top:40px">
+				<h1 style="text-align:center;">ERROR 404</h1>
+				<h2 style="text-align:center;">This list doesn't exist</h2>
+			</div>
+			<div class="buttons-container">
+				<a href="{{ path('list') }}" class="btn btn-dark" style="margin:0 auto;">Back to lists</a>
+			</div>
+		{% elseif not access and exists %}
+			<div class="alert alert-warning" role="alert" style="margin-top:40px">
+				<h1 style="text-align:center;">ERROR 403</h1>
+				<h2 style="text-align:center;">You cannot access to this list</h2>
+			</div>
+			<div class="buttons-container">
+				<a href="{{ path('list') }}" class="btn btn-dark" style="margin:0 auto;">Back to lists</a>
+			</div>
+		{% endif %}
+	{% endif %}
+{% endblock %}

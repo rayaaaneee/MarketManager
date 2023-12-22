@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connection
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/connect.css') }}">
+{% endblock %}
+
+{% block body %}
+	{{ include('/message.html.twig')}}
+	<main>
+		{{ form_start(connectionForm) }}
+		<h1>Connection</h1>
+		{{ form_row(connectionForm.Name) }}
+		{{ form_row(connectionForm.Surname) }}
+		{{ form_row(connectionForm.Password) }}
+		<button type="submit" class="btn btn-primary">Sign In</button>
+		{{ form_end(connectionForm) }}
+	</main>
+{% endblock %}

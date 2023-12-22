@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market Manager
+{% endblock %}
+
+{% block body %}
+	{% block stylesheet %}
+		<link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
+	{% endblock stylesheet %}
+
+	{{ include('/message.html.twig') }}
+	{{ include('article/article.search.bar.html.twig') }}
+	<main>
+		<img src="{{ asset('img/home.png') }}" alt="homepage" class="home-image" width="100" height="100">
+		<div class="home-text-container">
+			<h1>Home page</h1>
+			<h5>Welcome to Market Manager.
+			</div>
+		</main>
+		<a type="button" class="btn btn-outline-secondary" href="{{ path('list') }}">Create new list</a>
+	{% endblock %}

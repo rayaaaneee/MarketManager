@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.new.css') }}">
+{% endblock %}
+
+{% block title %}New shoppingList
+{% endblock %}
+
+{% block body %}
+	{{ include('title.page.html.twig', {title: 'New shoppingList', 'file' : 'create.png', 'title' : 'Create new shoppingList'}) }}
+	{{ include('list/list.form.html.twig', {button_label: 'Create', 'form' : shoppingListForm}) }}
+{% endblock %}

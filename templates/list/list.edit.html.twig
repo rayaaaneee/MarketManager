@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ShoppingList
+{% endblock %}
+
+{% block body %}
+	{% if isOwner %}
+		{{ include('title.page.html.twig', {title: 'New shoppingList', 'file' : 'edit.png', 'title' : 'Edit my shoppingList'}) }}
+		{{ include('list/list.form.html.twig', {'button_label': 'Update', 'form': shoppingListForm, 'displayDelete': true}) }}
+	{% else %}
+		<div class="alert alert-warning" role="alert" style="margin-top:40px">
+			<h1 style="text-align:center;">You haven't permissions</h1>
+		</div>
+		<div class="buttons-container" style="width:100%;display:flex;align-items:center;justify-content:center;margin-top:45px;">
+			<a href="{{ path('list') }}" class="btn btn-dark" style="margin:0 auto;">Back to lists</a>
+		</div>
+	{% endif %}
+{% endblock %}

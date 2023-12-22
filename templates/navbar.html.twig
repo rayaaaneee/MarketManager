@@ -1,58 +1,57 @@
-<style>
-  .title-menu-container {
-    display: flex;
-    align-items: center;
-  }
+{% block stylesheet %}{% endblock %}
 
-  .title-menu-container img {
-    margin-right: 10px;
-    width: 25px;
-    height: fit-content;
-  }
-  .name-menu-container {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    color: white;
-    margin-top:14px;
-  }
-
-  .title-menu-container { margin-left: 20px; }
-</style>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <div class="title-menu-container">
-          <img src="../assets/img/icon.png" alt="logo" draggable="false">
-          <a class="navbar-brand" href="{{ path('home') }}">Market Manager</a>
-      </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('list') }}">Lists</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('article_search') }}">Search article</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./">New list</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./">Stats</a>
-          </li>
-        </ul>
-        <form class="d-flex">
-        {% if app.session.get('id') %}
-          <p class="name-menu-container">Bonjour {{ app.session.get('Surname') }}</p>
-          <a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
-        {% else %}
-          <a href="{{ path('connect') }}" type="button" class="btn btn-primary">Connect</a>
-          <a href="{{ path('register') }}"type="button" class="btn btn-primary">Sign Up</a>
-        {% endif %}
-        </form>
-
-      </div>
-    </div>
-</nav>
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<div class="container-fluid">
+			<div class="title-menu-container">
+				<a class="navbar-brand" href="{{ path('home') }}">
+					<img src="{{ asset('img/icon.png') }}" alt="logo" draggable="false">
+					<p>Market Manager</p>
+					<p></p>
+				</a>
+			</div>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			{% if app.session.get('user') %}
+				<div class="collapse navbar-collapse" id="navbarColor01">
+					<ul class="navbar-nav me-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('list') }}">Lists</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('article') }}">Items</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('new_list') }}">New list</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('stat')}}">Stats</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_collaboration_request_index') }}">Collabs requests</a>
+							<div class="collabs">
+								<p>0</p>
+							</div>
+						</li>
+					</ul>
+					<div class="nav-text-right">
+						<div class="hello-text-image-container">
+							<img class="hello-image" src="{{ asset('img/hello.png') }}" alt="hello" draggable="false" width="25" height="25">
+							<div class="hello-text-container">
+								<p class="hello-text">Hello
+									{{ app.session.get('user').Name }}</p>
+							</div>
+						</div>
+						<a href="{{ path('disconnect') }}" type="button" class="btn btn-primary">Disconnect</a>
+					</div>
+				{% else %}
+					<div class="nav-text-right-disconnected">
+						<a href="{{ path('connect') }}" type="button" class="btn btn-primary">Connect</a>
+						<a href="{{ path('register') }}" type="button" class="btn btn-primary">Sign Up</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
+{% endblock %}

@@ -1,0 +1,117 @@
+<div class="date-filter-container">
+	<a class="btn btn-primary button-nav-lists new-lists" href="{{path('list')}}">
+		New lists
+	</a>
+	<a class="btn btn-primary button-nav-lists old-lists" href="{{path('old_list')}}">
+		Old lists
+	</a>
+</div>
+{% if not canEdit %}
+	<h4 class="description-old-page">Your shopping list will be saved here after the end date has passed provided that the list isn't empty.</h4>
+{% endif %}
+<div class="colors-responding">
+	<div class="color">
+		<p>Collaborative list :</p>
+		<div class="collaborator-color color-list"></div>
+	</div>
+	<div class="color">
+		<p>Personal list :</p>
+		<div class="personal-color color-list"></div>
+	</div>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Shopping date</th>
+			<th>Number of items</th>
+			<th>Total price</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for shopping_list in shopping_lists %}
+			<tr class="{% if shopping_list.collaborators|length > 0 %}collaborator{% endif %}">
+				<td>
+					{% if shopping_list.user.id == app.session.get('user').id and shopping_list.collaborators|length > 0 %}
+						<img src="{{ asset('img/crown.png') }}" alt="shopping-list" class="shopping-list-icon" style="width:25px;" title="You are the owner of this list" draggable="false">
+					{% endif %}
+					<p style="vertical-align:middle;margin:0;">
+						{% if shopping_list.name|length > 25 %}
+							{{ shopping_list.name|slice(0, 25) ~ '...' }}
+						{% else %}
+							{{ shopping_list.name }}
+						{% endif %}
+					</p>
+				</td>
+				<td>
+					{% if shopping_list.description is not null %}
+						{% if shopping_list.description|length > 25 %}
+							{{ shopping_list.description|slice(0, 25) ~ '...' }}
+						{% else %}
+							{{ shopping_list.description }}
+						{% endif %}
+					{% else %}
+						No description
+					{% endif %}
+				</td>
+				<td>
+					{% if shopping_list.endDate is not null %}
+						{{ shopping_list.endDate|date('d/m/Y') }}
+					{% else %}
+						Not set
+					{% endif %}
+				</td>
+				<td>{{ shopping_list.nbArticles }}</td>
+				<td>{{ shopping_list.totalPrice }}
+					€</td>
+				<td>
+					{% if canEdit and shopping_list.user.id == app.session.get('user').id %}
+						<a href="{{ path('list_edit', {'id': shopping_list.id}) }}" class="btn btn-light">edit</a>
+					{% else %}
+						<div></div>
+					{% endif %}
+					<a href="{{ path('list_show', {'id': shopping_list.id}) }}" class="btn btn-dark">show</a>
+				</td>
+			</tr>
+		{% endfor %}
+		{% if shopping_lists|length > 1 %}
+			<tr>
+				<td>
+					<h4>Total  :</h4>
+				</td>
+				<td></td>
+				<td></td>
+				<td>
+					<div class="total-list-price-container">
+						<div class="bar"></div>
+						<div class="total-container">
+							<div class="total-list-price">
+								<h4>{{ nbItems }}</h4>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="total-list-price-container">
+						<div class="bar"></div>
+						<div class="total-container">
+							<div class="total-list-price">
+								<h4>{{ totalPriceList }}
+									€</h4>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td></td>
+			</tr>
+		</tr>
+	{% endif %}
+</tbody></table>{% if shopping_lists|length == 0 %}
+<div class="alert alert-warning" role="alert">
+	<h1 style="text-align:center;">You have no shopping lists yet</h1>
+</div>{% endif %}{% if canEdit %}
+<div class="create-new-container">
+	<a href="{{ path('new_list') }}" class="btn btn-outline-primary">Create new</a>
+</div>{% endif %}

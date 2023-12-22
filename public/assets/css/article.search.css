@@ -1,0 +1,25 @@
+#formSearchArticle {
+    margin-top: 20px;
+}
+
+#formSearchArticle select {
+    width: 5%;
+}
+
+#formSearchArticle #article_search {
+    width: 55%;
+}
+
+#formSearchArticle #article_submit {
+    width: 170px;
+    padding-left: 57px;
+    background-image: url(../../img/glasses.png);
+    background-repeat: no-repeat;
+    background-position: 22px center;
+    background-size: 22px;
+}
+
+.separator {
+    width: 5px;
+    background-color: #d0d0d0;
+}

@@ -14,7 +14,13 @@ class Type
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
+
+    public function __construct(string $name, int $id = null)
+    {
+        $this->name = $name;
+        $this->id = $id;
+    }
 
     public function getId(): ?int
     {
@@ -23,12 +29,12 @@ class Type
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function setName(string $Name): self
     {
-        $this->Name = $Name;
+        $this->name = $Name;
 
         return $this;
     }

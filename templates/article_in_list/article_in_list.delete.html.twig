@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ article.name }}
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.show.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/css/article_in_list.delete.css') }}">
+{% endblock %}
+
+{% block body %}
+	<div class="card text-white bg-warning mb-3">
+		<h4 class="card-header">Warning</h4>
+		<div class="card-body">
+			<p class="card-text">This article will be deleted of your list</p>
+		</div>
+	</div>
+	<article class="main-container">
+		<div class="list-card">
+			{% if shopping_list.hasEndDate() %}
+				<div class="end-date-container">
+					<img src="{{ asset('img/calendar.png') }}" alt="calendar" draggable="false">
+					<h1 class="list-name">{{ shopping_list.endDate|date('d/m/Y') }}</h1>
+				</div>
+			{% endif %}
+			<div class="title-container">
+				<div class="title-list">
+					<img src="{{ asset('img/list.png') }}" width="40" height="40" alt="list">
+					<h1>{{ shopping_list.name }}</h1>
+				</div>
+				{% if shopping_list.hasDescription %}
+					<div class="description-list">
+						<img src="{{ asset('img/description.png') }}" width="25" height="25" alt="description">
+						<div class="description-text">
+							<h3>Description :</h3>
+							<h3>{{ shopping_list.description }}</h3>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+			<div class="article-container">
+				<div class="article-container">
+					<div class="article-card article-in-list-viewer">
+						<div class="article-img">
+							<a href="{{ path('article_show', {'id': article.id}) }}">
+								<img src="{{ asset('img/article/' ~ article.article.image) }}" width="70" height="70" alt="article">
+							</a>
+						</div>
+						<div class="article-name">
+							<h3 class="list-property-value">{{ article.name }}</h3>
+							<label for="type" class="type-label">{{ article.article.type.name }}</label>
+						</div>
+						<div class="article-category">
+							<label for="brand">Brand :</label>
+							<h4 class="list-property-value">
+								{% if article.brand is not null %}
+									{{ article.brand }}
+								{% else %}
+									Unknown
+								{% endif %}
+							</h4>
+						</div>
+						<div class="article-price">
+							<label for="unityPrice">Unity price :</label>
+							<h4 class="list-property-value">{{ article.unityPrice }}
+								€</h4>
+						</div>
+						<div class="article-quantity">
+							<label for="quantity">Quantity :</label>
+							<h4 class="list-property-value">{{ article.quantity }}</h4>
+						</div>
+						<div class="article-total-price">
+							<label for="totalPrice">Total price :</label>
+							<h4>{{ article.totalPrice }}
+								€</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+	<div class="buttons-container">
+		<a href="{{ path('list_show', {'id' : shopping_list.id }) }}" class="btn btn-dark">Back to my list</a>
+		{{ include('article_in_list/_delete_form.html.twig') }}
+	</div>
+{% endblock %}

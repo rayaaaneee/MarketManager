@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shopping lists
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">
+{% endblock %}
+
+{% block body %}
+	{% if shopping_lists|length == 0 %}
+		{% set title = 'Old shopping lists' %}
+	{% else %}
+		{% set title = 'My old shopping lists ('~ shopping_lists|length ~')' %}
+	{% endif %}
+	{{ include('title.page.html.twig', {'title': title, 'file' : 'bulleted-list.png'}) }}
+	{{ include('list/list.new.old.template.html.twig')}}
+{% endblock %}

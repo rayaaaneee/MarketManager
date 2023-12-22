@@ -1,0 +1,4 @@
+<form method="post" class="delete-article-in-list-form" action="{{ path('app_article_in_list_delete', {'id': article.id}) }}">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+	<button class="btn btn-warning">Delete</button>
+</form>

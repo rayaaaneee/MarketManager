@@ -1,0 +1,46 @@
+.charts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 35px 0;
+    column-gap: 45px;
+}
+
+.alert {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#piechart svg {
+    background-color: #ececec !important;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+#piechart .apexcharts-legend {
+    top: 80px !important;
+}
+
+#barchart svg {
+    background-color: #ececec !important;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+#barchart .apexcharts-legend {
+    display: none;
+}
+
+#barchart .apexcharts-toolbar{
+    display: none;
+}
+
+.buttons-container {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    justify-content: center;
+    margin: 35px 0;
+    column-gap: 45px;
+}

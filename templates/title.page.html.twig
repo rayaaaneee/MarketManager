@@ -1,0 +1,8 @@
+{% block stylesheet %}
+	<link rel="stylesheet" href="{{ asset('assets/css/title.page.css') }}">
+{% endblock %}
+
+<div class="title-page-container">
+	<img src="{{ asset('img/'~ file ~'') }}" alt="create" class="title-page-img">
+	<h1 class="title-page">{{ title }}</h1>
+</div>

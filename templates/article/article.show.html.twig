@@ -1,0 +1,38 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.Name }}{% endblock %}
+
+{% block body %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{{ asset('assets/css/article.show.css') }}">
+{% endblock %}
+
+{{ include('article/article.search.bar.html.twig') }}
+<div class="article-show-and-form-container">
+  <div class = "container">
+    <div class="article-show">
+      <img src="{{ asset('img/article/' ~ article.image) }}" alt="{{ article.name }}" draggable="false">
+      <div class="text-container">
+        <h1>{{ article.Name }}</h1>
+        <h3>Unity Price: {{ article.UnityPrice }} €</h3>
+        <h3>{{ article.Type.name }}</h3>
+      </div>
+    </div>
+    <div class="form-container">
+      {{ form_start(articleInListForm) }}
+        {{ form_row(articleInListForm.name) }}
+        {{ form_row(articleInListForm.brand) }}
+        {{ form_row(articleInListForm.unityPrice) }}
+        {{ form_row(articleInListForm.quantity) }}
+        {{ form_row(articleInListForm.shoppingList) }}
+        {{ form_row(articleInListForm.submit) }}
+      {{ form_end(articleInListForm) }}
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+
